@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/photo_fond">
+
+    <ImageView
+        android:id="@+id/connexion_imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/partybay"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="200px"/>
+
+    <LinearLayout
+        android:id="@+id/connexion_LL_pseudo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40px"
+        android:layout_marginRight="40px"
+        android:layout_marginLeft="40px"
+        android:layout_below="@id/connexion_imageView">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/pseudo"/>
+        <EditText
+            android:id="@+id/connexion_ET_pseudo"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/edit_text"
+            android:inputType="text"
+            android:drawableLeft="@drawable/icone_transparent"
+            android:hint="Pseudo"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/connexion_LL_mdp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40px"
+        android:layout_marginRight="40px"
+        android:layout_marginLeft="40px"
+        android:layout_below="@id/connexion_LL_pseudo">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/mdp"/>
+        <EditText
+            android:id="@+id/connexion_ETpassword"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:drawableLeft="@drawable/icone_transparent"
+            android:background="@drawable/edit_text"
+            android:inputType="textPassword"
+            android:hint="Mot de passe"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/connexion_B_connexion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_button"
+        android:text="Connexion"
+        android:width="300px"
+        android:height="88px"
+        android:layout_marginTop="100px"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:layout_below="@id/connexion_LL_mdp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="40px"
+        android:layout_marginBottom="30px">
+
+        <TextView
+            android:layout_below="@id/connexion_B_connexion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text=" Mot de passe oublié ? "
+            android:textSize="40px"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Renvoyer le"
+            android:textSize="40px"
+            android:textColor="@color/redClear"/>
+    </LinearLayout>
+
+
+</RelativeLayout>

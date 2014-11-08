@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/photo_fond">
+
+    <TextView
+        android:id="@+id/inscription_retour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/retourButton"
+        android:textColor="#FFFFFF"
+        android:textSize="40px"
+        android:layout_marginLeft="40px"
+        android:layout_marginTop="10px"
+        android:layout_marginBottom="10px"/>
+
+    <ImageView
+        android:id="@+id/inscription_IV_pb"
+        android:layout_width="200px"
+        android:layout_height="200px"
+        android:background="@drawable/partybay"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/inscription_retour"/>
+
+    <RadioGroup
+        android:id="@+id/inscription_radiouGroup"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/inscription_IV_pb"
+        android:layout_marginTop="30px">
+
+        <RadioButton
+            android:id="@+id/inscription_rg_homme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Homme"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"/>
+
+        <RadioButton
+            android:id="@+id/inscription_rg_femme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Femme"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"/>
+    </RadioGroup>
+
+    <LinearLayout
+        android:id="@+id/inscription_LL_pseudo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/inscription_radiouGroup"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30px"
+        android:layout_marginRight="40px"
+        android:layout_marginLeft="40px" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/pseudo"/>
+        <EditText
+            android:id="@+id/inscription_ET_pseudo"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:drawableLeft="@drawable/icone_transparent"
+            android:hint="Pseudo"
+            android:inputType="text"
+            android:background="@drawable/edit_text"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/inscription_LL_mail"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/inscription_LL_pseudo"
+        android:layout_marginTop="30px"
+        android:layout_marginRight="40px"
+        android:layout_marginLeft="40px" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/mail"/>
+        <EditText
+            android:id="@+id/inscription_ET_mail"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:drawableLeft="@drawable/icone_transparent"
+            android:hint="test@partybay.fr"
+            android:inputType="text"
+            android:background="@drawable/edit_text"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/inscription_LL_tel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/inscription_LL_mail"
+        android:layout_marginTop="30px"
+        android:layout_marginRight="40px"
+        android:layout_marginLeft="40px" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tel"/>
+        <EditText
+            android:id="@+id/inscription_ET_tel"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:drawableLeft="@drawable/icone_transparent"
+            android:inputType="phone"
+            android:hint="0612345678"
+            android:background="@drawable/edit_text"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/inscription_pass"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/inscription_LL_tel"
+        android:layout_marginTop="30px"
+        android:layout_marginRight="40px"
+        android:layout_marginLeft="40px" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/mdp"/>
+        <EditText
+            android:id="@+id/inscription_ET_pass"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:drawableLeft="@drawable/icone_transparent"
+            android:hint="Mot de passe"
+            android:inputType="textPassword"
+            android:background="@drawable/edit_text"/>
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/inscription_text_naissance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date de naissance"
+        android:textColor="#FFFFFF"
+        android:layout_below="@id/inscription_pass"
+        android:textStyle="bold"
+        android:layout_marginRight="40px"
+        android:layout_marginLeft="40px"
+        android:layout_marginTop="20px"/>
+
+    <Button
+        android:id="@+id/inscription_bouton_date_naissance"
+        android:layout_below="@id/inscription_text_naissance"
+        android:layout_marginTop="20px"
+        android:layout_width="fill_parent"
+        android:layout_height="40dip"
+        android:layout_marginBottom="10dip"
+        android:layout_marginLeft="30dip"
+        android:layout_marginRight="30dip"
+        android:background="@drawable/corner"
+        android:text="01/01/2014" />
+
+    <TextView
+        android:id="@+id/inscription_tv_cgu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cgu"
+        android:textColor="#FFFFFF"
+        android:layout_marginRight="40px"
+        android:layout_marginLeft="40px"
+        android:gravity="center"
+        android:layout_below="@id/inscription_bouton_date_naissance"/>
+    <Button
+        android:id="@+id/inscription_button_valider"
+        android:layout_width="300px"
+        android:layout_marginTop="40px"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_button"
+        android:layout_below="@id/inscription_tv_cgu"
+        android:text="Valider"
+        android:textColor="#FFFFFF"
+        android:layout_centerHorizontal="true"/>
+
+
+
+</RelativeLayout>

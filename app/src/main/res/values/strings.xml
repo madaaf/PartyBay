@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">PartyBay</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="date_instant">à l'instant</string>
+
+    <string name="connexion">Connexion</string>
+    <string name="inscription">Inscription</string>
+    <string name="cgu">En vous inscrivant, vous acceptez <font fgcolor="#ffff0000"> les conditions générales d\'utilisations </font> et prenez connaissance de notre <font fgcolor="#ffff0000">politique de confidentialité</font>.</string>
+    <string name="retourButton"> Retour </string>
+    <string name="poppup_1a">Tu as oublié tes identifiant ?</string>
+    <string name="poppup_1b">  \nRenseigne ton adresse email ou ton numéro de téléphone dans le champs ci dessous pour récupérer tes nouveaus identifiants.  </string>
+
+
+
+    <!--PATH SDCARD-->
+    <string name="sdcard_path">/storage/sdcard0/PartyBay2</string>
+    <string name="sdcard_user">/storage/sdcard0/PartyBay2/user.serial</string>
+    <string name="sdcard_token">/storage/sdcard0/PartyBay2/token.serial</string>
+    <string name="sdcard_photo">/storage/sdcard0/PartyBay2/photo.jpeg</string>
+    <string name="sdcard_video">/storage/sdcard0/PartyBay2/video.mp4</string>
+
+
+</resources>

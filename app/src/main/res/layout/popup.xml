@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5">
+
+    <TextView
+        android:id="@+id/poppup_1a"
+        android:layout_marginTop="60px"
+        android:layout_width="600px"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content"
+        android:text="@string/poppup_1a"
+        android:textStyle="bold"
+        android:gravity="center"/>
+    <TextView
+        android:id="@+id/poppup_1b"
+        android:layout_marginTop="20px"
+        android:layout_width="600px"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/poppup_1a"
+        android:text="@string/poppup_1b"
+        android:gravity="center"/>
+
+    <LinearLayout
+        android:id="@+id/LL_pop"
+        android:layout_marginTop="30px"
+        android:layout_below="@id/poppup_1b"
+        android:layout_centerInParent="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="40px"
+        android:layout_marginLeft="40px">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/icofondtel"/>
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:inputType="text"
+            android:layout_centerHorizontal="true"
+            android:drawableLeft="@drawable/icone_transparent"
+            android:hint="email ou numéro ici"
+            android:background="@drawable/edit_text"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true">
+
+        <Button
+            android:id="@+id/button_connexion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_dark_button"
+            android:textColor="#FFFFFF"
+            android:text="Annuler"
+            android:width="400px"
+            android:height="88px"/>
+        <Button
+            android:id="@+id/button_inscription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_button"
+            android:textColor="@color/white"
+            android:text="Valider"
+            android:width="400px"
+            android:height="88px"/>
+    </LinearLayout>
+
+</RelativeLayout>

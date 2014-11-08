@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/intro">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="40px"
+        android:layout_marginLeft="40px"
+        android:layout_centerVertical="true">
+
+
+        <TextView
+            android:id="@+id/first_act_pseudo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:layout_centerHorizontal="true"
+            android:textSize="70px"
+            android:text="SALUT CLAIRE"/>
+
+        <TextView
+            android:id="@+id/first_act_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="80px"
+            android:textSize="33px"
+            android:layout_below="@id/first_act_pseudo"
+            android:text="Bienvenue et merci de t'etre inscrite sur PartyBay !"/>
+
+        <ImageView
+            android:id="@+id/first_act_bouton_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/first_act_text"
+            android:layout_marginTop="50px"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/bouton_photo"/>
+
+        <TextView
+            android:id="@+id/fist_act_text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="50px"
+            android:textSize="33px"
+            android:layout_below="@id/first_act_bouton_photo"
+            android:text="Capture tes moments de soirées préférés à tout instant en cliquant sur ce bouton directement depuis la timeline."/>
+
+
+        <Button
+            android:id="@+id/fist_act_button_go"
+            android:layout_width="300px"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="90px"
+            android:layout_below="@id/fist_act_text2"
+            android:background="@drawable/round_dark_button"
+            android:textColor="#FFFFFF"
+            android:text="Ok, go !"/>
+    </RelativeLayout>
+</RelativeLayout>

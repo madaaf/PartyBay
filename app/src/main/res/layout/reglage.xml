@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:stretchColumns="1"
+    >
+
+
+    <TableRow
+        android:background="#F5F5F5">
+        <TextView
+            android:text="MON COMPTE"
+            android:layout_column="1"
+            android:padding="10dip"  />
+
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="Pseudo"
+            android:layout_column="1"
+            android:padding="10dip"
+            />
+        <TextView
+            android:id="@+id/pseudo"
+            android:text="ok"
+            android:layout_column="1"
+            android:padding="10dip"
+            />
+
+    </TableRow>
+    <TableRow>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="Numéro "
+            android:layout_column="1"
+            android:padding="10dip"
+            />
+        <TextView
+            android:id="@+id/num"
+            android:text="ok"
+            android:layout_column="1"
+            android:padding="10dip"
+            />
+
+    </TableRow>
+    <TableRow>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="Adresse email"
+            android:layout_column="1"
+            android:padding="10dip"
+            />
+        <TextView
+            android:id="@+id/email"
+            android:text="ok"
+            android:layout_column="1"
+            android:padding="10dip"
+            />
+
+    </TableRow>
+    <TableRow>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="Paramètre de notifications"
+            android:layout_column="1"
+            android:padding="10dip"
+            />
+        <TextView
+            android:text=">"
+            android:layout_column="1"
+            android:padding="10dip"
+            />
+
+    </TableRow>
+
+    <TableRow
+        android:background="#F5F5F5">
+
+        <TextView
+            android:text="CONTACTS"
+            android:layout_column="1"
+            android:padding="10dip"
+            />
+
+    </TableRow>
+    <TableRow>
+
+        <TextView
+            android:text="Importer les contacts"
+            android:layout_column="1"
+            android:padding="10dip"
+            />
+        <TextView
+            android:text=">"
+            android:layout_column="1"
+            android:padding="10dip"
+            />
+    </TableRow>
+
+    <TableRow>
+
+        <Button
+            android:id="@+id/reglage_deco_button"
+            android:text="Déconnexion"
+            android:layout_column="1"
+            android:padding="10dip"
+            />
+        <TextView
+            android:text=">"
+            android:layout_column="1"
+            android:padding="10dip"
+            />
+    </TableRow>
+
+</TableLayout>

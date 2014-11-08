@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <RelativeLayout
+        android:id="@+id/bar_edit"
+        android:layout_width="fill_parent"
+        android:layout_height="100px"
+        android:background="@drawable/reddark"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/editer_retour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20px"
+            android:layout_centerVertical="true"
+            android:background="@drawable/retour"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Éditer"
+            android:textColor="@color/white"
+            android:layout_centerVertical="true"
+            android:textSize="38px"
+            android:layout_centerHorizontal="true"/>
+
+        <ImageButton
+            android:id="@+id/button_poster"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20px"
+            android:layout_centerVertical="true"
+            android:background="@drawable/yes_inactive"/>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/image_toedit"
+        android:layout_width="match_parent"
+        android:layout_height="600px"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@id/bar_edit"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"/>
+
+    <!-- android:background="@drawable/photo_fond"
+     android:scaleType="fitXY"
+     android:adjustViewBounds="true"
+     -->
+
+
+    <RelativeLayout
+        android:id="@+id/description"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/image_toedit"
+        >
+
+        <EditText
+            android:id="@+id/edit_description"
+            android:layout_width="fill_parent"
+            android:layout_height="100px"
+            android:hint="Écris une courte description..."/>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/lieu"
+        android:layout_width="fill_parent"
+        android:layout_height="50px"
+        android:layout_below="@id/description"
+        android:layout_margin="18px"
+        >
+
+
+        <ImageButton
+            android:layout_centerVertical="true"
+            android:id="@+id/lieu_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/lieu"/>
+
+        <TextView
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="80px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Donner un nom à ce lieu"
+            android:textSize="28px"/>
+
+        <ImageView
+            android:layout_width="30px"
+            android:layout_height="30px"
+            android:background="@drawable/aller"
+            android:layout_alignParentRight="true"/>
+
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="18px">
+
+
+
+        <TextView
+            android:id="@+id/title_reseau"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Partager sur les réseaux"
+            android:gravity="center"
+            android:textSize="28px"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title_reseau"
+            android:orientation="horizontal"
+            android:layout_centerHorizontal="true">
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20px"
+                android:background="@drawable/facebook"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20px"
+                android:background="@drawable/tumblr"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20px"
+                android:background="@drawable/twitter"/>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>
