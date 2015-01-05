@@ -56,7 +56,9 @@ public class MyDate {
              resultat ="il y a "+ hours+"h";
          }else if(hours>=24){
              resultat ="il y a "+ hours/24+"j";
-         }
+         }else if(hours >=48) {
+            resultat = "le "+day2+"/"+month2+"/"+year2;
+        }
 
         return resultat;
     }

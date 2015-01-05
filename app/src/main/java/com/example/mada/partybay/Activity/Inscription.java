@@ -96,6 +96,7 @@ public class Inscription extends Activity {
             client.AddParam("email",mail_s);
             client.AddParam("phone",tel_s);
             client.AddParam("password",mdp_s);
+            client.AddParam("from","app");
 
             try {
                 client.Execute("POST");

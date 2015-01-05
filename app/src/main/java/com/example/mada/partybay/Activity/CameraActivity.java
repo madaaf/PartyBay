@@ -311,7 +311,7 @@ public class CameraActivity extends Activity implements TextureView.SurfaceTextu
             Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
             Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap , 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
             bitmap.recycle();
-            rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 75, stream2);
+            rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream2);
             rotatedBitmap.recycle();
 
             try {

@@ -4,7 +4,7 @@
     <string name="app_name">PartyBay</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="date_instant">à l'instant</string>
+    <string name="date_instant">à l\'instant</string>
 
     <string name="connexion">Connexion</string>
     <string name="inscription">Inscription</string>
