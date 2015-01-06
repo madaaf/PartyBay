@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/PartyBay"
         android:layout_width="fill_parent"
-        android:layout_height="90px"
+        android:layout_height="60dp"
         android:background="@drawable/reddark"
         android:orientation="horizontal">
 
@@ -42,6 +42,27 @@
 
     </RelativeLayout>
 
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swype"
+        android:layout_below="@+id/PartyBay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/lvPost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true" >
+
+        </ListView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+<!--
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/rlLayout"
@@ -62,7 +83,7 @@
         </ListView>
 
     </RelativeLayout>
-
+-->
     <ImageButton
         android:id="@+id/moment"
         android:layout_width="wrap_content"
@@ -72,4 +93,8 @@
         android:layout_marginBottom="15px"
         android:background="@drawable/bouton_photo"/>
 
+
+
+
 </RelativeLayout>
+

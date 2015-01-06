@@ -52,10 +52,14 @@
             android:label="@style/AppTheme"/>
         <activity
             android:name=".Activity.TimeLine"
-         android:label="@style/AppTheme"/>
+            android:label="@style/AppTheme"/>
 
         <activity
-            android:name=".Activity.Reglage"
+        android:name=".MenuManager.ViewPagerActivity"
+        android:label="@style/AppTheme"/>
+
+        <activity
+            android:name=".Activity.Profile"
             android:label="@style/AppTheme"/>
 
         <activity
@@ -69,6 +73,8 @@
         <activity
             android:name=".TimeLineManager.PostActivity"
             android:label="@style/AppTheme"/>
+
+
 
 
 

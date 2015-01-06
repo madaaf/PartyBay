@@ -14,6 +14,7 @@ import com.example.mada.partybay.Class.SerializeurMono;
 import com.example.mada.partybay.Class.Token;
 import com.example.mada.partybay.Class.User;
 import com.example.mada.partybay.R;
+import com.example.mada.partybay.TimeLineManager.PostActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -108,7 +109,7 @@ public class Connexion extends Activity{
                     // j'enregistre dans mon fichier user les info
                     serializeur.setObjet(user);
 
-                    Intent intent = new Intent(Connexion.this, TimeLine.class);
+                    Intent intent = new Intent(Connexion.this, PostActivity.class);
                     startActivity(intent);
                     finish();
                 } catch (Exception e) {

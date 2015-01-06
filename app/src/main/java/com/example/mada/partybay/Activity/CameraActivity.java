@@ -29,6 +29,7 @@ import java.io.InputStream;
  * Created by mada on 07/11/2014.
  */
 
+
 public class CameraActivity extends Activity implements TextureView.SurfaceTextureListener {
 
     public static final int MEDIA_TYPE_IMAGE = 1;
@@ -88,6 +89,7 @@ public class CameraActivity extends Activity implements TextureView.SurfaceTextu
     }
 
     private void releaseCamera(){
+        Log.d("Camera ", "release Camera");
         if (mCamera != null){
             mCamera.release(); // release the camera for other applications
             mCamera = null;
@@ -97,6 +99,7 @@ public class CameraActivity extends Activity implements TextureView.SurfaceTextu
     View.OnClickListener flashListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            Log.d("Camera ", "flash Camera");
             if(flash_active){
                 flash_active = false;
                 flash.setImageResource(R.drawable.flashoff);
@@ -117,6 +120,7 @@ public class CameraActivity extends Activity implements TextureView.SurfaceTextu
     View.OnClickListener captureListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            Log.d("Camera ", "capture Camera");
             // get an image from the camera
             try {
                 File fichier = new File(getResources().getString(R.string.sdcard_photo));
@@ -129,9 +133,11 @@ public class CameraActivity extends Activity implements TextureView.SurfaceTextu
             }
         }
     };
+
     View.OnClickListener quitterListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            Log.d("Camera ", "quitter Camera");
             releaseCamera();
             Intent intent = new Intent(CameraActivity.this, TimeLine.class);
             startActivity(intent);
@@ -180,6 +186,7 @@ public class CameraActivity extends Activity implements TextureView.SurfaceTextu
 
     @Override
     public void onResume() {
+        Log.d("Camera ", "onResume Camera");
         super.onPause();
         if (mCamera == null){
             mCamera = Camera.open();
@@ -203,6 +210,7 @@ public class CameraActivity extends Activity implements TextureView.SurfaceTextu
 
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int i, int i2) {
+        Log.d("Camera ", "onSurfaceTextureAvailable Camera");
         thread = new Thread(new ActiveCam(surfaceTexture, i, i2));
         thread.start();
     }
@@ -214,6 +222,7 @@ public class CameraActivity extends Activity implements TextureView.SurfaceTextu
 
     @Override
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
+        Log.d("Camera ", "onSurfaceTextureDestroyed Camera");
         if (mCamera != null) {
             mCamera.stopPreview();
             mCamera.release();
@@ -233,12 +242,14 @@ public class CameraActivity extends Activity implements TextureView.SurfaceTextu
         private int height;
 
         public ActiveCam(SurfaceTexture surface, int width, int height){
+            Log.d("Camera ", "ActiveCam class Camera");
             this.surface = surface;
             this.width = width;
             this.height = height;
         }
 
         public void run(){
+            Log.d("Camera ", "ActiveCam class run Camera");
             if(mCamera==null)
                 mCamera = Camera.open();
             try {
@@ -271,7 +282,7 @@ public class CameraActivity extends Activity implements TextureView.SurfaceTextu
     private Camera.PictureCallback mPicture = new Camera.PictureCallback() {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
-
+            Log.d("Camera ", "onPictureTaken class Camera");
             File pictureFile;
             FileOutputStream out = null;
             FileOutputStream stream = null;
@@ -330,7 +341,7 @@ public class CameraActivity extends Activity implements TextureView.SurfaceTextu
     // BITMAP FROM FILE
 
     public Bitmap decodeSampledBitmapFromFile(String path, int reqWidth, int reqHeight) {
-
+        Log.d("Camera ", "decodeSampledBitmapFromFile class Camera");
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(path, options);
@@ -358,7 +369,7 @@ public class CameraActivity extends Activity implements TextureView.SurfaceTextu
 
     /** Create a File for saving an image or video */
     private File getOutputMediaFile(int type){
-
+        Log.d("Camera ", "getOutputMediaFile class Camera");
         File mediaFile;
         if (type == MEDIA_TYPE_IMAGE){
             String file = getResources().getString(R.string.sdcard_photo);

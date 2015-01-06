@@ -1,11 +1,11 @@
 package com.example.mada.partybay.Activity;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -20,7 +20,7 @@ import java.io.IOException;
 /*
  * Created by mada on 20/10/2014.
  */
-public class Reglage extends Activity {
+public class Reglage extends Fragment {
 
     private TextView pseudo = null;
     private TextView num = null;
@@ -30,32 +30,27 @@ public class Reglage extends Activity {
     private Button deco;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.reglage);
-        ActionBar bar = this.getActionBar();
-        bar.hide();
-        Log.d("je suis la ", "ok");
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.reglage, container, false);
 
-        pseudo = (TextView) findViewById(R.id.pseudo);
-        num = (TextView) findViewById(R.id.num);
-        mail = (TextView) findViewById(R.id.email);
-        deco = (Button) findViewById(R.id.reglage_deco_button);
+        pseudo = (TextView) rootView.findViewById(R.id.pseudo);
+        num = (TextView) rootView.findViewById(R.id.num);
+        mail = (TextView) rootView.findViewById(R.id.email);
+        deco = (Button) rootView.findViewById(R.id.reglage_deco_button);
 
         serializeur = new SerializeurMono<User>(getResources().getString(R.string.sdcard_user));
-
         JSONObject obj = new JSONObject();
         User user;
         user = serializeur.getObject();
-        user.getId();
 
         pseudo.setText(user.getPseudo());
         num.setText(user.getPhone());
         mail.setText(user.getEmail());
 
         deco.setOnClickListener(decoListener);
-
+        return  rootView;
     }
+
 
     View.OnClickListener decoListener = new View.OnClickListener() {
         @Override
@@ -76,9 +71,9 @@ public class Reglage extends Activity {
                     System.exit(0);
                 }
 
-                Intent i = new Intent(Reglage.this,Chargement.class);
+                Intent i = new Intent(getActivity(),Chargement.class);
                 startActivity(i);
-                finish();
+               // finish();
             }
 
         }

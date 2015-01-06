@@ -4,13 +4,17 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.mada.partybay.Activity.CameraActivity;
-import com.example.mada.partybay.Activity.Reglage;
+import com.example.mada.partybay.Activity.Profile;
 import com.example.mada.partybay.Class.RestClient;
+import com.example.mada.partybay.MenuManager.ViewPagerActivity;
 import com.example.mada.partybay.R;
 
 import org.json.JSONArray;
@@ -24,12 +28,12 @@ import java.util.Iterator;
 /**
  * Created by mada on 05/11/2014.
  */
-public class PostActivity extends Activity{
+public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefreshListener{
 
-
-    private ImageButton reglage = null;
+    private ImageButton menu = null;
     private ImageButton profile = null;
     private ImageButton moment = null;
+    private SwipeRefreshLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +43,23 @@ public class PostActivity extends Activity{
         ActionBar bar = this.getActionBar();
         bar.hide();
 
+        layout = (SwipeRefreshLayout) findViewById(R.id.swype);
+        layout.setOnRefreshListener(this);
 
-        reglage = (ImageButton) findViewById(R.id.reglage);
+        // Set the refresh swype color scheme
+        layout.setColorScheme(
+                R.color.swype_1,
+                R.color.swype_2,
+                R.color.swype_3,
+                R.color.swype_4);
+
+        menu = (ImageButton) findViewById(R.id.reglage);
         profile = (ImageButton) findViewById(R.id.profile);
         moment = (ImageButton) findViewById(R.id.moment);
 
 
         // post.setImageDrawable();
-        reglage.setOnClickListener(reglageListener);
+        menu.setOnClickListener(reglageListener);
         profile.setOnClickListener(profileListener);
         moment.setOnClickListener(momentListener);
     }
@@ -64,7 +77,7 @@ public class PostActivity extends Activity{
     View.OnClickListener reglageListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(PostActivity.this, Reglage.class);
+            Intent intent = new Intent(PostActivity.this, ViewPagerActivity.class);
             startActivity(intent);
 
         }
@@ -73,8 +86,8 @@ public class PostActivity extends Activity{
     View.OnClickListener profileListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            // Intent intent = new Intent(TimeLine.this, Profile.class);
-            //startActivity(intent);
+             Intent intent = new Intent(PostActivity.this, Profile.class);
+             startActivity(intent);
         }
     };
 
@@ -121,8 +134,6 @@ public class PostActivity extends Activity{
             ListView listView = (ListView) findViewById(R.id.lvPost);
             listView.setAdapter(adapter);
 
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -144,5 +155,17 @@ public class PostActivity extends Activity{
     }
 
 
+    @Override
+    public void onRefresh() {
+        // I create a handler to stop the refresh and show a message after 3s
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                layout.setRefreshing(false);
+                Toast.makeText(PostActivity.this, "Cool !", Toast.LENGTH_LONG).show();
+            }
 
+        }, 3000);
+
+    }
 }

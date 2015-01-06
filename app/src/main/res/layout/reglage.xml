@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<TableLayout
+    android:layout_below="@id/reglage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:stretchColumns="1"
@@ -9,15 +15,19 @@
 
 
     <TableRow
-        android:background="#F5F5F5">
+        android:background="@drawable/menu_table">
         <TextView
             android:text="MON COMPTE"
             android:layout_column="1"
-            android:padding="10dip"  />
+            android:padding="10dip"
+            android:textStyle="bold"
+            android:textColor="#000000"
+           />
 
     </TableRow>
 
-    <TableRow>
+    <TableRow
+        android:background="@drawable/menu_table_border">
 
         <TextView
             android:layout_width="wrap_content"
@@ -30,10 +40,13 @@
             android:text="ok"
             android:layout_column="1"
             android:padding="10dip"
+            android:textColor="#747272"
+            android:gravity="right"
             />
 
     </TableRow>
-    <TableRow>
+    <TableRow
+        android:background="@drawable/menu_table_border">
 
         <TextView
             android:layout_width="wrap_content"
@@ -46,10 +59,13 @@
             android:text="ok"
             android:layout_column="1"
             android:padding="10dip"
+            android:textColor="#747272"
+            android:gravity="right"
             />
 
     </TableRow>
-    <TableRow>
+    <TableRow
+        android:background="@drawable/menu_table_border">
 
         <TextView
             android:layout_width="wrap_content"
@@ -62,36 +78,46 @@
             android:text="ok"
             android:layout_column="1"
             android:padding="10dip"
+            android:textColor="#747272"
+            android:gravity="right"
             />
 
     </TableRow>
-    <TableRow>
+    <TableRow
+        android:background="@drawable/menu_table_border">
 
         <TextView
             android:layout_width="wrap_content"
             android:text="Paramètre de notifications"
             android:layout_column="1"
             android:padding="10dip"
+
             />
         <TextView
             android:text=">"
+            android:textSize="20dp"
             android:layout_column="1"
+            android:layout_centerVertical="true"
             android:padding="10dip"
-            />
+            android:textColor="#747272"
+            android:gravity="right"/>
 
     </TableRow>
 
     <TableRow
-        android:background="#F5F5F5">
+        android:background="@drawable/menu_table">
 
         <TextView
             android:text="CONTACTS"
             android:layout_column="1"
             android:padding="10dip"
+            android:textStyle="bold"
+            android:textColor="#000000"
             />
 
     </TableRow>
-    <TableRow>
+    <TableRow
+        android:background="@drawable/menu_table_border">
 
         <TextView
             android:text="Importer les contacts"
@@ -100,11 +126,74 @@
             />
         <TextView
             android:text=">"
+            android:textSize="20dp"
             android:layout_column="1"
             android:padding="10dip"
+            android:textColor="#747272"
+            android:gravity="right"
             />
     </TableRow>
 
+    <TableRow
+        android:background="@drawable/menu_table">
+
+        <TextView
+            android:text="PLUS"
+            android:layout_column="1"
+            android:padding="10dip"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            />
+
+    </TableRow>
+
+    <TableRow
+        android:background="@drawable/menu_table_border">
+
+        <TextView
+            android:text="CGU"
+            android:layout_column="1"
+            android:padding="10dip"
+            />
+        <TextView
+            android:text=">"
+            android:textSize="20dp"
+            android:layout_column="1"
+            android:padding="10dip"
+            android:textColor="#747272"
+            android:gravity="right"
+            />
+    </TableRow>
+
+    <TableRow
+        android:background="@drawable/menu_table_border">
+
+        <TextView
+            android:text="confidentialité"
+            android:layout_column="1"
+            android:padding="10dip"
+            />
+        <TextView
+            android:text=">"
+            android:textSize="20dp"
+            android:layout_column="1"
+            android:padding="10dip"
+            android:textColor="#747272"
+            android:gravity="right"
+            />
+    </TableRow>
+    <TableRow
+        android:background="@drawable/menu_table">
+
+        <TextView
+            android:text="ACTIONS"
+            android:layout_column="1"
+            android:padding="10dip"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            />
+
+    </TableRow>
     <TableRow>
 
         <Button
@@ -115,9 +204,13 @@
             />
         <TextView
             android:text=">"
+            android:textSize="20dp"
+            android:textColor="#747272"
             android:layout_column="1"
             android:padding="10dip"
+            android:gravity="right"
             />
     </TableRow>
 
 </TableLayout>
+</RelativeLayout>

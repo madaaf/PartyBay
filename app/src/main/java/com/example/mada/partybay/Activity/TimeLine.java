@@ -1,5 +1,10 @@
 package com.example.mada.partybay.Activity;
+///
 
+
+///CETTE CLASSE NEST PAS UTILISER
+
+///
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
@@ -7,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.example.mada.partybay.MenuManager.ViewPagerActivity;
 import com.example.mada.partybay.R;
 
 /*
@@ -42,7 +48,7 @@ public class TimeLine extends Activity {
     View.OnClickListener reglageListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(TimeLine.this, Reglage.class);
+            Intent intent = new Intent(TimeLine.this, ViewPagerActivity.class);
             startActivity(intent);
 
         }
@@ -51,8 +57,8 @@ public class TimeLine extends Activity {
     View.OnClickListener profileListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-           // Intent intent = new Intent(TimeLine.this, Profile.class);
-            //startActivity(intent);
+            Intent intent = new Intent(TimeLine.this, Profile.class);
+            startActivity(intent);
         }
     };
 

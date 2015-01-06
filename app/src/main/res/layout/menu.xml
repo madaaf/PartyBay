@@ -1,0 +1,82 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:id="@+id/PartyBay"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/reddark"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/retour"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/retour"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Menu"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/reglage"
+        android:paddingBottom="10dp"
+        android:layout_marginBottom="0.2dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/PartyBay"
+        android:background="@drawable/reddark">
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal"
+            android:layout_margin="10dip">
+
+            <Button
+                android:id="@+id/activite_b"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/activite_active"
+                android:text="Activité"
+                android:layout_centerVertical="true"
+                android:textColor="@color/white"/>
+
+            <Button
+                android:id="@+id/reglage_b"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/activite_b"
+                android:background="@drawable/reglage_inactive"
+                android:text="Reglage"
+                android:layout_centerVertical="true"
+                android:textColor="@color/white"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+    <android.support.v4.view.ViewPager
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/viewpager"
+    android:layout_below="@id/reglage"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+
+</RelativeLayout>
