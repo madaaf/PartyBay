@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,13 +13,14 @@ import com.example.mada.partybay.R;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by mada on 05/11/2014.
  */
 
-public class PostAdapter extends ArrayAdapter<Post> {
-
+public class PostAdapter extends ArrayAdapter<Post> implements View.OnClickListener{
+    private List<ImageButton> buttons = new ArrayList<ImageButton>();
 
     public PostAdapter(Context context, ArrayList<Post> posts) {
         super(context,R.layout.post, posts);
@@ -34,6 +36,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
         TextView date;
         TextView latitude;
         ImageView link;
+
     }
 
 
@@ -56,6 +59,14 @@ public class PostAdapter extends ArrayAdapter<Post> {
             viewHolder.link = (ImageView)convertView.findViewById(R.id.post_photo_fond);
 
             convertView.setTag(viewHolder);
+
+            ImageButton b = (ImageButton) convertView.findViewById(R.id.post_coeur);
+            System.out.println("ID IN: "+post.getId());
+            System.out.println("POSITION" + position);
+            b.setTag(Integer.valueOf(post.getId()));
+            b.setOnClickListener(this);
+            buttons.add(b);
+
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
         }
@@ -73,7 +84,10 @@ public class PostAdapter extends ArrayAdapter<Post> {
     }
 
 
-
-
+    @Override
+    public void onClick(View v) {
+        int id = (Integer)v.getTag();
+        System.out.println("ID: "+id);
+    }
 
 }

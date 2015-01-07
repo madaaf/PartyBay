@@ -4,7 +4,6 @@ import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.widget.Button;
 
 import com.example.mada.partybay.R;
@@ -42,7 +41,7 @@ public class ViewPagerActivity extends FragmentActivity{
                 // When swiping between different app sections, select the corresponding tab.
                 // We can also use ActionBar.Tab#select() to do this if we have a reference to the
                 // Tab.
-                Log.d("position", String.valueOf(position));
+
                 if(position==1){
                     activite_b.setBackgroundResource(R.drawable.activite_inactive);
                     reglage_b.setBackgroundResource(R.drawable.reglage_active);

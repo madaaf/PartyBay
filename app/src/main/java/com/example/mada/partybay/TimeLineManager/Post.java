@@ -2,10 +2,12 @@ package com.example.mada.partybay.TimeLineManager;
 
 import com.example.mada.partybay.Class.MyDate;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -20,6 +22,10 @@ public class Post {
     private String latitude = null;
     private String longitude = null;
     private String text = null;
+    private String user_pseudo = null;
+    private String lovers = null;
+    private ArrayList<String> tabLovers = null;
+
 
     public static String getCurrentTimeStamp() {
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//dd/MM/yyyy
@@ -30,10 +36,22 @@ public class Post {
 
     public Post(JSONObject obj) {
         try {
+
+            System.out.println("OOOK  "+obj.toString());
+
+            id = obj.getString("id");
             user_pseudo = obj.getString("user_pseudo");
             text = obj.getString("text");
             latitude = obj.getString("latitude");
             lovers = obj.getString("lovers");
+
+            // Transforme l'arret liste en chiffre pour afficher le nbr de like
+            if (lovers!="false"){
+                tabLovers = jsonStringToArray(lovers);
+                lovers = String.valueOf(tabLovers.size());
+            }else{
+                lovers  = "0";
+            }
 
             String test = obj.getString("date");
             int year =Integer.parseInt(test.substring(0,4));
@@ -93,9 +111,7 @@ public class Post {
         this.longitude = longitude;
     }
 
-    public String getDate() {
-        return date;
-    }
+    public String getDate() { return date; }
 
     public void setDate(String date) {
         this.date = date;
@@ -125,11 +141,20 @@ public class Post {
         this.id = id;
     }
 
-    private String user_pseudo = null;
-    private String lovers = null;
 
 
 
+    public ArrayList<String> jsonStringToArray(String jsonString) throws JSONException{
+        ArrayList<String> stringArray = new ArrayList<String>();
+        if (jsonString!=null){
+            JSONArray jsonArray = new JSONArray(jsonString);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                stringArray.add(jsonArray.getString(i));
+            }
+
+        }
+        return stringArray;
+    }
 
 
 

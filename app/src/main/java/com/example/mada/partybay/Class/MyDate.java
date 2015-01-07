@@ -27,7 +27,7 @@ public class MyDate {
         String resultat = null;
 
         java.util.Date heure = new GregorianCalendar(year,month,day,hour,minute).getTime();
-        System.out.println("heure du post = "+ year +" "+month+" "+ day+" "+hour+" "+minute+" ");
+        //System.out.println("heure du post = "+ year +" "+month+" "+ day+" "+hour+" "+minute+" ");
 
         // heure de mtn yyyy-MM-dd HH:mm:ss
 

@@ -44,6 +44,10 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
     private SwipeRefreshLayout swipeContainer;
 
+    private int nbr_scroll = 0 ;
+
+    private final static int NBROFITEM = 5;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,15 +72,15 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         listView = (ListView) findViewById(R.id.lvPost);
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swype);
 
-
+        posts = new ArrayList<Post>();
         // post.setImageDrawable();
         menu.setOnClickListener(reglageListener);
         profile.setOnClickListener(profileListener);
         moment.setOnClickListener(momentListener);
 
-
+         // on recupere les 10 premier postes
         try {
-            getPostFromApi(0,7);
+            getPostFromApi(0,NBROFITEM);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -88,7 +92,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-               // Log.d(" onScrollStateChanged", "Y00000000");
+                // Log.d(" onScrollStateChanged", "Y00000000");
                 onScroolStateChange = true;
             }
 
@@ -101,12 +105,15 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
                 if(lastInScreen == (totalItemCount) && (onScroolStateChange==true)){
                     Log.d(" firstVisibleItem", "YEEEEEEEEHHH");
+                    nbr_scroll ++;
                     try {
-                        //getPostFromApi(7,3);
+
+                        // on récupere les 10 post suivant car l'utilsateur a scroller jusqu'à la fin de la liste
+                         getPostFromApi(nbr_scroll*NBROFITEM,NBROFITEM);
                         // Create the adapter to convert the array to array to views
                         //adapter = new PostAdapter(PostActivity,posts);
                         //Attach the adapter to a ListView
-                        listView.setAdapter(adapter);
+                         //listView.setAdapter(adapter);
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -116,9 +123,9 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
                 if(firstVisibleItem ==0){
                     //Log.d(" firstVisibleItem", "=0");
-                   layout.setEnabled(true);
+                    layout.setEnabled(true);
                 }else{
-                   // Log.d(" firstVisibleItem", "!=0");
+                    // Log.d(" firstVisibleItem", "!=0");
                     layout.setEnabled(false);
                 }
             }
@@ -140,51 +147,44 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         String access_token = client.getTokenValid();
 
         client.AddHeader("Authorization","Bearer "+access_token);
-        String rep = null;
+        String rep = "";
         try {
             rep =  client.Execute("GET");
-            System.out.println("RESPONSE DE EXECITE GET : " + rep);
-            ArrayList<String> stringArray = new ArrayList<String>();
-            stringArray =jsonStringToArray(rep);
+            //System.out.println("RESPONSE DE EXECITE GET : " + rep.toString()+ "taille ="+rep.length()) ;
+            if (rep!=null && rep.length()>2){
+                ArrayList<String> stringArray = new ArrayList<String>();
+                stringArray=jsonStringToArray(rep);
 
-            Iterator<String> it = stringArray.iterator();
-            Post post = null;
+                Iterator<String> it = stringArray.iterator();
+                Post post = null;
+                while (it.hasNext()) {
+                    String s = it.next();
+                    JSONObject obj = new JSONObject(s);
+                    post = new Post(obj);
+                   // System.out.println("jajoute le poste numero = "+ post.getDate() + ' '+ post.getId());
+                    posts.add(post);
 
-            posts = new ArrayList<Post>();
-
-            while (it.hasNext()) {
-                String s = it.next();
-                JSONObject obj = new JSONObject(s);
-                post = new Post(obj);
-                posts.add(post);
+                }
             }
 
-            /*// Create the adapter to convert the array to array to views
-            PostAdapter adapter = new PostAdapter(this,posts);
-            //Attach the adapter to a ListView
-            ListView listView = (ListView) findViewById(R.id.lvPost);
-            listView.setAdapter(adapter);*/
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        // System.out.print("REPONSE "+ postItem.getLink());
     }
 
 
 
-
-
     public ArrayList<String> jsonStringToArray(String jsonString) throws JSONException{
-
         ArrayList<String> stringArray = new ArrayList<String>();
-        JSONArray jsonArray = new JSONArray(jsonString);
+         if (jsonString!=null){
+             JSONArray jsonArray = new JSONArray(jsonString);
+             for (int i = 0; i < jsonArray.length(); i++) {
+                 stringArray.add(jsonArray.getString(i));
+             }
 
-        for (int i = 0; i < jsonArray.length(); i++) {
-            stringArray.add(jsonArray.getString(i));
-        }
-
+         }
         return stringArray;
     }
 
@@ -232,6 +232,3 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
 
 }
-
-
-
