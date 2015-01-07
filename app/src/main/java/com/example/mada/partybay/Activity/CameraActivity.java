@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.mada.partybay.R;
+import com.example.mada.partybay.TimeLineManager.PostActivity;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -139,7 +140,7 @@ public class CameraActivity extends Activity implements TextureView.SurfaceTextu
         public void onClick(View view) {
             Log.d("Camera ", "quitter Camera");
             releaseCamera();
-            Intent intent = new Intent(CameraActivity.this, TimeLine.class);
+            Intent intent = new Intent(CameraActivity.this, PostActivity.class);
             startActivity(intent);
         }
     };

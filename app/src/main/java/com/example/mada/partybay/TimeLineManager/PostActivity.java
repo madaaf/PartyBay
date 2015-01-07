@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -34,12 +36,19 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
     private ImageButton profile = null;
     private ImageButton moment = null;
     private SwipeRefreshLayout layout;
+    private ListView listView;
+    private PostAdapter adapter;
+    private boolean onScroolStateChange = false;
+    private boolean loadingMore = false;
+    private ArrayList<Post> posts = null;
+
+    private SwipeRefreshLayout swipeContainer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timeline);
-
         ActionBar bar = this.getActionBar();
         bar.hide();
 
@@ -56,53 +65,77 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         menu = (ImageButton) findViewById(R.id.reglage);
         profile = (ImageButton) findViewById(R.id.profile);
         moment = (ImageButton) findViewById(R.id.moment);
+        listView = (ListView) findViewById(R.id.lvPost);
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swype);
 
 
         // post.setImageDrawable();
         menu.setOnClickListener(reglageListener);
         profile.setOnClickListener(profileListener);
         moment.setOnClickListener(momentListener);
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+
         try {
-            getPostFromApi();
+            getPostFromApi(0,7);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        // Create the adapter to convert the array to array to views
+        adapter = new PostAdapter(this,posts);
+        //Attach the adapter to a ListView
+        listView.setAdapter(adapter);
+
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+               // Log.d(" onScrollStateChanged", "Y00000000");
+                onScroolStateChange = true;
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount){
+                //Log.d(" firstVisibleItem", String.valueOf(firstVisibleItem));
+                //Log.d(" visibleItemCount", String.valueOf(visibleItemCount));
+                //Log.d(" totalItemCount", String.valueOf(totalItemCount));
+                int lastInScreen = firstVisibleItem + visibleItemCount;
+
+                if(lastInScreen == (totalItemCount) && (onScroolStateChange==true)){
+                    Log.d(" firstVisibleItem", "YEEEEEEEEHHH");
+                    try {
+                        //getPostFromApi(7,3);
+                        // Create the adapter to convert the array to array to views
+                        //adapter = new PostAdapter(PostActivity,posts);
+                        //Attach the adapter to a ListView
+                        listView.setAdapter(adapter);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    onScroolStateChange = false;
+                }
+
+                if(firstVisibleItem ==0){
+                    //Log.d(" firstVisibleItem", "=0");
+                   layout.setEnabled(true);
+                }else{
+                   // Log.d(" firstVisibleItem", "!=0");
+                    layout.setEnabled(false);
+                }
+            }
+        });
+
+
+
     }
 
-    View.OnClickListener reglageListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Intent intent = new Intent(PostActivity.this, ViewPagerActivity.class);
-            startActivity(intent);
 
-        }
-    };
 
-    View.OnClickListener profileListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-             Intent intent = new Intent(PostActivity.this, Profile.class);
-             startActivity(intent);
-        }
-    };
 
-    View.OnClickListener momentListener = new View.OnClickListener(){
-        @Override
-        public void onClick(View view) {
-            Intent intent = new Intent(PostActivity.this, CameraActivity.class);
-            startActivity(intent);
-        }
-    };
 
     // get posts from api
-    public void getPostFromApi() throws Exception {
+    public void getPostFromApi(int pos_debut, int nbr_item) throws Exception {
 
-        RestClient client = new RestClient("https://api.partybay.fr/posts?order=id&side=desc?limit=10");
+        RestClient client = new RestClient("https://api.partybay.fr/posts?limit="+nbr_item+"&offset="+pos_debut+"&side=desc&order=id");
         // je recupere un token dans la sd carte
         String access_token = client.getTokenValid();
 
@@ -117,7 +150,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
             Iterator<String> it = stringArray.iterator();
             Post post = null;
 
-             ArrayList<Post> posts = new ArrayList<Post>();
+            posts = new ArrayList<Post>();
 
             while (it.hasNext()) {
                 String s = it.next();
@@ -126,13 +159,11 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
                 posts.add(post);
             }
 
-
-            // Create the adapter to convert the array to array to views
+            /*// Create the adapter to convert the array to array to views
             PostAdapter adapter = new PostAdapter(this,posts);
-
             //Attach the adapter to a ListView
             ListView listView = (ListView) findViewById(R.id.lvPost);
-            listView.setAdapter(adapter);
+            listView.setAdapter(adapter);*/
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -141,10 +172,13 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         // System.out.print("REPONSE "+ postItem.getLink());
     }
 
-    public ArrayList<String> jsonStringToArray(String jsonString) throws JSONException {
+
+
+
+
+    public ArrayList<String> jsonStringToArray(String jsonString) throws JSONException{
 
         ArrayList<String> stringArray = new ArrayList<String>();
-
         JSONArray jsonArray = new JSONArray(jsonString);
 
         for (int i = 0; i < jsonArray.length(); i++) {
@@ -157,6 +191,8 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onRefresh() {
+        layout.setRefreshing(true);
+        Log.d(" onRefresh", "=onRefresh");
         // I create a handler to stop the refresh and show a message after 3s
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -168,4 +204,34 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         }, 3000);
 
     }
+
+    View.OnClickListener reglageListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(PostActivity.this, ViewPagerActivity.class);
+            startActivity(intent);
+
+        }
+    };
+
+    View.OnClickListener profileListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(PostActivity.this, Profile.class);
+            startActivity(intent);
+        }
+    };
+
+    View.OnClickListener momentListener = new View.OnClickListener(){
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(PostActivity.this, CameraActivity.class);
+            startActivity(intent);
+        }
+    };
+
+
 }
+
+
+

@@ -115,7 +115,7 @@ public class Editer extends Activity {
         @Override
         public void onClick(View view) {
 
-            Intent i = new Intent(Editer.this, TimeLine.class);
+            Intent i = new Intent(Editer.this, PostActivity.class);
             startActivity(i);
             finish();
         }
