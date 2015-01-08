@@ -1,5 +1,6 @@
 package com.example.mada.partybay.TimeLineManager;
 
+import com.example.mada.partybay.Class.Love;
 import com.example.mada.partybay.Class.MyDate;
 
 import org.json.JSONArray;
@@ -9,6 +10,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 
 /**
  * Created by mada on 07/11/2014.
@@ -24,7 +26,10 @@ public class Post {
     private String text = null;
     private String user_pseudo = null;
     private String lovers = null;
+
     private ArrayList<String> tabLovers = null;
+    private ArrayList<Love> tabLoves = null;
+
 
 
     public static String getCurrentTimeStamp() {
@@ -37,7 +42,7 @@ public class Post {
     public Post(JSONObject obj) {
         try {
 
-            System.out.println("OOOK  "+obj.toString());
+            //System.out.println("OOOK  "+obj.toString());
 
             id = obj.getString("id");
             user_pseudo = obj.getString("user_pseudo");
@@ -45,10 +50,46 @@ public class Post {
             latitude = obj.getString("latitude");
             lovers = obj.getString("lovers");
 
+
             // Transforme l'arret liste en chiffre pour afficher le nbr de like
             if (lovers!="false"){
                 tabLovers = jsonStringToArray(lovers);
+                //System.out.println("jsonStringToArray "+lovers);
                 lovers = String.valueOf(tabLovers.size());
+
+                Iterator<String> it = tabLovers.iterator();
+                Love love = null;
+                try {
+                    while(it.hasNext()){
+                        String s = it.next();
+                        JSONObject objT = null;
+                        objT = new JSONObject(s);
+                        love = new Love(objT);
+                        System.out.println("LOVE PICTURE "+ love.toString());
+                        //if(love!=null){tabLoves.add(love);}
+
+                        //System.out.println("LOVE PICTURE "+love.getPseudo());
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+
+                //System.out.println("size "+lovers);
+                //System.out.println("lovers"+tabLovers);
+
+                /*
+                Iterator<String> it = tabLovers.iterator();
+                Love loveTest = null;
+                while (it.hasNext()) {
+                    String s = it.next();
+                    obj = new JSONObject(s);
+                    loveTest = new Love(obj);
+                    tabLoves.add(loveTest);
+                }*/
+
+
             }else{
                 lovers  = "0";
             }
@@ -70,6 +111,10 @@ public class Post {
             System.out.println("Err : "+e.getMessage());
         }
     }
+
+    public ArrayList<Love> getTabLoves() { return tabLoves;}
+
+    public ArrayList<String> getTabLovers() { return tabLovers;}
 
     public String getUser_pseudo() {
         return user_pseudo;
@@ -140,6 +185,7 @@ public class Post {
     public void setId(String id) {
         this.id = id;
     }
+
 
 
 

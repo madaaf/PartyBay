@@ -10,18 +10,29 @@ import java.io.Serializable;
  */
 public class Love implements Serializable {
 
-    private String nbr;
-    private String lover;
-
-
+    private int user_id;
+    private String picture;
+    private String pseudo;
 
     public Love(JSONObject obj) {
         try {
-            nbr = obj.getString("id");
-            lover = obj.getString("pseudo");;
+            user_id = Integer.parseInt(obj.getString("id"));
+            picture =obj.getString("picture");
+            pseudo = obj.getString("pseudo");
         } catch (JSONException e) {
             System.out.println("Err : "+e.getMessage());
         }
     }
+
+
+    public int getUser_id(){return user_id;}
+    public String getPicture() {return picture;}
+    public String getPseudo() {return pseudo;}
+    @Override
+    public String toString(){
+        System.out.println("id: "+user_id+" picture: "+picture+" pseudo: "+pseudo);
+        return null;
+    }
+
 
 }

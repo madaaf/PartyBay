@@ -240,7 +240,7 @@ public class RestClient {
         String access_token = token.getAcess_token();
 
         System.out.println("ancien access_token : "+ access_token);
-        System.out.println("ancien refresh_token : "+ refresh_token);
+       // System.out.println("ancien refresh_token : "+ refresh_token);
 
         // validToken() == false : acess token non valide, je recupere le refresh token  pour recuper un nouveau AT et RT
         // validToken() == true : acess token encore valide
