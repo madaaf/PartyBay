@@ -150,8 +150,8 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         client.AddHeader("Authorization","Bearer "+access_token);
         String rep = "";
         try {
-            rep =  client.Execute("POST");
-            System.out.println("RESPONSE DE EXECITE GET : " + rep.toString()+ "taille ="+rep.length()) ;
+            rep =  client.Execute("GET");
+            //System.out.println("RESPONSE DE EXECITE GET : " + rep.toString()+ "taille ="+rep.length()) ;
             if (rep!=null && rep.length()>2){
                 System.out.println("je suis ici encore");
                 ArrayList<String> stringArray = new ArrayList<String>();

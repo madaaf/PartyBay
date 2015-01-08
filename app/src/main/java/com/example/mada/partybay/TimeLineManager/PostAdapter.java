@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.example.mada.partybay.Class.Love;
 import com.example.mada.partybay.Class.RestClient;
+import com.example.mada.partybay.Class.SerializeurMono;
+import com.example.mada.partybay.Class.User;
 import com.example.mada.partybay.R;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
@@ -36,6 +38,10 @@ public class PostAdapter extends ArrayAdapter<Post>  {
     ImageButton loveButton;
     ArrayList<Post> posts = new ArrayList<Post>();
     private boolean unlikeLove = false;
+    Thread threadLove = null;
+    private String idPost;
+    SerializeurMono<User> serializeur ;
+    String myUser_id;
 
 
     public PostAdapter(Context context, int layoutResourceId, ArrayList<Post> posts) {
@@ -63,9 +69,14 @@ public class PostAdapter extends ArrayAdapter<Post>  {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
+        serializeur = new SerializeurMono<User>("/storage/sdcard0/PartyBay2/user.serial");
+        User user = serializeur.getObject();
+        myUser_id = user.getId();
+
          // System.out.println("THE POSTE ID  2: "+ p.getId());
         //System.out.println("PSIITION "+ position);
-
+        
         View row = convertView;
         if (row == null) {
             LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -108,9 +119,12 @@ public class PostAdapter extends ArrayAdapter<Post>  {
                     loveButton.setTag(Integer.valueOf(post.getId()));
                     loveButton.setOnClickListener(LoveListener);
 
-                    System.out.println("post.getLovers()  " + post.getLovers());
+                    //
+                    //System.out.println("post.getLovers()  " + post.getLovers());
+                    //if(post.getLovers())
 
                     ArrayList<String> tabLovers = post.getTabLovers();
+                    System.out.println("tabLovers :"+tabLovers);
                     Iterator<String> it = tabLovers.iterator();
                     Love love = null;
                     try {
@@ -119,14 +133,26 @@ public class PostAdapter extends ArrayAdapter<Post>  {
                             JSONObject obj = null;
                             obj = new JSONObject(s);
                             love = new Love(obj);
-                            System.out.println("LOVE PICTURE " + love.getPseudo());
+                            // json decode
+
+                            System.out.println("POST ID : /"+post.getId()+"myUser_id  /"+ myUser_id+"/User_id_Liker /"+love.getUser_id()+"/");
+                            String test2 = String.valueOf(love.getUser_id());
+
+                            if(test2.equals(myUser_id)){
+                                System.out.println("J4AI LIKER CE POSTE NUMERO ");
+                                loveButton.setImageResource(R.drawable.coeur);
+                                break;
+                            }else{
+                                loveButton.setImageResource(R.drawable.coeur_unlike);
+                            }
+                           // System.out.println("LOVE PICTURE " + love.getPseudo());
                          }
                     } catch (JSONException e) {
                             e.printStackTrace();
                      }
 
                     ArrayList<Love> tabLovers2 = post.getTabLoves();
-                    System.out.println("ARRAYLIST DE LOVE "+ tabLovers2);
+                    //System.out.println("ARRAYLIST DE LOVE "+ tabLovers2);
 
                     // condition si j'ai deja liker ce poste => coeur rouge
                     /*if(post.getLovers()!=null){
@@ -144,24 +170,20 @@ public class PostAdapter extends ArrayAdapter<Post>  {
     View.OnClickListener LoveListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+
+
             //int id = Integer.valueOf((String)view.getTag());
             System.out.println ("POSITION ID 1 : "+ view.getTag());
-            // j'ajoute un like a l'API du pose correspondant
-            RestClient client = new RestClient("https://api.partybay.fr/users/1/love/"+view.getTag());
-            System.out.println("REST CLIENT = > https://api.partybay.fr/users/1/love/"+view.getTag());
-            String access_token = client.getTokenValid();
-            client.AddHeader("Authorization","Bearer "+access_token);
-            String rep = "";
-            try{
-                //rep =  client.Execute("GET");
-                System.out.println("REPONSE DU LOVE"+rep);
-            }catch(Exception e) {
-                e.printStackTrace();
-            }
-           // loveButton.setImageResource(R.drawable.coeur);
-            //System.out.println ("unlike 1  : "+ unlikeLove) ;
+            idPost= String.valueOf(view.getTag());
+            // Envoie une requete a l'API pour le prevenir du like
+            threadLove = new LoveThread();
+            threadLove.start();
 
-            /*if(unlikeLove == false){
+
+           // loveButton.setImageResource(R.drawable.coeur);
+           /*System.out.println ("unlike 1  : "+ unlikeLove) ;
+
+           if(unlikeLove == false){
                 System.out.println ("unlike 2  : "+ unlikeLove) ;
 
                 loveButton.setImageResource(R.drawable.coeur);
@@ -190,4 +212,25 @@ public class PostAdapter extends ArrayAdapter<Post>  {
     }
 
 
-}
+    class LoveThread extends Thread{
+        public void run() {
+
+            // j'ajoute un like a l'API du pose correspondant
+            RestClient client = new RestClient("https://api.partybay.fr/users/"+myUser_id+"/love/"+idPost);
+            System.out.println("https://api.partybay.fr/users/1/love/"+idPost);
+            String access_token = client.getTokenValid();
+            client.AddHeader("Authorization","Bearer "+access_token);
+            String rep = "";
+            try{
+                rep =  client.Execute("POST");
+                System.out.println("REPONSE DU LOVE"+rep);
+            }catch(Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
+
+ }

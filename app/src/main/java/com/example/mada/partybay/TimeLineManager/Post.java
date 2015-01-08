@@ -10,7 +10,6 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 
 /**
  * Created by mada on 07/11/2014.
@@ -56,7 +55,7 @@ public class Post {
                 tabLovers = jsonStringToArray(lovers);
                 //System.out.println("jsonStringToArray "+lovers);
                 lovers = String.valueOf(tabLovers.size());
-
+/*
                 Iterator<String> it = tabLovers.iterator();
                 Love love = null;
                 try {
@@ -73,7 +72,7 @@ public class Post {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
+*/
 
 
                 //System.out.println("size "+lovers);
