@@ -74,25 +74,25 @@ public class PostAdapter extends ArrayAdapter<Post>  {
         User user = serializeur.getObject();
         myUser_id = user.getId();
 
-         // System.out.println("THE POSTE ID  2: "+ p.getId());
+        // System.out.println("THE POSTE ID  2: "+ p.getId());
         //System.out.println("PSIITION "+ position);
-        
+
         View row = convertView;
         if (row == null) {
             LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             row = inflater.inflate(R.layout.post, parent, false);
         }
 
-            // object item based on the position
-           // Post objectItem = data[position];
+        // object item based on the position
+        // Post objectItem = data[position];
 
-         user_pseudo =(TextView) row.findViewById(R.id.post_pseudo);
-         text = (TextView)row.findViewById(R.id.post_texte);
-         lovers = (TextView)row.findViewById(R.id.post_like);
-         date = (TextView)row.findViewById(R.id.post_time);
-         latitude = (TextView)row.findViewById(R.id.post_lieu);
-         link = (ImageView)row.findViewById(R.id.post_photo_fond);
-         loveButton = (ImageButton)row.findViewById(R.id.post_coeur);
+        user_pseudo =(TextView) row.findViewById(R.id.post_pseudo);
+        text = (TextView)row.findViewById(R.id.post_texte);
+        lovers = (TextView)row.findViewById(R.id.post_like);
+        date = (TextView)row.findViewById(R.id.post_time);
+        latitude = (TextView)row.findViewById(R.id.post_lieu);
+        link = (ImageView)row.findViewById(R.id.post_photo_fond);
+        loveButton = (ImageButton)row.findViewById(R.id.post_coeur);
 
         // Get the data item for this position
         Post post = getItem(position);
@@ -145,11 +145,11 @@ public class PostAdapter extends ArrayAdapter<Post>  {
                             }else{
                                 loveButton.setImageResource(R.drawable.coeur_unlike);
                             }
-                           // System.out.println("LOVE PICTURE " + love.getPseudo());
-                         }
+                            // System.out.println("LOVE PICTURE " + love.getPseudo());
+                        }
                     } catch (JSONException e) {
-                            e.printStackTrace();
-                     }
+                        e.printStackTrace();
+                    }
 
                     ArrayList<Love> tabLovers2 = post.getTabLoves();
                     //System.out.println("ARRAYLIST DE LOVE "+ tabLovers2);
@@ -180,7 +180,7 @@ public class PostAdapter extends ArrayAdapter<Post>  {
             threadLove.start();
 
 
-           // loveButton.setImageResource(R.drawable.coeur);
+            // loveButton.setImageResource(R.drawable.coeur);
            /*System.out.println ("unlike 1  : "+ unlikeLove) ;
 
            if(unlikeLove == false){
@@ -233,4 +233,4 @@ public class PostAdapter extends ArrayAdapter<Post>  {
     }
 
 
- }
+}

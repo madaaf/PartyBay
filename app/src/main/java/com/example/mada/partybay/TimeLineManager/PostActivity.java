@@ -161,8 +161,8 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
                 Post post = null;
                 while (it.hasNext()) {
                     String s = it.next();
-                   // System.out.println("js : "+s.startsWith("["));
-                   // if(s.startsWith("[")){}
+                    // System.out.println("js : "+s.startsWith("["));
+                    // if(s.startsWith("[")){}
                     JSONObject obj = new JSONObject(s);
                     post = new Post(obj);
                     // System.out.println("jajoute le poste numero = "+ post.getDate() + ' '+ post.getId());
