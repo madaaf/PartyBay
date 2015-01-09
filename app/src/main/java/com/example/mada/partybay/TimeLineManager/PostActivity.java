@@ -202,6 +202,16 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
             @Override
             public void run() {
                 layout.setRefreshing(false);
+                try {
+                    // on récupere les 10 post suivant car l'utilsateur a scroller jusqu'à la fin de la liste
+                    posts.clear();
+                    getPostFromApi(0,NBROFITEM);
+                    //adapter = new PostAdapter(this,posts);
+                    listView.setAdapter(adapter);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 Toast.makeText(PostActivity.this, "Cool !", Toast.LENGTH_LONG).show();
             }
 
