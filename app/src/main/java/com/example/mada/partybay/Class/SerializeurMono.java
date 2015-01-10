@@ -4,8 +4,6 @@ package com.example.mada.partybay.Class;
  * Created by mada on 06/11/2014.
  */
 
-import android.util.Log;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -21,7 +19,7 @@ public class SerializeurMono<Objet> {
     private ObjectOutputStream objectOutput;
 
     public SerializeurMono(String filepath) {
-        Log.d("fichier", filepath);
+        //Log.d("fichier", filepath);
         fichier = new File(filepath);
         try {
             fichier.createNewFile();

@@ -39,7 +39,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
     private ListView listView;
     private PostAdapter adapter;
     private boolean onScroolStateChange = false;
-    private boolean loadingMore = false;
+    private Thread ThreadLoadPost;
     private ArrayList<Post> posts = null;
 
     private SwipeRefreshLayout swipeContainer;
@@ -142,8 +142,11 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
     // get posts from api
     public void getPostFromApi(int pos_debut, int nbr_item) throws Exception {
 
+       // ThreadLoadPost = new LoadListenerThread(pos_debut,nbr_item);
+       // ThreadLoadPost.start();
+
         RestClient client = new RestClient("https://api.partybay.fr/posts?limit="+nbr_item+"&offset="+pos_debut+"&side=desc&order=id");
-        System.out.println("https://api.partybay.fr/posts?limit="+nbr_item+"&offset="+pos_debut+"&side=desc&order=id");
+       // System.out.println("https://api.partybay.fr/posts?limit="+nbr_item+"&offset="+pos_debut+"&side=desc&order=id");
         // je recupere un token dans la sd carte
         String access_token = client.getTokenValid();
 
@@ -153,7 +156,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
             rep =  client.Execute("GET");
             //System.out.println("RESPONSE DE EXECITE GET : " + rep.toString()+ "taille ="+rep.length()) ;
             if (rep!=null && rep.length()>2){
-                System.out.println("je suis ici encore");
+               // System.out.println("je suis ici encore");
                 ArrayList<String> stringArray = new ArrayList<String>();
                 stringArray=jsonStringToArray(rep);
 
@@ -176,8 +179,8 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
             e.printStackTrace();
         }
 
-    }
 
+    }
 
 
     public ArrayList<String> jsonStringToArray(String jsonString) throws JSONException{
@@ -205,7 +208,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
                 try {
                     // on récupere les 10 post suivant car l'utilsateur a scroller jusqu'à la fin de la liste
                     posts.clear();
-                    getPostFromApi(0,NBROFITEM);
+                    getPostFromApi(0, NBROFITEM);
                     //adapter = new PostAdapter(this,posts);
                     listView.setAdapter(adapter);
 
@@ -244,5 +247,23 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         }
     };
 
+/*
+    class LoadListenerThread extends Thread{
+        int nbr_item;
+        int pos_debut;
+
+        public LoadListenerThread(int pos_debut,int nbr_item){
+            this.nbr_item=nbr_item;
+            this.pos_debut=pos_debut;
+        }
+
+        public void run(){
+
+
+
+
+        }
+    }
+*/
 
 }

@@ -85,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:background="@drawable/coeur_unlike"
-                android:onClick="onClickFunction"/>
+                android:onClick="onClickFunctionLover"/>
 
             <TextView
                 android:id="@+id/post_like"

@@ -2,6 +2,8 @@ package com.example.mada.partybay.TimeLineManager;
 
 import com.example.mada.partybay.Class.Love;
 import com.example.mada.partybay.Class.MyDate;
+import com.example.mada.partybay.Class.SerializeurMono;
+import com.example.mada.partybay.Class.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,6 +12,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 
 /**
  * Created by mada on 07/11/2014.
@@ -24,10 +27,13 @@ public class Post {
     private String longitude = null;
     private String text = null;
     private String user_pseudo = null;
-    private String lovers = null;
 
-    private ArrayList<String> tabLovers = null;
-    private ArrayList<Love> tabLoves = null;
+    private String lovers = null;
+    private ArrayList<String> tabLovers = null; // Array list de string de tout les lover correspondant au post
+    private ArrayList<Love> tabLover = null;  // array list de love de tout les lover correspondant au post
+    private Boolean PostIsLoved = false;  // true si j'ai déjà liker se post
+    private SerializeurMono<User> serializeur ;
+    String myUser_id;
 
 
 
@@ -39,23 +45,29 @@ public class Post {
     }
 
     public Post(JSONObject obj) {
+
+        serializeur = new SerializeurMono<User>("/storage/sdcard0/PartyBay2/user.serial");
+        User user = serializeur.getObject();
+        myUser_id = user.getId();
+        tabLover = new ArrayList<Love>();
         try {
-
-            //System.out.println("OOOK  "+obj.toString());
-
+            // je recupere la reponse de l'api et je creer le post correspondant
             id = obj.getString("id");
             user_pseudo = obj.getString("user_pseudo");
-            text = obj.getString("text");
+            text = obj.getString("text") +" ID :"+ obj.getString("id");
             latitude = obj.getString("latitude");
             lovers = obj.getString("lovers");
 
 
             // Transforme l'arret liste en chiffre pour afficher le nbr de like
+            // Je met à jour les données suivant :
+            // lover = nbr de personne qui ont lové le poste
+            // tabLover = ArrayListe de Love du post
+            // postIsLove = true si le poste a été aimé par moi-meme
             if (lovers!="false"){
                 tabLovers = jsonStringToArray(lovers);
-                //System.out.println("jsonStringToArray "+lovers);
+
                 lovers = String.valueOf(tabLovers.size());
-/*
                 Iterator<String> it = tabLovers.iterator();
                 Love love = null;
                 try {
@@ -64,35 +76,28 @@ public class Post {
                         JSONObject objT = null;
                         objT = new JSONObject(s);
                         love = new Love(objT);
-                        System.out.println("LOVE PICTURE "+ love.toString());
-                        //if(love!=null){tabLoves.add(love);}
+                        String test2 = String.valueOf(love.getUser_id());
+                        tabLover.add(love);
+                        if (test2.equals(myUser_id)) {
+                            PostIsLoved=true;
+                            break;
+                        }else{
+                            PostIsLoved=false;
+                            tabLover.add(love);
+                        }
 
-                        //System.out.println("LOVE PICTURE "+love.getPseudo());
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-*/
-
-
-                //System.out.println("size "+lovers);
-                //System.out.println("lovers"+tabLovers);
-
-                /*
-                Iterator<String> it = tabLovers.iterator();
-                Love loveTest = null;
-                while (it.hasNext()) {
-                    String s = it.next();
-                    obj = new JSONObject(s);
-                    loveTest = new Love(obj);
-                    tabLoves.add(loveTest);
-                }*/
-
+                if(PostIsLoved==null){PostIsLoved=false;}
 
             }else{
                 lovers  = "0";
             }
 
+
+            // je transforme la date en bon format
             String test = obj.getString("date");
             int year =Integer.parseInt(test.substring(0,4));
             int month = Integer.parseInt(test.substring(5, 7));
@@ -102,8 +107,9 @@ public class Post {
 
             MyDate datePost = new MyDate(year,month,day,hour,minute);
             String time = datePost.getDifferenceDateToday();
-
             date =time;
+
+
             link = obj.getString("link");
 
         } catch (JSONException e) {
@@ -111,7 +117,11 @@ public class Post {
         }
     }
 
-    public ArrayList<Love> getTabLoves() { return tabLoves;}
+    public void setPostIsLoved(Boolean postIsLoved) {PostIsLoved = postIsLoved;}
+
+    public ArrayList<Love> getTabLover() { return tabLover;}
+
+    public Boolean getPostIsLoved() { return PostIsLoved;}
 
     public ArrayList<String> getTabLovers() { return tabLovers;}
 

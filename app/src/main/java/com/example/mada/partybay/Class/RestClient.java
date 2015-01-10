@@ -51,8 +51,6 @@ public class RestClient {
     private String CURRENT_TOKEN;
 
 
-
-
     public RestClient(String url) {
         this.url = url;
         params = new ArrayList<NameValuePair>();

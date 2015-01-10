@@ -14,7 +14,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -100,8 +99,8 @@ public class Editer extends Activity {
                 gps=new GPSTracker(Editer.this);
                 latitude = gps.getLatitude();
                 longitude = gps.getLongitude();
-                Log.d("longitude : ", Double.toString(longitude));
-                Log.d("latitude : ", Double.toString(latitude));
+                //Log.d("longitude : ", Double.toString(longitude));
+               // Log.d("latitude : ", Double.toString(latitude));
 
                 new ImageUploaderTask().execute();
             }else{

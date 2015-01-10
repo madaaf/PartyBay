@@ -30,7 +30,7 @@ public class Love implements Serializable {
     public String getPseudo() {return pseudo;}
     @Override
     public String toString(){
-        System.out.println("id: "+user_id+" picture: "+picture+" pseudo: "+pseudo);
+        //System.out.println("id: "+user_id+" picture: "+picture+" pseudo: "+pseudo);
         return null;
     }
 
