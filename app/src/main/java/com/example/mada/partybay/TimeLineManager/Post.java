@@ -27,8 +27,8 @@ public class Post {
     private String longitude = null;
     private String text = null;
     private String user_pseudo = null;
-
     private String lovers = null;
+    private int totalLovers;
     private ArrayList<String> tabLovers = null; // Array list de string de tout les lover correspondant au post
     private ArrayList<Love> tabLover = null;  // array list de love de tout les lover correspondant au post
     private Boolean PostIsLoved = false;  // true si j'ai déjà liker se post
@@ -68,6 +68,8 @@ public class Post {
                 tabLovers = jsonStringToArray(lovers);
 
                 lovers = String.valueOf(tabLovers.size());
+                totalLovers = tabLovers.size();
+
                 Iterator<String> it = tabLovers.iterator();
                 Love love = null;
                 try {
@@ -94,6 +96,7 @@ public class Post {
 
             }else{
                 lovers  = "0";
+                totalLovers = 0;
             }
 
 
@@ -117,6 +120,9 @@ public class Post {
         }
     }
 
+    public int getTotalLovers() { return totalLovers;}
+
+    public void setTotalLovers(int totalLovers) {this.totalLovers = totalLovers;}
     public void setPostIsLoved(Boolean postIsLoved) {PostIsLoved = postIsLoved;}
 
     public ArrayList<Love> getTabLover() { return tabLover;}

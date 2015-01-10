@@ -2,7 +2,6 @@ package com.example.mada.partybay.TimeLineManager;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,10 +26,12 @@ public class PostAdapter extends ArrayAdapter<Post>  {
 
     private ArrayList<Post> posts = new ArrayList<Post>();
     private Thread threadLove = null;
-    private String idPost;
+    private int positionPost;
+    private int idPost;
     private SerializeurMono<User> serializeur ;
     String myUser_id;
     private Activity context = null;
+    private  ViewHolder viewHolder;
 
     //A ViewHolder object stores each of the component views inside the tag field of the Layout,
     // so you can immediately access them without the need to look them up repeatedly.
@@ -47,8 +48,7 @@ public class PostAdapter extends ArrayAdapter<Post>  {
     public PostAdapter(Context context, int layoutResourceId, ArrayList<Post> posts) {
         super(context,layoutResourceId, posts);
         this.posts = posts;
-        Log.d("layoutResourceId ", String.valueOf(layoutResourceId));
-        Log.d("posts in post adapter  ", String.valueOf(posts));
+
     }
 
     public PostAdapter(Context context, int id) {
@@ -68,103 +68,141 @@ public class PostAdapter extends ArrayAdapter<Post>  {
         posts.add(post);
     }
 
+    public Post getItem(int position)
+    {
+        return posts.get(position);
+    }
+
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent) {
 
         serializeur = new SerializeurMono<User>("/storage/sdcard0/PartyBay2/user.serial");
         User user = serializeur.getObject();
         myUser_id = user.getId();
 
-        View row = null;
+
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            row = inflater.inflate(R.layout.post, parent, false);
+            convertView = inflater.inflate(R.layout.post, parent, false);
 
-            final ViewHolder viewHolder = new ViewHolder();
-            viewHolder.user_pseudo = (TextView) row.findViewById(R.id.post_pseudo);
-            viewHolder.text = (TextView) row.findViewById(R.id.post_texte);
-            viewHolder.lovers = (TextView) row.findViewById(R.id.post_like);
-            viewHolder.date = (TextView) row.findViewById(R.id.post_time);
-            viewHolder.latitude = (TextView) row.findViewById(R.id.post_lieu);
-            viewHolder.link = (ImageView) row.findViewById(R.id.post_photo_fond);
-            viewHolder.loveButton = (ImageButton) row.findViewById(R.id.post_coeur);
+            viewHolder = new ViewHolder();
+            viewHolder.user_pseudo = (TextView) convertView.findViewById(R.id.post_pseudo);
+            viewHolder.text = (TextView) convertView.findViewById(R.id.post_texte);
+            viewHolder.lovers = (TextView) convertView.findViewById(R.id.post_like);
+            viewHolder.date = (TextView) convertView.findViewById(R.id.post_time);
+            viewHolder.latitude = (TextView) convertView.findViewById(R.id.post_lieu);
+            viewHolder.link = (ImageView) convertView.findViewById(R.id.post_photo_fond);
+            viewHolder.loveButton = (ImageButton) convertView.findViewById(R.id.post_coeur);
 
-            viewHolder.loveButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    idPost = String.valueOf(view.getTag());
-
-                    // Envoie une requete a l'API pour le prévenir que j'ai liké
-                    threadLove = new LoveThread();
-                    threadLove.start();
-
-                    // Colorie le coeur en rouge si j'ai liké et blanc sinon
-                    if(posts.get(position).getPostIsLoved()==true){
-                        viewHolder.loveButton.setImageResource(R.drawable.coeur_unlike);
-                        posts.get(position).setPostIsLoved(false);
-                    }else{
-                        viewHolder.loveButton.setImageResource(R.drawable.coeur);
-                        posts.get(position).setPostIsLoved(true);
-                    }
-
-                }
-
-                class LoveThread extends Thread {
-                    public void run() {
-
-                        // je préviens l'api que j'ai liké/unliké
-                        RestClient client = new RestClient("https://api.partybay.fr/users/" + myUser_id + "/love/" + idPost);
-                        System.out.println("https://api.partybay.fr/users/1/love/" + idPost);
-                        String access_token = client.getTokenValid();
-                        client.AddHeader("Authorization", "Bearer " + access_token);
-                        String rep = "";
-                        try {
-                            rep = client.Execute("POST");
-                            System.out.println("REPONSE DU LOVE" + rep);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-
-                }
-            });
-
-           row.setTag(viewHolder);
-           viewHolder.loveButton.setTag(posts.get(position).getId());
+            viewHolder.loveButton.setTag(posts.get(position));
+            //viewHolder.lovers.setTag(position);
+            // link the cached views to the convertview
+            convertView.setTag(viewHolder);
 
         }else{
-            row = convertView;
-           // ((ViewHolder)row.getTag()).loveButton.setTag(posts.get(position));
+            System.out.println("je suis dans le else");
+            // ((ViewHolder)row.getTag()).loveButton.setTag(posts.get(position));
+            viewHolder = (ViewHolder) convertView.getTag();
+            viewHolder.loveButton.setTag(position);
         }
-        ViewHolder holder = (ViewHolder) row.getTag();
+
+
+        ViewHolder holder = (ViewHolder) convertView.getTag();
         // Populate the data into the template view using the data object
         holder.user_pseudo.setText(posts.get(position).getUser_pseudo());
         holder.text.setText(posts.get(position).getText());
-        holder.lovers.setText(posts.get(position).getLovers());
+        String nbrOfLovers = String.valueOf(posts.get(position).getTotalLovers());
+        holder.lovers.setText(nbrOfLovers);
         holder.date.setText(posts.get(position).getDate());
         holder.latitude.setText(posts.get(position).getLatitude());
         UrlImageViewHelper.setUrlDrawable(holder.link, "https://static.partybay.fr/images/posts/640x640_" + posts.get(position).getLink());
 
-            if( posts.get(position)!=null) {
-                String Sid =  posts.get(position).getId();
-                if (Sid != null) {
-                    int i = Integer.parseInt( posts.get(position).getId());
-                    if (i > 2 &&  posts.get(position).getId() != null) {
 
-                       System.out.println("le poste numero "+posts.get(position).getId()+" a une valeur de "+posts.get(position).getPostIsLoved()) ;
-                       ViewHolder viewHolder = (ViewHolder) row.getTag();
-                        // je colorie les coeur en rouge si je les ai déjà liké
-                        if(posts.get(position).getPostIsLoved()==true){
-                            viewHolder.loveButton.setImageResource(R.drawable.coeur);
-                        }else{
-                            viewHolder.loveButton.setImageResource(R.drawable.coeur_unlike);
-                        }
+        holder.loveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                String positionS = String.valueOf(view.getTag());
+                positionPost = Integer.parseInt(positionS);
+                idPost = Integer.parseInt(posts.get(positionPost).getId());
+
+                System.out.println("get id"+posts.get(positionPost).getId()+ "  posts.get(positionPost).getPostIsLoved()"+  posts.get(positionPost).getPostIsLoved());
+
+                //threadLove = new LoveThread();
+                //threadLove.start();
+
+                if(posts.get(positionPost).getPostIsLoved()==true){
+                    System.out.println("je suis dans le true");
+                    viewHolder.loveButton.setImageResource(R.drawable.coeur_unlike);
+                    posts.get(positionPost).setPostIsLoved(false);
+
+                        /*
+                       // posts.get(position).setTotalLovers(posts.get(position).getTotalLovers()-1);
+                        String test = String.valueOf(posts.get(positionPost).getTotalLovers()-1);
+                        //String test2 = String.valueOf(posts.get(position).getTotalLovers());
+                        System.out.println("AVANT "+posts.get(positionPost).getTotalLovers());
+                        System.out.println("APRES"+test);
+                        viewHolder.lovers.setText(test);*/
+                    // System.out.println("MON NOMBRE DE LIVER + "+posts.get(position).getTotalLovers());
+
+                }else{
+                    viewHolder.loveButton.setImageResource(R.drawable.coeur);
+                    posts.get(positionPost).setPostIsLoved(true);
+                    System.out.println("je suis dans le false");
+                       /* //posts.get(position).setTotalLovers(posts.get(position).getTotalLovers()+1);
+                        String test = String.valueOf(posts.get(positionPost).getTotalLovers()+1);
+                        System.out.println("AVANT "+posts.get(positionPost).getTotalLovers());
+                        System.out.println("APRES "+test);
+
+                        viewHolder.lovers.setText(test);
+                        //holder.lovers.setText(posts.get(position).getLovers());
+                       // System.out.println("MON NOMBRE DE LIVER + "+posts.get(position).getTotalLovers());*/
+                }
+
+            }
+
+            class LoveThread extends Thread {
+                public void run() {
+                    // je préviens l'api que j'ai liké/unliké
+                    System.out.println("https://api.partybay.fr/users/" + myUser_id + "/love/" + idPost);
+                    RestClient client = new RestClient("https://api.partybay.fr/users/" + myUser_id + "/love/" + idPost);
+
+                    String access_token = client.getTokenValid();
+                    client.AddHeader("Authorization", "Bearer " + access_token);
+                    String rep = "";
+                    try {
+                        rep = client.Execute("POST");
+                        System.out.println("REPONSE DU LOVE" + rep);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            }
+        });
+
+
+
+        if(posts.get(position)!=null) {
+            String Sid =  posts.get(position).getId();
+            if (Sid != null) {
+                int i = Integer.parseInt( posts.get(position).getId());
+                if (i > 2 &&  posts.get(position).getId() != null) {
+
+                    System.out.println("le poste numero "+posts.get(position).getId()+" la position est "+position + " et  a une valeur de "+posts.get(position).getPostIsLoved()) ;
+                    ViewHolder viewHolder = (ViewHolder) convertView.getTag();
+                    // je colorie les coeur en rouge si je les ai déjà liké
+                    if(posts.get(position).getPostIsLoved()==true){
+                        viewHolder.loveButton.setImageResource(R.drawable.coeur);
+                    }else{
+                        viewHolder.loveButton.setImageResource(R.drawable.coeur_unlike);
                     }
                 }
             }
-        return row;
+        }
+        return convertView;
     }
 
 

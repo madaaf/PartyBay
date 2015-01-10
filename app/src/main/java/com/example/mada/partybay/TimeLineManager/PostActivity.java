@@ -42,8 +42,6 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
     private Thread ThreadLoadPost;
     private ArrayList<Post> posts = null;
 
-    private SwipeRefreshLayout swipeContainer;
-
     private int nbr_scroll = 0 ;
 
     private final static int NBROFITEM = 10;
@@ -70,7 +68,6 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         profile = (ImageButton) findViewById(R.id.profile);
         moment = (ImageButton) findViewById(R.id.moment);
         listView = (ListView) findViewById(R.id.lvPost);
-        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swype);
 
         posts = new ArrayList<Post>();
         // post.setImageDrawable();
@@ -85,7 +82,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
             e.printStackTrace();
         }
         // Create the adapter to convert the array to array to views
-        adapter = new PostAdapter(this,posts);
+        adapter = new PostAdapter(this,R.id.lvPost,posts);
         //Attach the adapter to a ListView
         listView.setAdapter(adapter);
 
@@ -134,10 +131,6 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
 
     }
-
-
-
-
 
     // get posts from api
     public void getPostFromApi(int pos_debut, int nbr_item) throws Exception {
