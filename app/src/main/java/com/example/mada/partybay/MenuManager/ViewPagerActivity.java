@@ -1,12 +1,16 @@
 package com.example.mada.partybay.MenuManager;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.example.mada.partybay.R;
+import com.example.mada.partybay.TimeLineManager.PostActivity;
 
 /**
  * Created by mada on 06/01/15.
@@ -17,6 +21,7 @@ public class ViewPagerActivity extends FragmentActivity{
     private ViewPager mViewPager;
     private Button activite_b;
     private Button reglage_b;
+    private ImageButton retour_b;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,13 +31,16 @@ public class ViewPagerActivity extends FragmentActivity{
         bar.hide();
         activite_b = (Button)findViewById(R.id.activite_b);
         reglage_b = (Button)findViewById(R.id.reglage_b);
+        retour_b = (ImageButton)findViewById(R.id.MENUretour);
+
+        retour_b.setOnClickListener(retourListener);
         //set u pthe action bar
        // final ActionBar actionbar = getActionBar();
        // actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         mSectionsPagerAdaptater = new ViewPagerAdapter(getSupportFragmentManager());
 
         // set up the ViewPager
-        mViewPager = (ViewPager)findViewById(R.id.viewpager);
+        mViewPager = (ViewPager)findViewById(R.id.menuviewpager);
         mViewPager.setAdapter(mSectionsPagerAdaptater);
         // modifiler l'indicateur lorsque on swippe
         mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -54,5 +62,17 @@ public class ViewPagerActivity extends FragmentActivity{
             }
         });
     }
+
+    View.OnClickListener retourListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            System.out.println("JE DEMANDE RETOUR");
+            Intent i = new Intent(ViewPagerActivity.this, PostActivity.class);
+            startActivity(i);
+
+
+        }
+    };
+
 
 }

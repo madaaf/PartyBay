@@ -12,7 +12,7 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/retour"
+            android:id="@+id/MENUretour"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="20px"
@@ -74,7 +74,7 @@
 
     <android.support.v4.view.ViewPager
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/viewpager"
+    android:id="@+id/menuviewpager"
     android:layout_below="@id/reglage"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />

@@ -16,17 +16,17 @@
             android:id="@+id/reglage"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="20px"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:background="@drawable/reglage"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PartyBay"
+            android:text="Party"
             android:textColor="@color/white"
-            android:textSize="40px"
+            android:textSize="33dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"/>
 
@@ -34,9 +34,9 @@
             android:id="@+id/profile"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="20px"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="@drawable/profile"/>
 
 

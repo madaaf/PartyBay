@@ -14,7 +14,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.mada.partybay.Activity.CameraActivity;
-import com.example.mada.partybay.Activity.Profile;
+import com.example.mada.partybay.ProfileManager.ProfileViewPagerActivity;
 import com.example.mada.partybay.Class.RestClient;
 import com.example.mada.partybay.MenuManager.ViewPagerActivity;
 import com.example.mada.partybay.R;
@@ -44,7 +44,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
     private int nbr_scroll = 0 ;
 
-    private final static int NBROFITEM = 10;
+    private final static int NBROFITEM = 15;
 
 
     @Override
@@ -102,6 +102,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
                 if(lastInScreen == (totalItemCount) && (onScroolStateChange==true)){
                     Log.d(" firstVisibleItem", "YEEEEEEEEHHH");
+                    System.out.println("JE LOAAAAAAD encore ");
                     nbr_scroll ++;
                     try {
 
@@ -227,7 +228,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
     View.OnClickListener profileListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(PostActivity.this, Profile.class);
+            Intent intent = new Intent(PostActivity.this, ProfileViewPagerActivity.class);
             startActivity(intent);
         }
     };

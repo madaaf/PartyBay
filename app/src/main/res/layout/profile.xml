@@ -5,28 +5,38 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
+        android:id="@+id/ItemPorfile"
         android:layout_width="fill_parent"
-        android:layout_height="640px"
+        android:layout_height="350dp"
         android:background="@drawable/photo_fond">
+
+
+        <ImageButton
+            android:id="@+id/PROFILEretour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/retour"
+            android:layout_margin="15dp"/>
 
         <ImageView
             android:id="@+id/profile_photo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="40px"
+            android:layout_marginTop="20dp"
             android:background="@drawable/cercle"/>
 
         <TextView
             android:id="@+id/profile_pseudo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
             android:textColor="#FFFFFF"
             android:layout_below="@+id/profile_photo"
             android:layout_centerHorizontal="true"
-            android:textSize="47px"
+            android:textSize="30dp"
             android:textStyle="bold"
-            android:text="Claire, 23 "/>
+            android:text="Claire, 23 ans"/>
 
         <TextView
             android:id="@+id/profile_description"
@@ -35,19 +45,115 @@
             android:textColor="#FFFFFF"
             android:layout_centerHorizontal="true"
             android:gravity="center"
-            android:textSize="30px"
+            android:textSize="15dp"
             android:layout_below="@id/profile_pseudo"
             android:text="Voici une courte description de mon profil blabla blaednjke..."/>
 
-        <TableRow
+        <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:weightSum="3">
+
+            <Button
+                android:id="@+id/bMoment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Moments"
+                android:textColor="#F83838"
+                android:background="@null"/>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="25dp"
+                android:background="#ffff2218"
+                android:layout_gravity="center"/>
+            <Button
+                android:id="@+id/bTrackers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Trackers"
+                android:textColor="#F83838"
+                android:background="@null" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="25dp"
+                android:background="#ffff2218"
+                android:layout_gravity="center"/>
+            <Button
+                android:id="@+id/bTraking"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Tracking"
+                android:textColor="#F83838"
+                android:background="@null"/>
+
+            </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:weightSum="3">
+
+            <View
+                android:id="@+id/markerMoments"
+                android:layout_width="wrap_content"
+                android:layout_height="5dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="5dp"
+                android:background="#ffff2218"
+                android:layout_weight="1"/>
+
+
+            <View
+                android:id="@+id/markerTrackers"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="13dp"
+                android:layout_marginRight="5dp"
+                android:layout_height="5dp"
+                android:background="#ffff2218"
+                android:layout_weight="1"/>
+
+            <View
+                android:id="@+id/markerTracking"
+                android:layout_width="wrap_content"
+                android:layout_height="5dp"
+                android:background="#ffff2218"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"/>
 
 
 
-            </TableRow>
+
+        </LinearLayout>
 
         </RelativeLayout>
 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ItemPorfile">
+
+
+
+
+        <android.support.v4.view.ViewPager
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/profileviewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
 
 </RelativeLayout>
+

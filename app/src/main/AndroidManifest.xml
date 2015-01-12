@@ -32,6 +32,7 @@
             </intent-filter>
         </activity>
 
+            <!-- PACKAGE ACTIVITY -->
         <activity
             android:name=".Activity.MyActivity"
             android:label="@style/AppTheme"/>
@@ -45,25 +46,7 @@
             android:name=".Activity.Inscription"
             android:label="@style/AppTheme"/>
         <activity
-            android:name=".Activity.TimeLine"
-            android:label="@style/AppTheme"/>
-        <activity
             android:name=".Activity.popup"
-            android:label="@style/AppTheme"/>
-        <activity
-            android:name=".Activity.TimeLine"
-            android:label="@style/AppTheme"/>
-
-        <activity
-        android:name=".MenuManager.ViewPagerActivity"
-        android:label="@style/AppTheme"/>
-
-        <activity
-            android:name=".Activity.Profile"
-            android:label="@style/AppTheme"/>
-
-        <activity
-            android:name=".Activity.CameraActivity"
             android:label="@style/AppTheme"/>
 
         <activity
@@ -71,8 +54,31 @@
             android:label="@style/AppTheme"/>
 
         <activity
+            android:name=".Activity.CameraActivity"
+            android:label="@style/AppTheme"/>
+
+        <!-- PACKAGE MENU MANAGER -->
+
+        <activity
+             android:name=".MenuManager.ViewPagerActivity"
+             android:label="@style/AppTheme"/>
+
+        <activity
+            android:name=".MenuManager.ViewPagerActivity"
+            android:label="@style/AppTheme"/>
+
+        <!-- PACKAGE TIMELINE -->
+        <activity
             android:name=".TimeLineManager.PostActivity"
             android:label="@style/AppTheme"/>
+
+        <!-- PACKAGE PROFILE MANAGER -->
+        <activity
+            android:name=".ProfileManager.ProfileViewPagerActivity"
+            android:label="@style/AppTheme"/>
+
+
+
 
 
 
