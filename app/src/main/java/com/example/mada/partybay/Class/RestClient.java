@@ -82,7 +82,6 @@ public class RestClient {
         builder.addTextBody(name, value);
     }
 
-
     public void setUrl(String url){this.url = url;}
 
     private static String convertStreamToString(InputStream is) {

@@ -24,7 +24,7 @@ public class ProfileViewPagerAdapter extends FragmentPagerAdapter {
         //System.out.println(" ma position "+position);
         switch(position){
             case 0 : {
-                return new Moments();
+                return new MomentsViewPagerActivity();
             }
             case 1 : {
                 return new Trackers();
