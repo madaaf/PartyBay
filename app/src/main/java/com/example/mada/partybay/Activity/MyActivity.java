@@ -42,6 +42,7 @@ public class MyActivity extends Activity {
             Intent intent = new Intent(MyActivity.this, Connexion.class);
             startActivity(intent);
 
+
         }
     };
 

@@ -91,7 +91,6 @@ public class Connexion extends Activity{
             if(access_token==null) {
                 Intent intent = new Intent(Connexion.this, popup.class);
                 startActivity(intent);
-                finish();
 
             }else{
                 // 2ieme requetes

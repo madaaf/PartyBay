@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:id="@+id/item_album_photo_fond"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <ImageView
+            android:id="@+id/item_album_post_photo_fond"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:background="@drawable/photo_fond"/>
+
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15px">
+
+            <TextView
+                android:id="@+id/item_album_post_pseudo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Marie"
+                android:textSize="45px"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                />
+
+            <ImageView
+                android:id="@+id/item_album_post_photo"
+                android:layout_width="100px"
+                android:layout_height="100px"
+                android:layout_marginRight="15px"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/photo_profil"
+                android:layout_toLeftOf="@id/item_album_post_pseudo"/>
+
+
+
+            <TextView
+                android:id="@+id/item_album_post_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="il y a 12 min"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/white"
+                android:layout_below="@+id/item_album_post_pseudo"/>
+
+
+
+        </RelativeLayout>
+
+        <ImageButton
+            android:id="@+id/item_album_gauche"
+            android:layout_width="20dp"
+            android:layout_height="25dp"
+            android:background="@drawable/retour"
+            android:layout_margin="10dp"
+            android:layout_centerVertical="true"/>
+
+        <ImageButton
+            android:id="@+id/item_album_droite"
+            android:layout_width="20dp"
+            android:layout_height="25dp"
+            android:background="@drawable/aller"
+            android:layout_margin="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:id="@+id/item_album_post_lieu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" @ Chez Laura, Paris"
+            android:textColor="@color/white"
+            android:layout_above="@+id/item_album_marker"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="20px"/>
+
+        <View
+            android:id="@+id/item_album_marker"
+            android:layout_width="fill_parent"
+            android:layout_marginLeft="13dp"
+            android:layout_marginRight="5dp"
+            android:layout_height="1dp"
+            android:layout_marginBottom="5dp"
+            android:layout_above="@+id/item_album_coms"
+            android:background="#ffff2218"/>
+
+        <RelativeLayout
+            android:id="@+id/item_album_coms"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp">
+
+            <RelativeLayout
+                android:id="@+id/item_album_like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15px"
+                android:layout_marginRight="15px">
+
+                <ImageButton
+                    android:id="@+id/item_album_post_coeur"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/coeur_unlike"
+                    android:onClick="onClickFunctionLover"/>
+
+                <TextView
+                    android:id="@+id/item_album_post_like"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/item_album_post_coeur"
+                    android:layout_toRightOf="@+id/item_album_post_coeur"
+                    android:text="32"
+                    android:textColor="@color/redClear"/>
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/item_album_post_texte"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@id/item_album_like"
+                android:textSize="15dp"
+                android:textColor="@color/white"
+                android:text="Cest de la folie dans le jardin de Laura pour feter son anniv !"/>
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

@@ -57,6 +57,11 @@
             android:name=".Activity.CameraActivity"
             android:label="@style/AppTheme"/>
 
+        <activity
+            android:name=".Activity.Activation"
+            android:label="@style/AppTheme"/>
+
+
         <!-- PACKAGE MENU MANAGER -->
 
         <activity
@@ -75,6 +80,10 @@
         <!-- PACKAGE PROFILE MANAGER -->
         <activity
             android:name=".ProfileManager.ProfileViewPagerActivity"
+            android:label="@style/AppTheme"/>
+
+        <activity
+            android:name=".ProfileManager.ItemAlbum"
             android:label="@style/AppTheme"/>
 
 

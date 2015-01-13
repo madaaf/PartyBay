@@ -69,6 +69,7 @@ public class ViewPagerActivity extends FragmentActivity{
             System.out.println("JE DEMANDE RETOUR");
             Intent i = new Intent(ViewPagerActivity.this, PostActivity.class);
             startActivity(i);
+            finish();
 
 
         }

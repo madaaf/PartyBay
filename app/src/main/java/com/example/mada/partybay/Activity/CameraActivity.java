@@ -142,6 +142,7 @@ public class CameraActivity extends Activity implements TextureView.SurfaceTextu
             releaseCamera();
             Intent intent = new Intent(CameraActivity.this, PostActivity.class);
             startActivity(intent);
+            finish();
         }
     };
 

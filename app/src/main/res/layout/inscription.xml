@@ -92,7 +92,7 @@
             android:layout_height="fill_parent"
             android:drawableLeft="@drawable/icone_transparent"
             android:hint="test@partybay.fr"
-            android:inputType="text"
+            android:inputType="textEmailAddress"
             android:background="@drawable/edit_text"/>
     </LinearLayout>
 
@@ -165,7 +165,8 @@
         android:layout_marginLeft="30dip"
         android:layout_marginRight="30dip"
         android:background="@drawable/corner"
-        android:text="01/01/2014" />
+        android:text="01/01/2014"
+        android:onClick="showDatePickerDialog"/>
 
     <TextView
         android:id="@+id/inscription_tv_cgu"
@@ -177,6 +178,7 @@
         android:layout_marginLeft="40px"
         android:gravity="center"
         android:layout_below="@id/inscription_bouton_date_naissance"/>
+
     <Button
         android:id="@+id/inscription_button_valider"
         android:layout_width="300px"

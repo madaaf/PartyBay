@@ -116,7 +116,7 @@ public class Post {
             link = obj.getString("link");
 
         } catch (JSONException e) {
-            System.out.println("Err : "+e.getMessage());
+            System.out.println("Err constructeur Post : "+e.getMessage());
         }
     }
 

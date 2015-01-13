@@ -92,6 +92,7 @@ public class ProfileViewPagerActivity extends FragmentActivity{
         public void onClick(View v) {
             Intent i = new Intent(ProfileViewPagerActivity.this, PostActivity.class );
             startActivity(i);
+            finish();
 
         }
     };

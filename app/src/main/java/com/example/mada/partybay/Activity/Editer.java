@@ -137,7 +137,6 @@ public class Editer extends Activity {
 
 
         RestClient client = new RestClient("https://api.partybay.fr/users/"+user_id+"/posts");
-
         // Recupere un token valid
         String access_token = client.getTokenValid();
 

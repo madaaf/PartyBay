@@ -14,9 +14,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.mada.partybay.Activity.CameraActivity;
-import com.example.mada.partybay.ProfileManager.ProfileViewPagerActivity;
 import com.example.mada.partybay.Class.RestClient;
 import com.example.mada.partybay.MenuManager.ViewPagerActivity;
+import com.example.mada.partybay.ProfileManager.ProfileViewPagerActivity;
 import com.example.mada.partybay.R;
 
 import org.json.JSONArray;
@@ -41,6 +41,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
     private boolean onScroolStateChange = false;
     private Thread ThreadLoadPost;
     private ArrayList<Post> posts = null;
+
 
     private int nbr_scroll = 0 ;
 
@@ -74,6 +75,9 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         menu.setOnClickListener(reglageListener);
         profile.setOnClickListener(profileListener);
         moment.setOnClickListener(momentListener);
+
+
+
 
         // on recupere les 10 premier postes
         try {
@@ -149,11 +153,10 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         try {
             rep =  client.Execute("GET");
             //System.out.println("RESPONSE DE EXECITE GET : " + rep.toString()+ "taille ="+rep.length()) ;
-            if (rep!=null && rep.length()>2){
+
                // System.out.println("je suis ici encore");
                 ArrayList<String> stringArray = new ArrayList<String>();
                 stringArray=jsonStringToArray(rep);
-
                 Iterator<String> it = stringArray.iterator();
                 Post post = null;
                 while (it.hasNext()) {
@@ -165,7 +168,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
                     // System.out.println("jajoute le poste numero = "+ post.getDate() + ' '+ post.getId());
                     posts.add(post);
 
-                }
+
             }
 
 

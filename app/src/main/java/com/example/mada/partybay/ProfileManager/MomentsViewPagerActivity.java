@@ -1,5 +1,6 @@
 package com.example.mada.partybay.ProfileManager;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,9 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import com.example.mada.partybay.Class.RestClient;
+import com.example.mada.partybay.Class.SerializeurMono;
+import com.example.mada.partybay.Class.User;
 import com.example.mada.partybay.R;
 import com.example.mada.partybay.TimeLineManager.Post;
 
@@ -29,8 +31,8 @@ public class MomentsViewPagerActivity extends Fragment implements SwipeRefreshLa
 
     private MomentViewPagerAdapter adapter;
     private ArrayList<Post> posts;
-
-
+    private SerializeurMono<User> serializeur_user;
+    private User user = null;
     private final int NBROFITEM = 15;
 
     @Override
@@ -42,12 +44,20 @@ public class MomentsViewPagerActivity extends Fragment implements SwipeRefreshLa
         Resources resources = getResources();
 
 
+        serializeur_user = new SerializeurMono<User>(getResources().getString(R.string.sdcard_user));
+        JSONObject obj = new JSONObject();
+        user =new User(obj);
+        user = serializeur_user.getObject();
+        System.out.println("ID USER "+user.getId());
+
          // on recupere les 10 premier postes
         try {
             getPostFromApi(0,NBROFITEM);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
 
 
     }
@@ -94,7 +104,6 @@ public class MomentsViewPagerActivity extends Fragment implements SwipeRefreshLa
 
         // je recupere un token dans la sd carte
         String access_token = client.getTokenValid();
-
         client.AddHeader("Authorization","Bearer "+access_token);
         String rep = "";
         try {
@@ -138,7 +147,15 @@ public class MomentsViewPagerActivity extends Fragment implements SwipeRefreshLa
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         // retrieve the GridView item
         Post item = posts.get(position);
+
+        Intent i = new Intent(getActivity(),ItemAlbum.class);
+        i.putExtra("item_id", item.getId());
+        i.putExtra("my_user_id",user.getId());
+        i.putExtra("my_pseudo",user.getPseudo());
+       // i.putExtra()
+        startActivity(i);
+
         // do something
-        Toast.makeText(getActivity(), item.getId(), Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getActivity(), item.getId(), Toast.LENGTH_SHORT).show();
     }
 }
