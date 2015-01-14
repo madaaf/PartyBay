@@ -16,6 +16,9 @@ import com.example.mada.partybay.TimeLineManager.PostActivity;
 
 import org.json.JSONObject;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 /**
  * Created by mada on 10/11/2014.
  */
@@ -48,6 +51,7 @@ public class ProfileViewPagerActivity extends FragmentActivity{
         User user = serializeur_user.getObject();
 
 
+
         // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
         mAppSectionsPagerAdapter = new ProfileViewPagerAdapter(getSupportFragmentManager());
@@ -62,9 +66,18 @@ public class ProfileViewPagerActivity extends FragmentActivity{
         markerTrackers.setBackgroundResource(0);
         markerTracking.setBackgroundResource(0);
 
-        System.out.println("DATE : "+user.getBirth());
+        System.out.println("BIRTHDAY  : "+user.getBirth());
+        String year = user.getBirth().substring(0, 4);
+        String month = user.getBirth().substring(5, 7);
+        String jour = user.getBirth().substring(8, user.getBirth().length());
 
-        pseudoTv.setText(user.getPseudo());
+        int year2 = Integer.parseInt(year);
+        int month2 = Integer.parseInt(month);
+        int jour2 = Integer.parseInt(jour);
+        int age = getAge(year2,month2,jour2);
+
+
+        pseudoTv.setText(user.getPseudo()+","+age);
         mViewPager = (ViewPager)findViewById(R.id.profileviewpager);
         mViewPager.setAdapter(mAppSectionsPagerAdapter);
 
@@ -114,6 +127,26 @@ public class ProfileViewPagerActivity extends FragmentActivity{
 
         }
     };
+
+    public int getAge (int _year, int _month, int _day) {
+
+        GregorianCalendar cal = new GregorianCalendar();
+        int y, m, d, a;
+
+        y = cal.get(Calendar.YEAR);
+        m = cal.get(Calendar.MONTH);
+        d = cal.get(Calendar.DAY_OF_MONTH);
+        cal.set(_year, _month, _day);
+        a = y - cal.get(Calendar.YEAR);
+        if ((m < cal.get(Calendar.MONTH))
+                || ((m == cal.get(Calendar.MONTH)) && (d < cal
+                .get(Calendar.DAY_OF_MONTH)))) {
+            --a;
+        }
+        if(a < 0)
+            throw new IllegalArgumentException("Age < 0");
+        return a;
+    }
 
 
 

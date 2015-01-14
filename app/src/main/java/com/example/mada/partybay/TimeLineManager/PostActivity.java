@@ -13,7 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.mada.partybay.Activity.CameraActivity;
+import com.example.mada.partybay.Activity.CameraAc;
 import com.example.mada.partybay.Activity.Chargement;
 import com.example.mada.partybay.Class.RestClient;
 import com.example.mada.partybay.MenuManager.ViewPagerActivity;
@@ -301,7 +301,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
     View.OnClickListener momentListener = new View.OnClickListener(){
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(PostActivity.this, CameraActivity.class);
+            Intent intent = new Intent(PostActivity.this, CameraAc.class);
             startActivity(intent);
         }
     };

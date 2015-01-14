@@ -14,6 +14,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -52,6 +53,7 @@ public class Editer extends Activity {
     private String link = null;
     private ProgressDialog simpleWaitDialog;
     private ImageButton retour;
+    private  String photo_path;
 
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -62,13 +64,6 @@ public class Editer extends Activity {
         bar.hide();
 
 
-        Intent intent = getIntent();
-        System.out.println("ok"+intent);
-        if (intent != null) {
-            link = intent.getStringExtra(IMAGE_PATH);
-
-        }
-
         poster = (ImageButton) findViewById(R.id.button_poster);
         retour = (ImageButton) findViewById(R.id.editer_retour);
         desc = (EditText) findViewById(R.id.edit_description);
@@ -78,8 +73,9 @@ public class Editer extends Activity {
         retour.setOnClickListener(retourListener);
 
 
-        String path = getResources().getString(R.string.sdcard_photo);
-        Bitmap bmp = BitmapFactory.decodeFile(path);
+        Bundle bundle = getIntent().getExtras();
+        photo_path = bundle.getString("photo_path");
+        Bitmap bmp = decodeSampledBitmapFromFile(photo_path, 500, 300);
         Bitmap temp = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), Bitmap.Config.RGB_565);
         Canvas c = new Canvas(temp);
         c.drawBitmap(bmp, 0, 0, null);
@@ -143,7 +139,8 @@ public class Editer extends Activity {
         String authorization = "Bearer " + access_token;
         client.AddHeader("Authorization",authorization);
 
-        File file = new File(getResources().getString(R.string.sdcard_photo));
+
+        File file = new File(photo_path);
         FileBody fileBody = new FileBody(file);
         client.AddFile(fileBody);
         client.AddParamFile("filename", "photo.JPEG");
@@ -234,5 +231,32 @@ public class Editer extends Activity {
         protected void onPostExecute(Void result){
             simpleWaitDialog.dismiss();
         }
+    }
+
+    public Bitmap decodeSampledBitmapFromFile(String path, int reqWidth, int reqHeight) {
+        Log.d("Camera ", "decodeSampledBitmapFromFile class Camera");
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
+
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        int inSampleSize = 1;
+
+        if (height > reqHeight) {
+            inSampleSize = Math.round((float)height / (float)reqHeight);
+        }
+
+        int expectedWidth = width / inSampleSize;
+
+        if (expectedWidth > reqWidth) {
+            inSampleSize = Math.round((float)width / (float)reqWidth);
+        }
+
+        options.inSampleSize = inSampleSize;
+        options.inJustDecodeBounds = false;
+
+        return BitmapFactory.decodeFile(path, options);
     }
 }
