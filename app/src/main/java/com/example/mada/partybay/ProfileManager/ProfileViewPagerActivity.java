@@ -7,9 +7,14 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
+import com.example.mada.partybay.Class.SerializeurMono;
+import com.example.mada.partybay.Class.User;
 import com.example.mada.partybay.R;
 import com.example.mada.partybay.TimeLineManager.PostActivity;
+
+import org.json.JSONObject;
 
 /**
  * Created by mada on 10/11/2014.
@@ -27,7 +32,8 @@ public class ProfileViewPagerActivity extends FragmentActivity{
     View markerTracking;
     int position = 0;
     ImageButton retour_b;
-
+    SerializeurMono<User> serializeur_user;
+    TextView pseudoTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +42,12 @@ public class ProfileViewPagerActivity extends FragmentActivity{
         setContentView(R.layout.profile);
         ActionBar bar = this.getActionBar();
         bar.hide();
+
+        serializeur_user = new SerializeurMono<User>(getResources().getString(R.string.sdcard_user));
+        JSONObject obj = new JSONObject();
+        User user = serializeur_user.getObject();
+
+
         // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
         mAppSectionsPagerAdapter = new ProfileViewPagerAdapter(getSupportFragmentManager());
@@ -44,13 +56,18 @@ public class ProfileViewPagerActivity extends FragmentActivity{
         markerTrackers=(View)findViewById(R.id.markerTrackers);
         markerTracking=(View)findViewById(R.id.markerTracking);
         retour_b=(ImageButton)findViewById(R.id.PROFILEretour);
+        pseudoTv = (TextView)findViewById(R.id.profile_pseudo);
 
        // markerMoments.setBackgroundResource(0);
         markerTrackers.setBackgroundResource(0);
         markerTracking.setBackgroundResource(0);
 
-       mViewPager = (ViewPager)findViewById(R.id.profileviewpager);
-       mViewPager.setAdapter(mAppSectionsPagerAdapter);
+        System.out.println("DATE : "+user.getBirth());
+
+        pseudoTv.setText(user.getPseudo());
+        mViewPager = (ViewPager)findViewById(R.id.profileviewpager);
+        mViewPager.setAdapter(mAppSectionsPagerAdapter);
+
 
         retour_b.setOnClickListener(retourListener);
 

@@ -98,7 +98,7 @@ public class Inscription extends Activity {
             String day_s = String.valueOf(day);
             if(month<10) {month_s = "0"+month_s;}
             if(day<10){day_s = "0"+ day;}
-            birthday.setText(day+"/"+month_s+"/"+day_s);
+            birthday.setText(year+"/"+month_s+"/"+day_s);
             date_birthday = year+"-"+month_s+"-"+day_s;
             System.out.println("date_birthday"+date_birthday);
         }
@@ -129,7 +129,7 @@ public class Inscription extends Activity {
 
             String error = null;
             if(pseudo_s.equals("")){
-                 error="Remplir le champs pseudo";
+                error="Remplir le champs pseudo";
             }else if(mail_s.equals("")){
                 error="Remplir le champs mail";
             }else if(tel_s.equals("")){
@@ -142,38 +142,38 @@ public class Inscription extends Activity {
                 error="Ajoutez votre date de naissance";
             }
 
-             if(error!=null) {
-                 afficherPopup(error, null);
-             }else {
+            if(error!=null) {
+                afficherPopup(error, null);
+            }else {
 
-                 // je recupere un token
-                 RestClient client_token = new RestClient("https://api.partybay.fr/token");
-                 String autho = "Basic " + Base64.encodeToString(("android_app" + ":" + "MaD0u!ll3").getBytes(), Base64.NO_WRAP);
-                 client_token.AddParam("grant_type", "client_credentials");
-                 client_token.AddHeader("Authorization", autho);
-                 try {
-                     client_token.Execute("POST");
-                 } catch (Exception e) {
-                     e.printStackTrace();
-                 }
+                // je recupere un token
+                RestClient client_token = new RestClient("https://api.partybay.fr/token");
+                String autho = "Basic " + Base64.encodeToString(("android_app" + ":" + "MaD0u!ll3").getBytes(), Base64.NO_WRAP);
+                client_token.AddParam("grant_type", "client_credentials");
+                client_token.AddHeader("Authorization", autho);
+                try {
+                    client_token.Execute("POST");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-                 String response = client_token.getReponsePost();
-                 System.out.println("CLIENT TOKEN" + response);
-                 JSONObject tokObj = null;
-                 Token token = null;
-                 String access_token = null;
-                 try {
-                     tokObj = new JSONObject(response);
-                     token = new Token(tokObj);
-                     serializeur_token.setObjet(token);
-                     access_token = token.getAcess_token();
+                String response = client_token.getReponsePost();
+                System.out.println("CLIENT TOKEN" + response);
+                JSONObject tokObj = null;
+                Token token = null;
+                String access_token = null;
+                try {
+                    tokObj = new JSONObject(response);
+                    token = new Token(tokObj);
+                    serializeur_token.setObjet(token);
+                    access_token = token.getAcess_token();
 
-                 } catch (JSONException e) {
-                     e.printStackTrace();
-                 }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
 
-                 // j'insere mon user dans la base de donnée
+                // j'insere mon user dans la base de donnée
 
                 /* System.out.println("pseudo_s :"+pseudo_s);
                  System.out.println("mdp_s :"+mdp_s);
@@ -182,45 +182,45 @@ public class Inscription extends Activity {
                  System.out.println("sex :"+sex);
                  System.out.println("date :"+ date_birthday);*/
 
-                 RestClient client = new RestClient("https://api.partybay.fr/users");
-                 client.AddHeader("Authorization", "Bearer " + access_token);
+                RestClient client = new RestClient("https://api.partybay.fr/users");
+                client.AddHeader("Authorization", "Bearer " + access_token);
 
-                 client.AddParam("pseudo", pseudo_s);
-                 client.AddParam("email", mail_s);
-                 client.AddParam("phone", tel_s);
-                 client.AddParam("password", mdp_s);
-                 client.AddParam("from", "app");
-                 client.AddParam("sex", sex);
-                 client.AddParam("date",date_birthday );
+                client.AddParam("pseudo", pseudo_s);
+                client.AddParam("email", mail_s);
+                client.AddParam("phone", tel_s);
+                client.AddParam("password", mdp_s);
+                client.AddParam("from", "app");
+                client.AddParam("sex", sex);
+                client.AddParam("birth",date_birthday );
 
 
-                 try {
-                     client.Execute("POST");
-                 } catch (Exception e) {
-                     e.printStackTrace();
-                 }
+                try {
+                    client.Execute("POST");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-                 String user_data = client.getReponsePost();
+                String user_data = client.getReponsePost();
 
-                 try {
-                     JSONObject obj = new JSONObject(user_data);
-                     if (obj.has("error")) {
-                         System.out.println("ERREUR INSCRIOTION1 " + obj.get("description"));
-                         String error2 = translateError(obj.get("description").toString());
-                         afficherPopup(error2, null);
-                     } else {
-                         afficherPopup("Votre compte à été créer avec succes", new redirection());
-                         Token tokenObj = new Token(obj);
-                         // je creer mon fichier Token et je met mon nouv object token
-                         serializeur_token.setObjet(tokenObj);
-                     }
+                try {
+                    JSONObject obj = new JSONObject(user_data);
+                    if (obj.has("error")) {
+                        System.out.println("ERREUR INSCRIOTION1 " + obj.get("description"));
+                        String error2 = translateError(obj.get("description").toString());
+                        afficherPopup(error2, null);
+                    } else {
+                        afficherPopup("Votre compte à été créer avec succes", new redirection());
+                        Token tokenObj = new Token(obj);
+                        // je creer mon fichier Token et je met mon nouv object token
+                        serializeur_token.setObjet(tokenObj);
+                    }
 
-                 } catch (JSONException e) {
-                     System.out.println("ERREUR INSCRIOTION2 " + e.getMessage());
-                     afficherPopup(e.getMessage(), null);
-                     e.printStackTrace();
-                 }
-             } //fun du if
+                } catch (JSONException e) {
+                    System.out.println("ERREUR INSCRIOTION2 " + e.getMessage());
+                    afficherPopup(e.getMessage(), null);
+                    e.printStackTrace();
+                }
+            } //fun du if
 
         }
     };

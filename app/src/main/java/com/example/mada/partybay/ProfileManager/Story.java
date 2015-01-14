@@ -25,9 +25,9 @@ import java.util.Iterator;
 /**
  * Created by mada on 11/01/15.
  */
-public class Tracking extends Fragment  implements SwipeRefreshLayout.OnRefreshListener,AdapterView.OnItemClickListener{
+public class Story extends Fragment  implements SwipeRefreshLayout.OnRefreshListener,AdapterView.OnItemClickListener{
 
-    private TrackingAdapter adapter;
+    private StoryAdapter adapter;
     private ArrayList<Post> posts;
     private SerializeurMono<User> serializeur_user;
     private User user = null;
@@ -60,10 +60,10 @@ public class Tracking extends Fragment  implements SwipeRefreshLayout.OnRefreshL
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.traking, container, false);
+        View rootView = inflater.inflate(R.layout.story, container, false);
         // inflate the root view of the fragment
         // initialize the adapter
-        adapter = new TrackingAdapter(getActivity(), posts);
+        adapter = new StoryAdapter(getActivity(), posts);
         // initialize the GridView
         ListView lv = (ListView) rootView.findViewById(R.id.TrackinglistView);
 

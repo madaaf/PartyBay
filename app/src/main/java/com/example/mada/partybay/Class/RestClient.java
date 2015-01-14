@@ -1,6 +1,5 @@
 package com.example.mada.partybay.Class;
 
-import android.app.Activity;
 import android.util.Base64;
 import android.util.Log;
 
@@ -30,7 +29,7 @@ import java.util.ArrayList;
 /**
  * Created by mada on 06/11/2014.
  */
-public class RestClient extends Activity{
+public class RestClient {
 
     private ArrayList<NameValuePair> params;
     private ArrayList<NameValuePair> headers;
@@ -58,13 +57,6 @@ public class RestClient extends Activity{
         headers = new ArrayList<NameValuePair>();
     }
 
-    public RestClient(String uri,String type) {
-        this.url = uri;
-        params = new ArrayList<NameValuePair>();
-        headers = new ArrayList<NameValuePair>();
-    }
-
-
     public String getReponsePost(){return responsePost;}
 
     public String getResponseGet(){return responseGet;}
@@ -86,7 +78,7 @@ public class RestClient extends Activity{
     }
 
     public void AddParamFile(String name, String value) {
-        //System.out.println("param "+ name + " = " + value);
+        System.out.println("param "+ name + " = " + value);
         builder.addTextBody(name, value);
     }
 
@@ -239,12 +231,16 @@ public class RestClient extends Activity{
 
     public String getTokenValid(){
 
-
+        SerializeurMono<Token> serializeur = new SerializeurMono<Token>("/storage/sdcard0/PartyBay/token.serial");
         Token token = getTokenFromSd();
         String refresh_token = token.getRefresh_token();
         String access_token = token.getAcess_token();
 
         System.out.println("ancien access_token : "+ access_token);
+        // System.out.println("ancien refresh_token : "+ refresh_token);
+
+        // validToken() == false : acess token non valide, je recupere le refresh token  pour recuper un nouveau AT et RT
+        // validToken() == true : acess token encore valide
 
         Boolean validToken = validToken();
         if(validToken==false){
@@ -352,9 +348,5 @@ public class RestClient extends Activity{
 
         }
     }
-
-
-
-
 
 }

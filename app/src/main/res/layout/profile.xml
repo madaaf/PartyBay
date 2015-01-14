@@ -62,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Moments"
+                android:text="Story"
                 android:textColor="#F83838"
                 android:background="@null"/>
             <View
@@ -75,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Trackers"
+                android:text="Moments"
                 android:textColor="#F83838"
                 android:background="@null" />
 
@@ -89,7 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Tracking"
+                android:text="Relations"
                 android:textColor="#F83838"
                 android:background="@null"/>
 

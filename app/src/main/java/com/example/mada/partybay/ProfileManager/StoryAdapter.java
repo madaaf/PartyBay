@@ -18,7 +18,7 @@ import java.util.ArrayList;
 /**
  * Created by mada on 13/01/15.
  */
-public class TrackingAdapter extends BaseAdapter {
+public class StoryAdapter extends BaseAdapter {
 
     private Context mContext;
     private ArrayList<Post> posts;
@@ -35,7 +35,7 @@ public class TrackingAdapter extends BaseAdapter {
     }
 
 
-    public TrackingAdapter(Context c, ArrayList<Post> posts) {
+    public StoryAdapter(Context c, ArrayList<Post> posts) {
         System.out.println("jes suis dans l'adapteur ");
         this.mContext=c;
         this.posts=posts;
@@ -66,7 +66,7 @@ public class TrackingAdapter extends BaseAdapter {
 
             // inflate the GridView item layout
             LayoutInflater inflater = LayoutInflater.from(mContext);
-            convertView = inflater.inflate(R.layout.story, parent, false);
+            convertView = inflater.inflate(R.layout.story_item, parent, false);
 
             // initialize the view holder
             viewHolder = new ViewHolder();
