@@ -57,9 +57,6 @@ public class MomentsViewPagerActivity extends Fragment implements SwipeRefreshLa
             e.printStackTrace();
         }
 
-
-
-
     }
 
 
@@ -100,7 +97,8 @@ public class MomentsViewPagerActivity extends Fragment implements SwipeRefreshLa
         // ThreadLoadPost = new LoadListenerThread(pos_debut,nbr_item);
         // ThreadLoadPost.start();
 
-        RestClient client = new RestClient("https://api.partybay.fr/posts?limit="+nbr_item+"&offset="+pos_debut+"&side=desc&order=id&user_id=65");
+        RestClient client = new RestClient("https://api.partybay.fr/users/"+user.getId()+"/posts?limit="+nbr_item+"&offset=0&side=desc");
+        //System.out.println("https://api.partybay.fr/users/"+user.getId()+"/posts?limit="+nbr_item+"&offset=0&side=desc");
 
         // je recupere un token dans la sd carte
         String access_token = client.getTokenValid();
@@ -130,7 +128,6 @@ public class MomentsViewPagerActivity extends Fragment implements SwipeRefreshLa
                 }
             }
 
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -152,7 +149,6 @@ public class MomentsViewPagerActivity extends Fragment implements SwipeRefreshLa
         i.putExtra("item_id", item.getId());
         i.putExtra("my_user_id",user.getId());
         i.putExtra("my_pseudo",user.getPseudo());
-       // i.putExtra()
         startActivity(i);
 
         // do something

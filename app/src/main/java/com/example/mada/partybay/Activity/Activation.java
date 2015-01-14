@@ -52,7 +52,6 @@ public class Activation extends Activity {
             }
         }
         pseudo_intent=sb.toString();
-        System.out.println(pseudo_intent);
         serializeur_user = new SerializeurMono<User>(getResources().getString(R.string.sdcard_user));
         serializeur_token = new SerializeurMono<Token>(getResources().getString(R.string.sdcard_token));
         activation_button_valider.setOnClickListener(ListenerButtonValider);
@@ -67,7 +66,7 @@ public class Activation extends Activity {
 
 
             String code = activation_code.getText().toString();
-            System.out.println("CODE : "+code);
+
 
             /*
             * Envoyer le code à l'api pour verifier s'il est bon
@@ -76,7 +75,7 @@ public class Activation extends Activity {
 
             // Je récupere un token
             RestClient client_token = new RestClient("https://api.partybay.fr/token");
-            String authorization = "Basic " + Base64.encodeToString(("partybay" + ":" + "Pb2014").getBytes(), Base64.NO_WRAP);
+            String authorization = "Basic " + Base64.encodeToString(("android_app" + ":" + "MaD0u!ll3").getBytes(), Base64.NO_WRAP);
             client_token.AddHeader("Authorization",authorization);
             client_token.AddParam("grant_type", "client_credentials");
             String newTokenObjectString = null;
@@ -101,13 +100,10 @@ public class Activation extends Activity {
             String rep = null;
             try {
                 rep = client.Execute("GET");
-                System.out.println("REPONSE ACTIVATION   : "+rep);
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
 
             try {
                 JSONObject obj = new JSONObject(rep);

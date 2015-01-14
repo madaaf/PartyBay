@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="150dp"
+        android:weightSum="2">
+
+
+       <RelativeLayout
+            android:layout_width="350px"
+            android:layout_height="fill_parent"
+            android:layout_centerVertical="true"
+            android:scaleType="centerCrop"
+            android:layout_weight="1">
+
+           <ImageView
+               android:id="@+id/story_image_soiree"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_centerHorizontal="true"
+               android:layout_centerVertical="true"
+               android:layout_margin="10dp"
+               android:background="@drawable/partybay"/>
+            </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:scaleType="centerCrop">
+            <View
+                android:layout_width="2dp"
+                android:layout_height="fill_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="#ffff2218"
+                android:layout_gravity="center"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/story_ron" />
+
+
+
+        </RelativeLayout>
+
+
+
+        <RelativeLayout
+            android:layout_width="500px"
+            android:layout_height="fill_parent"
+            android:layout_weight="1">
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+               >
+
+                <TextView
+                    android:id="@+id/story_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="10dp"
+                    android:text="Super ambiance ce soir avec les potes ! "/>
+
+                <TextView
+                    android:id="@+id/story_lieu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_centerVertical="true"
+                    android:textSize="17dp"
+                    android:text="Dupleix" />
+
+                <LinearLayout
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/story_lieu"
+                    android:layout_marginTop="10dp"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:id="@+id/story_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14dp"
+                        android:textStyle="bold"
+                        android:text="il y 16 min"
+                        android:layout_weight="1"
+                        />
+                    <TextView
+                        android:id="@+id/story_nbr_lover"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14dp"
+                        android:layout_marginRight="10dp"
+                        android:text="12"
+                        />
+
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/coeur"/>
+
+                    </LinearLayout>
+
+
+            </RelativeLayout>
+
+
+
+    </RelativeLayout>
+
+
+
+    </LinearLayout>
+
+</LinearLayout>

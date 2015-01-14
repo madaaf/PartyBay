@@ -16,9 +16,10 @@ import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import java.util.ArrayList;
 
 /**
- * Created by mada on 12/01/15.
+ * Created by mada on 13/01/15.
  */
-public class MomentViewPagerAdapter extends BaseAdapter {
+public class TrackingAdapter extends BaseAdapter {
+
     private Context mContext;
     private ArrayList<Post> posts;
 
@@ -29,54 +30,22 @@ public class MomentViewPagerAdapter extends BaseAdapter {
         TextView date;
         TextView latitude;
         ImageView link;
+        TextView nbr_lovers;
         ImageButton loveButton;
     }
 
 
-    public MomentViewPagerAdapter(Context c, ArrayList<Post> posts) {
-         this.mContext=c;
-         this.posts=posts;
+    public TrackingAdapter(Context c, ArrayList<Post> posts) {
+        System.out.println("jes suis dans l'adapteur ");
+        this.mContext=c;
+        this.posts=posts;
     }
+
+
 
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        ViewHolder viewHolder;
-
-        if (convertView == null) {  // if it's not recycled, initialize some attributes
-
-            // inflate the GridView item layout
-            LayoutInflater inflater = LayoutInflater.from(mContext);
-            convertView = inflater.inflate(R.layout.photo, parent, false);
-
-
-            // initialize the view holder
-            viewHolder = new ViewHolder();
-            viewHolder.link = (ImageView) convertView.findViewById(R.id.photo_moment);
-
-            convertView.setTag(viewHolder);
-
-        } else {
-            //((ViewHolder)convertView.getTag()).loveButton.setTag(posts.get(position).getId());
-            viewHolder = (ViewHolder) convertView.getTag();
-        }
-
-        // update the item view
-        Post item = posts.get(position);
-
-        //viewHolder.link.setImageDrawable(R.drawable.photo_fond);
-        UrlImageViewHelper.setUrlDrawable(viewHolder.link, "https://static.partybay.fr/images/posts/640x640_" + item.getLink());
-
-
-        return convertView;
-    }
-
-
-    @Override
-    public int getCount() {
-        return posts.size();
-    }
+    public int getCount() { return posts.size();}
 
     @Override
     public Object getItem(int position) {
@@ -87,6 +56,51 @@ public class MomentViewPagerAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return position;
     }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        ViewHolder viewHolder;
+
+        if (convertView == null) {  // if it's not recycled, initialize some attributes
+
+            // inflate the GridView item layout
+            LayoutInflater inflater = LayoutInflater.from(mContext);
+            convertView = inflater.inflate(R.layout.story, parent, false);
+
+            // initialize the view holder
+            viewHolder = new ViewHolder();
+            viewHolder.link = (ImageView) convertView.findViewById(R.id.story_image_soiree);
+            viewHolder.text = (TextView) convertView.findViewById(R.id.story_text);
+            viewHolder.latitude = (TextView) convertView.findViewById(R.id.story_lieu);
+            viewHolder.date = (TextView) convertView.findViewById(R.id.story_time);
+            viewHolder.nbr_lovers =(TextView)convertView.findViewById(R.id.story_nbr_lover);
+
+
+            convertView.setTag(viewHolder);
+
+        } else {
+            //((ViewHolder)convertView.getTag()).loveButton.setTag(posts.get(position).getId());
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
+
+        // update the item view
+        Post item = posts.get(position);
+        // Populate the data into the template view using the data object
+
+        //viewHolder.latitude.setText(item.getLatitude());
+        //viewHolder.text.setText(item.getText());
+        viewHolder.date.setText(item.getDate());
+        viewHolder.nbr_lovers.setText(String.valueOf(item.getTotalLovers()));
+
+
+        //viewHolder.link.setImageDrawable(R.drawable.photo_fond);
+        UrlImageViewHelper.setUrlDrawable(viewHolder.link, "https://static.partybay.fr/images/posts/640x640_" + item.getLink());
+
+
+        return convertView;
+    }
+
 
 
 }

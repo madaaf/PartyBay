@@ -16,7 +16,6 @@ public class ProfileViewPagerAdapter extends FragmentPagerAdapter {
 
     public ProfileViewPagerAdapter(FragmentManager fm) {
         super(fm);
-        System.out.println("je suis la ");
     }
 
     @Override
@@ -27,10 +26,10 @@ public class ProfileViewPagerAdapter extends FragmentPagerAdapter {
                 return new MomentsViewPagerActivity();
             }
             case 1 : {
-                return new Trackers();
+                return new Tracking();
             }
             case 2 : {
-                return new Tracking();
+                return new Trackers();
             }
         }
         return null;

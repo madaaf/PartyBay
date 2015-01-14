@@ -51,7 +51,8 @@ public class ProfileViewPagerActivity extends FragmentActivity{
 
        mViewPager = (ViewPager)findViewById(R.id.profileviewpager);
        mViewPager.setAdapter(mAppSectionsPagerAdapter);
-       retour_b.setOnClickListener(retourListener);
+
+        retour_b.setOnClickListener(retourListener);
 
 
         // modifier l'indicateur lorsqu'on swippe

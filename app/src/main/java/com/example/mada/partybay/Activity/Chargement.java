@@ -46,9 +46,9 @@ public class Chargement extends Activity{
         public void run(){
 
            File file = new File(getResources().getString(R.string.sdcard_path));
-           file.mkdir();
+            file.mkdir();
 
-           fichier = new File(getResources().getString(R.string.sdcard_user));
+            fichier = new File(getResources().getString(R.string.sdcard_user));
 
            boolean exist = fichier.exists();
 

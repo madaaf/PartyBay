@@ -1,5 +1,6 @@
 package com.example.mada.partybay.Class;
 
+import android.app.Activity;
 import android.util.Base64;
 import android.util.Log;
 
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 /**
  * Created by mada on 06/11/2014.
  */
-public class RestClient {
+public class RestClient extends Activity{
 
     private ArrayList<NameValuePair> params;
     private ArrayList<NameValuePair> headers;
@@ -57,6 +58,13 @@ public class RestClient {
         headers = new ArrayList<NameValuePair>();
     }
 
+    public RestClient(String uri,String type) {
+        this.url = uri;
+        params = new ArrayList<NameValuePair>();
+        headers = new ArrayList<NameValuePair>();
+    }
+
+
     public String getReponsePost(){return responsePost;}
 
     public String getResponseGet(){return responseGet;}
@@ -78,7 +86,7 @@ public class RestClient {
     }
 
     public void AddParamFile(String name, String value) {
-        System.out.println("param "+ name + " = " + value);
+        //System.out.println("param "+ name + " = " + value);
         builder.addTextBody(name, value);
     }
 
@@ -178,7 +186,7 @@ public class RestClient {
             }
 
 
-         }
+        }
     }
 
     public Token getTokenFromSd(){
@@ -198,9 +206,9 @@ public class RestClient {
         System.out.println("CURRENT_TOKEN" + token.getAcess_token());
         CURRENT_TOKEN = token.getAcess_token();
 
-       RestClient client= new RestClient("https://api.partybay.fr/users/1?oauth_token=");
-       client.AddHeader("Authorization", "Bearer "+CURRENT_TOKEN);
-       String rep = null;
+        RestClient client= new RestClient("https://api.partybay.fr/users/1?oauth_token=");
+        client.AddHeader("Authorization", "Bearer "+CURRENT_TOKEN);
+        String rep = null;
 
         try {
             rep = client.Execute("GET");
@@ -223,31 +231,27 @@ public class RestClient {
         return bool;
     }
 
-/**
- cette fonction est appelé avant chaque requete pour verifier la validiter du token
- si le token est encore valide, il retourn l'ancien token
- sinon il récupere un nouveau token et se charge d'enregisstre dans token.serial le nouveau token
- **/
+    /**
+     cette fonction est appelé avant chaque requete pour verifier la validiter du token
+     si le token est encore valide, il retourn l'ancien token
+     sinon il récupere un nouveau token et se charge d'enregisstre dans token.serial le nouveau token
+     **/
 
     public String getTokenValid(){
 
-        SerializeurMono<Token> serializeur = new SerializeurMono<Token>("/storage/sdcard0/PartyBay/token.serial");
+
         Token token = getTokenFromSd();
         String refresh_token = token.getRefresh_token();
         String access_token = token.getAcess_token();
 
         System.out.println("ancien access_token : "+ access_token);
-       // System.out.println("ancien refresh_token : "+ refresh_token);
-
-        // validToken() == false : acess token non valide, je recupere le refresh token  pour recuper un nouveau AT et RT
-        // validToken() == true : acess token encore valide
 
         Boolean validToken = validToken();
         if(validToken==false){
 
             System.out.println("je récupere un nouveau token ");
             RestClient client = new RestClient("https://api.partybay.fr/token");
-            String authorization = "Basic " + Base64.encodeToString(("partybay" + ":" + "Pb2014").getBytes(), Base64.NO_WRAP);
+            String authorization = "Basic " + Base64.encodeToString(("android_app" + ":" + "MaD0u!ll3").getBytes(), Base64.NO_WRAP);
 
             client.AddHeader("Authorization",authorization);
             client.AddParam("grant_type", "refresh_token");
@@ -348,5 +352,9 @@ public class RestClient {
 
         }
     }
+
+
+
+
 
 }

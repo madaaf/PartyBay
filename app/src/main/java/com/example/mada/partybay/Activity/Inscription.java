@@ -148,7 +148,7 @@ public class Inscription extends Activity {
 
                  // je recupere un token
                  RestClient client_token = new RestClient("https://api.partybay.fr/token");
-                 String autho = "Basic " + Base64.encodeToString(("partybay" + ":" + "Pb2014").getBytes(), Base64.NO_WRAP);
+                 String autho = "Basic " + Base64.encodeToString(("android_app" + ":" + "MaD0u!ll3").getBytes(), Base64.NO_WRAP);
                  client_token.AddParam("grant_type", "client_credentials");
                  client_token.AddHeader("Authorization", autho);
                  try {
@@ -175,12 +175,12 @@ public class Inscription extends Activity {
 
                  // j'insere mon user dans la base de donnée
 
-                 System.out.println("pseudo_s :"+pseudo_s);
+                /* System.out.println("pseudo_s :"+pseudo_s);
                  System.out.println("mdp_s :"+mdp_s);
                  System.out.println("tel_s :"+tel_s);
                  System.out.println("mail_s :"+mail_s);
                  System.out.println("sex :"+sex);
-                 System.out.println("date :"+ date_birthday);
+                 System.out.println("date :"+ date_birthday);*/
 
                  RestClient client = new RestClient("https://api.partybay.fr/users");
                  client.AddHeader("Authorization", "Bearer " + access_token);

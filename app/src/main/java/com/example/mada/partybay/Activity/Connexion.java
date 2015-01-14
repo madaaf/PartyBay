@@ -60,7 +60,7 @@ public class Connexion extends Activity{
             client.AddParam("grant_type", "password");
             client.AddParam("username", p);
             client.AddParam("password", m);
-            String authorization = "Basic " + Base64.encodeToString(("partybay" + ":" + "Pb2014").getBytes(), Base64.NO_WRAP);
+            String authorization = "Basic " + Base64.encodeToString(("android_app" + ":" + "MaD0u!ll3").getBytes(), Base64.NO_WRAP);
             client.AddHeader("Authorization",authorization);
 
             try {
@@ -70,7 +70,6 @@ public class Connexion extends Activity{
             }
 
             String response = client.getReponsePost();
-            System.out.println("Authentification "+response);
 
             JSONObject obj = null;
             Token token = null ;
@@ -102,7 +101,6 @@ public class Connexion extends Activity{
                 try {
                     client_connect.Execute("POST");
                     String user_data = client_connect.getReponsePost();
-                    System.out.println("serial.user : "+user_data);
                     obj = new JSONObject(user_data);
                     User user = new User(obj);
                     // j'enregistre dans mon fichier user les info
