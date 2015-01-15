@@ -27,10 +27,11 @@ public class Post {
     private String longitude = null;
     private String text = null;
     private String user_pseudo = null;
-    private String lovers = null;
-    private int totalLovers;
-    private ArrayList<String> tabLovers = null; // Array list de string de tout les lover correspondant au post
-    private ArrayList<Love> tabLover = null;  // array list de love de tout les lover correspondant au post
+    private String nbrlovers = null;   // nbr de lober en String en string
+    private int totalLovers; // nvr de lober
+    private ArrayList<String> tabStringLovers = null; // Array list de string de tout les lover correspondant au post
+    //private ArrayList<Love> tabLoverLovers = null;  // array list de love de tout les lover correspondant au post
+
     private Boolean PostIsLoved = false;  // true si j'ai déjà liker se post
     private SerializeurMono<User> serializeur ;
     String myUser_id;
@@ -49,29 +50,30 @@ public class Post {
         serializeur = new SerializeurMono<User>("/storage/sdcard0/PartyBay2/user.serial");
         User user = serializeur.getObject();
         myUser_id = user.getId();
-        tabLover = new ArrayList<Love>();
+       // tabLoverLovers = new ArrayList<Love>();
         try {
             // je recupere la reponse de l'api et je creer le post correspondant
             id = obj.getString("id");
             user_pseudo = obj.getString("user_pseudo");
             text = obj.getString("text") +" ID :"+ obj.getString("id");
             latitude = obj.getString("latitude");
-            lovers = obj.getString("lovers");
-
+            nbrlovers = obj.getString("lovers");
+            user_id=obj.getString("user_id");
 
             // Transforme l'arret liste en chiffre pour afficher le nbr de like
             // Je met à jour les données suivant :
             // lover = nbr de personne qui ont lové le poste
             // tabLover = ArrayListe de Love du post
             // postIsLove = true si le poste a été aimé par moi-meme
-            if (lovers!="false"){
-                tabLovers = jsonStringToArray(lovers);
 
-                lovers = String.valueOf(tabLovers.size());
-                totalLovers = tabLovers.size();
+            if (nbrlovers!="false"){
+                tabStringLovers = jsonStringToArray(nbrlovers);
+                nbrlovers = String.valueOf(tabStringLovers.size());
+                totalLovers = tabStringLovers.size();
 
-                Iterator<String> it = tabLovers.iterator();
+                Iterator<String> it = tabStringLovers.iterator();
                 Love love = null;
+                Love lovetest = null;
                 try {
                     while(it.hasNext()){
                         String s = it.next();
@@ -79,25 +81,32 @@ public class Post {
                         objT = new JSONObject(s);
                         love = new Love(objT);
                         String test2 = String.valueOf(love.getUser_id());
-                        tabLover.add(love);
                         if (test2.equals(myUser_id)) {
                             PostIsLoved=true;
-                            break;
+                            break; // pour sortir de la boucle quand il me trouve
                         }else{
                             PostIsLoved=false;
-                            tabLover.add(love);
+                            //tabLoverLovers.add(love);
                         }
 
                     }
+
+
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 if(PostIsLoved==null){PostIsLoved=false;}
 
             }else{
-                lovers  = "0";
+                nbrlovers  = "0";
                 totalLovers = 0;
+                //tabLoverLovers=null;
             }
+
+           //System.out.println("DANS LE POSTE num "+id+" size :"+tabLoverLovers.size());
+          // System.out.println("DANS LE POSTE num "+id+" size :"+
+          // .toString());
 
 
             // je transforme la date en bon format
@@ -125,11 +134,11 @@ public class Post {
     public void setTotalLovers(int totalLovers) {this.totalLovers = totalLovers;}
     public void setPostIsLoved(Boolean postIsLoved) {PostIsLoved = postIsLoved;}
 
-    public ArrayList<Love> getTabLover() { return tabLover;}
+   // public ArrayList<Love> getTabLoverLovers() { return tabLoverLovers;}
 
     public Boolean getPostIsLoved() { return PostIsLoved;}
 
-    public ArrayList<String> getTabLovers() { return tabLovers;}
+    public ArrayList<String> getTabStringLovers() { return tabStringLovers;}
 
     public String getUser_pseudo() {
         return user_pseudo;
@@ -139,12 +148,10 @@ public class Post {
         this.user_pseudo = user_pseudo;
     }
 
-    public String getLovers() {
-        return lovers;
-    }
+    public String getNbrLovers() { return nbrlovers; }
 
-    public void setLovers(String lovers) {
-        this.lovers = lovers;
+    public void setLovers(String nbrlovers) {
+        this.nbrlovers = nbrlovers;
     }
 
     public String getText() {

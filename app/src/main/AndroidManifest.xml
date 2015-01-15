@@ -88,6 +88,10 @@
             android:name=".TimeLineManager.PostActivity"
             android:label="@style/AppTheme"/>
 
+        <activity
+            android:name=".TimeLineManager.LoversListActivity"
+            android:label="@style/AppTheme"/>
+
         <!-- PACKAGE PROFILE MANAGER -->
         <activity
             android:name=".ProfileManager.ProfileViewPagerActivity"

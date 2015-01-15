@@ -97,6 +97,17 @@
                 android:text="32"
                 android:textColor="@color/redClear"/>
 
+            <ImageView
+                android:id="@+id/spinnerLovers"
+                android:layout_width="35dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="7dp"
+                android:layout_toRightOf="@+id/post_like"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bandelov"
+                android:onClick="onClickFunctionLover"
+                />
+
         </RelativeLayout>
 
 

@@ -1,7 +1,7 @@
 package com.example.mada.partybay.TimeLineManager;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,8 +29,8 @@ public class PostAdapter extends ArrayAdapter<Post>  {
     private Thread threadLove = null;
     private String idPost;
     private SerializeurMono<User> serializeur ;
-    String myUser_id;
-    private Activity context = null;
+    private String myUser_id;
+    private Context context;
 
     //A ViewHolder object stores each of the component views inside the tag field of the Layout,
     // so you can immediately access them without the need to look them up repeatedly.
@@ -42,24 +42,18 @@ public class PostAdapter extends ArrayAdapter<Post>  {
         TextView latitude;
         ImageView link;
         ImageButton loveButton;
+        ImageView loversList;
     }
 
     public PostAdapter(Context context, int layoutResourceId, ArrayList<Post> posts) {
         super(context,layoutResourceId, posts);
         this.posts = posts;
+        this.context=context;
         Log.d("layoutResourceId ", String.valueOf(layoutResourceId));
         Log.d("posts in post adapter  ", String.valueOf(posts));
     }
 
-    public PostAdapter(Context context, int id) {
-        super(context,id);
-    }
 
-    public PostAdapter(Activity context, ArrayList<Post> posts) {
-        super(context,R.layout.post,posts);
-        this.context =context;
-        this.posts = posts;
-    }
 
 
     @Override
@@ -74,7 +68,8 @@ public class PostAdapter extends ArrayAdapter<Post>  {
         serializeur = new SerializeurMono<User>("/storage/sdcard0/PartyBay2/user.serial");
         User user = serializeur.getObject();
         myUser_id = user.getId();
-        if (convertView == null) {
+
+        if(convertView == null) {
             LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.post, parent, false);
 
@@ -86,24 +81,39 @@ public class PostAdapter extends ArrayAdapter<Post>  {
             viewHolder.latitude = (TextView) convertView.findViewById(R.id.post_lieu);
             viewHolder.link = (ImageView) convertView.findViewById(R.id.post_photo_fond);
             viewHolder.loveButton = (ImageButton) convertView.findViewById(R.id.post_coeur);
+            viewHolder.loversList = (ImageView) convertView.findViewById(R.id.spinnerLovers);
+
+            viewHolder.loversList.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    String infoLove = String.valueOf(v.getTag());
+                    //String user_idPost = String.valueOf(posts.get(position).getUser_id());
+                   // ArrayList<Love> tabLoveLovers = posts.get(position).getTabLoverLovers();
+                    //ArrayList<String> tabStringLovers = posts.get(position).getTabStringLovers();
+
+                   // System.out.println("position  "+ position + " id post "+idPost);
+                   // System.out.println("dans le postAdapter "+tabStringLovers.toString());
+                    //System.out.println("dans le postAdapter taille "+tabLoveLovers.size());
+                   // System.out.println("loveListListener position"+position+ " id post "+idPost);
+
+                    Intent i = new Intent(context,LoversListActivity.class);
+                    i.putExtra("infoLove",infoLove);
+                    context.startActivity(i);
+                }
+             });
 
             viewHolder.loveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    System.out.println("loveButtonListener position"+position+ " id post "+view.getTag());
 
                     idPost = String.valueOf(view.getTag());
-
                     // Envoie une requete a l'API pour le prévenir que j'ai liké
                     threadLove = new LoveThread();
                     threadLove.start();
-
-                   System.out.println("idPost "+idPost);
                     int test;
-
-
                     // Colorie le coeur en rouge si j'ai liké et blanc sinon
                     // rafrechie le chiffre qui indique le nombre de like
-
                     if(posts.get(position).getPostIsLoved()==true){
                         viewHolder.loveButton.setImageResource(R.drawable.coeur_unlike);
                         posts.get(position).setPostIsLoved(false);
@@ -119,14 +129,11 @@ public class PostAdapter extends ArrayAdapter<Post>  {
                         String ok = String.valueOf(test);
                         posts.get(position).setTotalLovers(test);
                         viewHolder.lovers.setText(ok);
-
                     }
-
-                }
+                 }
 
                 class LoveThread extends Thread {
                     public void run() {
-
                         // je préviens l'api que j'ai liké/unliké
                         RestClient client = new RestClient("https://api.partybay.fr/users/" + myUser_id + "/love/" + idPost);
                         System.out.println("https://api.partybay.fr/users/1/love/" + idPost);
@@ -139,26 +146,26 @@ public class PostAdapter extends ArrayAdapter<Post>  {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-
                     }
-
                 }
-            });
+             });
 
             convertView.setTag(viewHolder);
             viewHolder.loveButton.setTag(posts.get(position).getId());
             viewHolder.lovers.setTag(posts.get(position).getId());
+            viewHolder.loversList.setTag(posts.get(position).getId() + "/"+posts.get(position).getUser_id());
 
         }else{
-
-            //viewHolder.loveButton.setTag(posts.get(position).getId());
-             ((ViewHolder)convertView.getTag()).loveButton.setTag(posts.get(position).getId());
+            ((ViewHolder)convertView.getTag()).loveButton.setTag(posts.get(position).getId());
+            ((ViewHolder)convertView.getTag()).lovers.setTag(posts.get(position).getId());
+            ((ViewHolder)convertView.getTag()).loversList.setTag(posts.get(position).getId() + "/"+posts.get(position).getUser_id());
         }
+
         ViewHolder holder = (ViewHolder) convertView.getTag();
         // Populate the data into the template view using the data object
         holder.user_pseudo.setText(posts.get(position).getUser_pseudo());
-        holder.text.setText(posts.get(position).getText());
-        holder.lovers.setText(posts.get(position).getLovers());
+        holder.text.setText(posts.get(position).getText()+" position "+position);
+        holder.lovers.setText(String.valueOf(posts.get(position).getTotalLovers()));
         holder.date.setText(posts.get(position).getDate());
         holder.latitude.setText(posts.get(position).getLatitude());
         UrlImageViewHelper.setUrlDrawable(holder.link, "https://static.partybay.fr/images/posts/640x640_" + posts.get(position).getLink());
@@ -167,9 +174,8 @@ public class PostAdapter extends ArrayAdapter<Post>  {
             String Sid =  posts.get(position).getId();
             if (Sid != null) {
                 int i = Integer.parseInt( posts.get(position).getId());
-                if (i > 2 &&  posts.get(position).getId() != null) {
-
-                   // System.out.println("le poste numero "+posts.get(position).getId()+" a une valeur de "+posts.get(position).getPostIsLoved()) ;
+                    if (i > 2 &&  posts.get(position).getId() != null) {
+                    // System.out.println("le poste numero "+posts.get(position).getId()+" a une valeur de "+posts.get(position).getPostIsLoved()) ;
                     ViewHolder viewHolder = (ViewHolder) convertView.getTag();
                     // je colorie les coeur en rouge si je les ai déjà liké
                     if(posts.get(position).getPostIsLoved()==true){
@@ -180,8 +186,8 @@ public class PostAdapter extends ArrayAdapter<Post>  {
                 }
             }
         }
+
         return convertView;
+
     }
-
-
 }

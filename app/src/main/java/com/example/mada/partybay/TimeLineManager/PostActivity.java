@@ -80,8 +80,6 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         moment.setOnClickListener(momentListener);
 
 
-
-
         // on recupere les 10 premier postes
         try {
             getPostFromApi(0,NBROFITEM);
@@ -95,10 +93,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                // Log.d(" onScrollStateChanged", "Y00000000");
-                onScroolStateChange = true;
-            }
+            public void onScrollStateChanged(AbsListView view, int scrollState) { onScroolStateChange = true; }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount){
@@ -170,14 +165,9 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
             Post post = null;
             while (it.hasNext()) {
                 String s = it.next();
-                // System.out.println("js : "+s.startsWith("["));
-                // if(s.startsWith("[")){}
                 JSONObject obj = new JSONObject(s);
                 post = new Post(obj);
-                // System.out.println("jajoute le poste numero = "+ post.getDate() + ' '+ post.getId());
                 posts.add(post);
-
-
             }
 
 

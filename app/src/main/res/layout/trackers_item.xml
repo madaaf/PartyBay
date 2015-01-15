@@ -12,6 +12,7 @@
 
 
     <ImageView
+        android:id="@+id/tracker_item_picture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -19,6 +20,7 @@
         android:background="@drawable/profile_default" />
 
     <TextView
+        android:id="@+id/tracker_item_pseudo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -27,6 +29,7 @@
        />
 
     <ImageButton
+        android:id="@+id/tracker_item_button_track"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/bouton_track"

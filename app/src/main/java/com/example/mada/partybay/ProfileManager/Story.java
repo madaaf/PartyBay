@@ -36,8 +36,6 @@ public class Story extends Fragment  implements SwipeRefreshLayout.OnRefreshList
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         // initialize the posts list
         posts = new ArrayList<Post>();
