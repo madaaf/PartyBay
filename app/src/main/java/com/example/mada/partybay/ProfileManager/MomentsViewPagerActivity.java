@@ -38,7 +38,6 @@ public class MomentsViewPagerActivity extends Fragment implements SwipeRefreshLa
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         // initialize the posts list
         posts = new ArrayList<Post>();
         Resources resources = getResources();

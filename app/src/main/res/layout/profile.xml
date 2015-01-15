@@ -18,19 +18,21 @@
             android:background="@drawable/retour"
             android:layout_margin="15dp"/>
 
-        <ImageView
+        <com.example.mada.partybay.Class.MLRoundedImageView
             android:id="@+id/profile_photo"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/cercle"/>
+            android:layout_marginTop="30dp"
+            android:scaleType="centerCrop"
+            />
+
 
         <TextView
             android:id="@+id/profile_pseudo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:textColor="#FFFFFF"
             android:layout_below="@+id/profile_photo"
             android:layout_centerHorizontal="true"

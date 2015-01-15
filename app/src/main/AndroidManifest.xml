@@ -65,6 +65,10 @@
             android:label="@style/AppTheme"/>
 
         <activity
+            android:name=".Activity.CameraSelfie"
+            android:label="@style/AppTheme"/>
+
+        <activity
             android:name=".Activity.Activation"
             android:label="@style/AppTheme"/>
 

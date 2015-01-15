@@ -2,13 +2,19 @@ package com.example.mada.partybay.ProfileManager;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.mada.partybay.Activity.CameraSelfie;
 import com.example.mada.partybay.Class.SerializeurMono;
 import com.example.mada.partybay.Class.User;
 import com.example.mada.partybay.R;
@@ -16,6 +22,7 @@ import com.example.mada.partybay.TimeLineManager.PostActivity;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -37,6 +44,7 @@ public class ProfileViewPagerActivity extends FragmentActivity{
     ImageButton retour_b;
     SerializeurMono<User> serializeur_user;
     TextView pseudoTv;
+    ImageView profile_photo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +60,7 @@ public class ProfileViewPagerActivity extends FragmentActivity{
 
 
 
+
         // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
         mAppSectionsPagerAdapter = new ProfileViewPagerAdapter(getSupportFragmentManager());
@@ -61,6 +70,33 @@ public class ProfileViewPagerActivity extends FragmentActivity{
         markerTracking=(View)findViewById(R.id.markerTracking);
         retour_b=(ImageButton)findViewById(R.id.PROFILEretour);
         pseudoTv = (TextView)findViewById(R.id.profile_pseudo);
+        profile_photo = (ImageView)findViewById(R.id.profile_photo);
+
+
+        File fichierPhoto = new File("storage/emulated/0/Pictures/PartyBay/selfie.jpg");
+
+        boolean exist = fichierPhoto.exists();
+        System.out.println("EXIST"+exist);
+        if(fichierPhoto.length()==0){
+            fichierPhoto.delete();
+            exist=false;
+        }else{
+            String path = "storage/emulated/0/Pictures/PartyBay/selfie.jpg";
+            Bitmap bmp = decodeSampledBitmapFromFile(path, 500, 300);
+            Bitmap temp = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), Bitmap.Config.RGB_565);
+            Canvas c = new Canvas(temp);
+            c.drawBitmap(bmp, 0, 0, null);
+            profile_photo.setImageBitmap(temp);
+        }
+
+
+
+
+        /*
+        String photo_path = "/storage/sdcard0/PartyBay2/photo.jpeg";
+        Bitmap bmp = decodeSampledBitmapFromFile(photo_path, 640, 640);
+        profile_photo.setImageBitmap(getRoundedBitmap(bmp));*/
+        profile_photo.setOnClickListener(ListenerPhotoSelfie);
 
        // markerMoments.setBackgroundResource(0);
         markerTrackers.setBackgroundResource(0);
@@ -149,8 +185,39 @@ public class ProfileViewPagerActivity extends FragmentActivity{
     }
 
 
+    public Bitmap decodeSampledBitmapFromFile(String path, int reqWidth, int reqHeight) {
+        Log.d("Camera ", "decodeSampledBitmapFromFile class Camera");
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
 
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        int inSampleSize = 1;
 
+        if (height > reqHeight) {
+            inSampleSize = Math.round((float)height / (float)reqHeight);
+        }
 
+        int expectedWidth = width / inSampleSize;
 
+        if (expectedWidth > reqWidth) {
+            inSampleSize = Math.round((float)width / (float)reqWidth);
+        }
+
+        options.inSampleSize = inSampleSize;
+        options.inJustDecodeBounds = false;
+
+        return BitmapFactory.decodeFile(path, options);
+    }
+
+    View.OnClickListener ListenerPhotoSelfie = new View.OnClickListener(){
+
+        @Override
+        public void onClick(View v) {
+            Intent i  = new Intent(ProfileViewPagerActivity.this,CameraSelfie.class);
+            startActivity(i);
+        }
+    };
 }
