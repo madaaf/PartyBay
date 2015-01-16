@@ -28,11 +28,9 @@ public class MyActivity extends Activity {
 
         connection = (Button) findViewById(R.id.activity_my_button_connexion);
         inscription = (Button) findViewById(R.id.activity_my_button_inscription);
-
-
         connection.setOnClickListener(connectionListener);
         inscription.setOnClickListener(inscriptionListener);
-        //serializeur_user = new SerializeurMono<User>(getResources().getString(R.string.sdcard_path))
+
     }
 
     private View.OnClickListener connectionListener = new View.OnClickListener(){
@@ -41,7 +39,6 @@ public class MyActivity extends Activity {
         public void onClick(View view) {
             Intent intent = new Intent(MyActivity.this, Connexion.class);
             startActivity(intent);
-
 
         }
     };

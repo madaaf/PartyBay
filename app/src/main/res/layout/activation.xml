@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/partybay"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"/>
+            android:layout_marginTop="35dp"/>
 
         <TextView
             android:id="@+id/activationTV"
@@ -22,8 +22,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/activationIV"
             android:textColor="@color/white"
-            android:layout_margin="15dp"
-            android:text="Tu viens de recevoir un code d'activation par SMS. Merci de l'entrer dans le champ ci dessous"
+            android:layout_margin="30dp"
+            android:text="Tu viens de recevoir un code d'activation par SMS. Merci de l'entrer dans le champ ci dessous."
             android:textSize="15dp"
             android:textStyle="bold"
             android:layout_centerHorizontal="true"
@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Renvoyer le"
-            android:textSize="15dp"
+            android:textSize="20dp"
             android:textStyle="bold"
             android:textColor="@color/red"
             android:layout_centerHorizontal="true"

@@ -67,16 +67,25 @@ public class Chargement extends Activity{
 
             if(exist){
                 System.out.println("ancienne connexion");
-               /* // je renouvelle mon token
+                // je verifie que le user a ctivé son code
                 User user = serializeur.getObject();
-                String user_id = user.getId();
-                RestClient client = new RestClient("https://api.partybay.fr/users/"+user_id+"/posts");
-                // enregistrer dans la carte sd un token valide
-                client.getTokenValid();*/
+                String user_active = user.getActive();
 
-                i = new Intent(Chargement.this, PostActivity.class );
-                startActivity(i);
-                finish();
+                System.out.println("USER"+ user.getPseudo());
+                System.out.println("USER"+ user.getActive());
+
+                if(user_active.equals("1")){
+                    System.out.println("key active");
+                    i = new Intent(Chargement.this, PostActivity.class );
+                    startActivity(i);
+                    finish();
+                }else{
+                    System.out.println("key don't active");
+                    i = new Intent(Chargement.this, MyActivity.class );
+                    startActivity(i);
+                    finish();
+                }
+
 
             }else{
                 System.out.println("premiere connexion");

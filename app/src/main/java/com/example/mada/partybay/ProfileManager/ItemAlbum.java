@@ -18,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by mada on 13/01/15.
@@ -35,6 +36,13 @@ public class ItemAlbum extends Activity{
 
     private ImageButton suivant;
     private ImageButton retour;
+    private ArrayList<Post> posts = new ArrayList<Post>();
+
+    String item_id;
+    String my_id;
+    String my_pseudo;
+
+    private ArrayList<Integer> tabId = new ArrayList<Integer>();
 
     public void onCreate(Bundle savedInstanceState) {
 
@@ -60,13 +68,13 @@ public class ItemAlbum extends Activity{
         //retour.setOnClickListener(retourListener);
 
         Bundle bundle = getIntent().getExtras();
-        String item_id = bundle.getString("item_id");
-        String my_id = bundle.getString("my_user_id");
-        String my_pseudo = bundle.getString("my_pseudo");
+        item_id = bundle.getString("item_id");
+        my_id = bundle.getString("my_user_id");
+        my_pseudo = bundle.getString("my_pseudo");
 
 
         //récupere information du post sur l'api
-        RestClient client = new RestClient("https://api.partybay.fr/users/"+my_id+"/posts/"+item_id);
+        RestClient client = new RestClient(this,"https://api.partybay.fr/users/"+my_id+"/posts/"+item_id);
         System.out.println("https://api.partybay.fr/users/"+my_id+"/posts/"+item_id);
         // je recupere un token dans la sd carte
         String access_token = client.getTokenValid();
@@ -78,18 +86,12 @@ public class ItemAlbum extends Activity{
             rep = client.Execute("GET");
             System.out.println(rep);
             JSONObject obj = new JSONObject(rep);
-            item = new Post(obj);
+            item = new Post(this,obj);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("item.getLink()"+item.getLink());
-        System.out.println("item.getLink()"+item.getDate());
-        System.out.println("item.getLink()"+item.getUser_id());
-        System.out.println("item.getLink()"+item.getId());
-        System.out.println("item.getLink()"+item.getText());
-        System.out.println("item.getLink()"+item.getLatitude());
-        System.out.println("item.getLink()"+item.getLongitude());
+
 
         pseudo.setText(my_pseudo);
         time.setText(item.getDate());
@@ -97,8 +99,6 @@ public class ItemAlbum extends Activity{
         com.setText(my_id+" "+item_id);
         //viewHolder.link.setImageDrawable(R.drawable.photo_fond);
         UrlImageViewHelper.setUrlDrawable(fond, "https://static.partybay.fr/images/posts/640x640_" + item.getLink());
-
-
 
     }
 
@@ -114,38 +114,81 @@ public class ItemAlbum extends Activity{
         return stringArray;
     }
 
-    /*
-    static class Item {
-        String id;
-        String user_id;
-        String link;
-        String date;
-        String latitude;
-        String longitude;
-        String text;
-
-        Item(JSONObject obj) {
-            try {
-                id = obj.getString("id");
-                user_id = obj.getString("user_id");
-                link = obj.getString("link");
-                date = obj.getString("date");
-                latitude = obj.getString("latitude");
-                longitude = obj.getString("longitude");
-                text = obj.getString("text") +" ID :"+ obj.getString("id");
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-    }*/
 
 
     View.OnClickListener suivantListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
+            //récupere information du post sur l'api
+            RestClient client = new RestClient(v.getContext(),"https://api.partybay.fr/users/"+my_id+"/posts?offset=0");
+
+            // je recupere un token dans la sd carte
+            String access_token = client.getTokenValid();
+            client.AddHeader("Authorization","Bearer "+access_token);
+            String rep = "";
+            try {
+                rep =  client.Execute("GET");
+                if (rep!=null && rep.length()>2){
+                    // System.out.println("je suis ici encore");
+                    ArrayList<String> stringArray = new ArrayList<String>();
+                    stringArray=jsonStringToArray(rep);
+
+                    Iterator<String> it = stringArray.iterator();
+                    Post post = null;
+                    while (it.hasNext()) {
+                        String s = it.next();
+                        // System.out.println("js : "+s.startsWith("["));
+                        // if(s.startsWith("[")){}
+                        JSONObject obj = new JSONObject(s);
+                        post = new Post(v.getContext(),obj);
+                        if(post!=null){
+                            tabId.add(Integer.valueOf(post.getId()));
+                            //System.out.println("jajoute le poste numero = "+post.getId());
+                            posts.add(post);
+                        }
+
+                    }
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            int index = tabId.indexOf(item_id);
+            //System.out.println("POST MTN  "+posts.get(index));
+           // Post postSuiv = posts.get(index+1);
+            //System.out.println("POST SUIVANT "+postSuiv.getId());
+
+/*
+
+            System.out.println("index DU POST mtn "+tabId.indexOf(item_id));
+            System.out.println("ID DU POST mtn "+posts.get(tabId.indexOf(item_id)));
+
+            System.out.println("index DU POST suivant "+tabId.indexOf(item_id)+1);
+            System.out.println("ID DU POST suivant "+posts.get(tabId.indexOf(item_id)+1));
+
+
+           // System.out.println("index DU POST avant "+ tabId.indexOf(item_id)-1);
+            //System.out.println("ID DU POST suivant "+posts.get(tabId.indexOf(item_id)-1));
+
+            int indexSuiv = tabId.indexOf(item_id)+1;
+
+            System.out.println("index DU POST SUIVANT"+tabId.indexOf(49));
+*/
+            System.out.println("id derniere"+item_id);
+            System.out.println("index DU POST 49"+tabId.indexOf(49));
+            System.out.println("index DU POST 39"+tabId.indexOf(39));
+            System.out.println("index DU POST 38 "+tabId.indexOf(38));
+            System.out.println("index DU POST37 "+tabId.indexOf(37));
+
+            System.out.println("POST 49"+posts.get(tabId.indexOf(49)).getId());
+            System.out.println("POST 39"+posts.get(tabId.indexOf(39)).getId());
+            System.out.println("POST 38 "+posts.get(tabId.indexOf(38)).getId());
+            System.out.println("POST37 "+posts.get(tabId.indexOf(37)).getId());
+
+            //Intent i = new Intent(ItemAlbum.this,ItemAlbum.class);
+            //i.putExtra("item_id",posts.get())
+
 
         }
     };

@@ -43,7 +43,6 @@ public class popup extends Activity {
             @Override
             public void onClick(View v) {
                String mail = popup_edit_mail.getText().toString();
-                System.out.println(" POPUP : email rentré "+ mail);
             }
         });
 

@@ -90,8 +90,6 @@
         <View
             android:id="@+id/item_album_marker"
             android:layout_width="fill_parent"
-            android:layout_marginLeft="13dp"
-            android:layout_marginRight="5dp"
             android:layout_height="1dp"
             android:layout_marginBottom="5dp"
             android:layout_above="@+id/item_album_coms"

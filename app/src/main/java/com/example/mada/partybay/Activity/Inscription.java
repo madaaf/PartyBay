@@ -64,7 +64,7 @@ public class Inscription extends Activity {
         valider.setOnClickListener(validerListener);
         birthday.setOnClickListener(birthdayListener);
 
-        //serializeur_user = new SerializeurMono<User>(getResources().getString(R.string.sdcard_user));
+        serializeur_user = new SerializeurMono<User>(getResources().getString(R.string.sdcard_user));
         serializeur_token = new SerializeurMono<Token>(getResources().getString(R.string.sdcard_token));
 
     }
@@ -98,7 +98,7 @@ public class Inscription extends Activity {
             String day_s = String.valueOf(day);
             if(month<10) {month_s = "0"+month_s;}
             if(day<10){day_s = "0"+ day;}
-            birthday.setText(year+"/"+month_s+"/"+day_s);
+            birthday.setText(day_s+"/"+month_s+"/"+year);
             date_birthday = year+"-"+month_s+"-"+day_s;
             System.out.println("date_birthday"+date_birthday);
         }
@@ -129,17 +129,17 @@ public class Inscription extends Activity {
 
             String error = null;
             if(pseudo_s.equals("")){
-                error="Remplir le champs pseudo";
+                error=getResources().getString(R.string.inscription_error1);
             }else if(mail_s.equals("")){
-                error="Remplir le champs mail";
+                error=getResources().getString(R.string.inscription_error2);
             }else if(tel_s.equals("")){
-                error="Remplir le champs numéro de téléphone";
+                error=getResources().getString(R.string.inscription_error3);
             }else if (mdp_s.equals("")){
-                error="Remplir le champs mdp";
+                error=getResources().getString(R.string.inscription_error4);
             }else if(sex==null){
-                error="Indiquez votre sex";
+                error=getResources().getString(R.string.inscription_error5);
             }else if(date_birthday==null){
-                error="Ajoutez votre date de naissance";
+                error=getResources().getString(R.string.inscription_error6);
             }
 
             if(error!=null) {
@@ -147,7 +147,7 @@ public class Inscription extends Activity {
             }else {
 
                 // je recupere un token
-                RestClient client_token = new RestClient("https://api.partybay.fr/token");
+                RestClient client_token = new RestClient(view.getContext(),"https://api.partybay.fr/token");
                 String autho = "Basic " + Base64.encodeToString(("android_app" + ":" + "MaD0u!ll3").getBytes(), Base64.NO_WRAP);
                 client_token.AddParam("grant_type", "client_credentials");
                 client_token.AddHeader("Authorization", autho);
@@ -174,15 +174,7 @@ public class Inscription extends Activity {
 
 
                 // j'insere mon user dans la base de donnée
-
-                /* System.out.println("pseudo_s :"+pseudo_s);
-                 System.out.println("mdp_s :"+mdp_s);
-                 System.out.println("tel_s :"+tel_s);
-                 System.out.println("mail_s :"+mail_s);
-                 System.out.println("sex :"+sex);
-                 System.out.println("date :"+ date_birthday);*/
-
-                RestClient client = new RestClient("https://api.partybay.fr/users");
+                RestClient client = new RestClient(view.getContext(),"https://api.partybay.fr/users");
                 client.AddHeader("Authorization", "Bearer " + access_token);
 
                 client.AddParam("pseudo", pseudo_s);
@@ -201,18 +193,20 @@ public class Inscription extends Activity {
                 }
 
                 String user_data = client.getReponsePost();
+                System.out.println(user_data);
 
                 try {
                     JSONObject obj = new JSONObject(user_data);
+
                     if (obj.has("error")) {
                         System.out.println("ERREUR INSCRIOTION1 " + obj.get("description"));
                         String error2 = translateError(obj.get("description").toString());
                         afficherPopup(error2, null);
                     } else {
-                        afficherPopup("Votre compte à été créer avec succes", new redirection());
-                        Token tokenObj = new Token(obj);
-                        // je creer mon fichier Token et je met mon nouv object token
-                        serializeur_token.setObjet(tokenObj);
+                        afficherPopup(getResources().getString(R.string.inscription_compte_creer), new redirection());
+                        // je creer mon fichier user et je met mon nouv object token
+                        User user = new User(obj);
+                        serializeur_user.setObjet(user);
                     }
 
                 } catch (JSONException e) {
@@ -239,10 +233,7 @@ public class Inscription extends Activity {
 
     class redirection implements android.content.DialogInterface.OnClickListener{
         public void onClick(DialogInterface dialog, int which) {
-            String  pseudo_s = pseudo.getText().toString();
-            // charge.cancel();
             Intent intent = new Intent(Inscription.this, Activation.class);
-            intent.putExtra("pseudo", pseudo_s);
             startActivity(intent);
             finish();
 
@@ -251,17 +242,17 @@ public class Inscription extends Activity {
 
     public String translateError(String error){
         if(error.equals("invalid password, password must contain a minuscule letter, a capital letter, a number and a punctuation")){
-            error = "Mot de passe invalide. Le mdp doit contenir au moins une lettre minuscule, une lettre majuscule, un chiffre, et une ponctuation. ";
+            error = getResources().getString(R.string.inscription_mdp_invalide);
         }else if (error.equals("pseudo can not be null")){
-            error = "Veuillez remplir votre pseudo.";
+            error = getResources().getString(R.string.inscription_error1);
         }else if(error.equals("invalid email address")){
-            error = "L'adresse email est invalide.";
+            error =  getResources().getString(R.string.inscription_error7);
         }else if(error.equals("invalid phone number")){
-            error ="Le numéro de téléphone est invalide";
+            error = getResources().getString(R.string.inscription_error8);
         }else if(error.equals("this pseudo is already used by an account")){
-            error = "Ce pseusdo est déjà utilisé par un autre utilsateur.";
+            error = getResources().getString(R.string.inscription_error9);
         }else if(error.equals("pseudo, email or phone number already used by an account")){
-            error = "Le pseudo, l'email ou le numéro de telphone sont déjà utilisés par un autre utilisateur.";
+            error =getResources().getString(R.string.inscription_error10);
         }
         return error;
     }

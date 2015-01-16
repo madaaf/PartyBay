@@ -48,7 +48,7 @@ public class LoversListActivity extends Activity{
         System.out.println("id_user" + id_user);
         System.out.println("id_post" + id_post);
 
-        RestClient client = new RestClient("https://api.partybay.fr/users/" + id_user + "/posts/" + id_post);
+        RestClient client = new RestClient(this,"https://api.partybay.fr/users/" + id_user + "/posts/" + id_post);
         System.out.println("https://api.partybay.fr/users/" + id_user + "/posts/" + id_post);
         String access_token = client.getTokenValid();
         client.AddHeader("Authorization", "Bearer " + access_token);
@@ -58,7 +58,7 @@ public class LoversListActivity extends Activity{
         try {
             rep = client.Execute("GET");
             JSONObject obj = new JSONObject(rep);
-             post = new Post(obj);
+             post = new Post(this,obj);
 
         } catch (Exception e) {
             e.printStackTrace();

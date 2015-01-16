@@ -1,7 +1,10 @@
 package com.example.mada.partybay.Class;
 
+import android.content.Context;
 import android.util.Base64;
 import android.util.Log;
+
+import com.example.mada.partybay.R;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -49,10 +52,12 @@ public class RestClient {
     private SerializeurMono<User> userSerializeur;
 
     private String CURRENT_TOKEN;
+    private Context c;
 
 
-    public RestClient(String url) {
+    public RestClient(Context c,String url) {
         this.url = url;
+        this.c=c;
         params = new ArrayList<NameValuePair>();
         headers = new ArrayList<NameValuePair>();
     }
@@ -157,7 +162,6 @@ public class RestClient {
             HttpPost request = new HttpPost(url);
             for (NameValuePair h : headers) {
                 request.addHeader(h.getName(), h.getValue());
-                System.out.println(h.getName() +h.getValue() );
             }
 
             if (builder!=null) {
@@ -182,7 +186,7 @@ public class RestClient {
     }
 
     public Token getTokenFromSd(){
-        tokenSerializeur = new SerializeurMono<Token>("/storage/sdcard0/PartyBay2/token.serial");
+        tokenSerializeur = new SerializeurMono<Token>(c.getResources().getString(R.string.sdcard_token));
         JSONObject obj = new JSONObject();
         Token token = new Token(obj);
         token = tokenSerializeur.getObject();
@@ -198,7 +202,7 @@ public class RestClient {
         System.out.println("CURRENT_TOKEN" + token.getAcess_token());
         CURRENT_TOKEN = token.getAcess_token();
 
-        RestClient client= new RestClient("https://api.partybay.fr/users/1?oauth_token=");
+        RestClient client= new RestClient(c,"https://api.partybay.fr/users/1?oauth_token=");
         client.AddHeader("Authorization", "Bearer "+CURRENT_TOKEN);
         String rep = null;
 
@@ -231,22 +235,17 @@ public class RestClient {
 
     public String getTokenValid(){
 
-        SerializeurMono<Token> serializeur = new SerializeurMono<Token>("/storage/sdcard0/PartyBay/token.serial");
         Token token = getTokenFromSd();
         String refresh_token = token.getRefresh_token();
         String access_token = token.getAcess_token();
-
-        System.out.println("ancien access_token : "+ access_token);
-        // System.out.println("ancien refresh_token : "+ refresh_token);
-
-        // validToken() == false : acess token non valide, je recupere le refresh token  pour recuper un nouveau AT et RT
+         // validToken() == false : acess token non valide, je recupere le refresh token  pour recuper un nouveau AT et RT
         // validToken() == true : acess token encore valide
 
         Boolean validToken = validToken();
         if(validToken==false){
 
             System.out.println("je récupere un nouveau token ");
-            RestClient client = new RestClient("https://api.partybay.fr/token");
+            RestClient client = new RestClient(c,"https://api.partybay.fr/token");
             String authorization = "Basic " + Base64.encodeToString(("android_app" + ":" + "MaD0u!ll3").getBytes(), Base64.NO_WRAP);
 
             client.AddHeader("Authorization",authorization);

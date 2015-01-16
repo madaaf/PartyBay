@@ -105,11 +105,13 @@ public class PostAdapter extends ArrayAdapter<Post>  {
             viewHolder.loveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    System.out.println("loveButtonListener position"+position+ " id post "+view.getTag());
+                    System.out.println(" id post "+view.getTag());
+                    System.out.println("posts.get(position).getId() "+ posts.get(position).getId());
+                    System.out.println("posts.get(position).getPostIsLoved() "+ posts.get(position).getPostIsLoved());
 
                     idPost = String.valueOf(view.getTag());
                     // Envoie une requete a l'API pour le prévenir que j'ai liké
-                    threadLove = new LoveThread();
+                    threadLove = new LoveThread(view.getContext());
                     threadLove.start();
                     int test;
                     // Colorie le coeur en rouge si j'ai liké et blanc sinon
@@ -133,9 +135,14 @@ public class PostAdapter extends ArrayAdapter<Post>  {
                  }
 
                 class LoveThread extends Thread {
+                    private Context context;
+
+                    public LoveThread(Context context){
+                        this.context=context;
+                    }
                     public void run() {
                         // je préviens l'api que j'ai liké/unliké
-                        RestClient client = new RestClient("https://api.partybay.fr/users/" + myUser_id + "/love/" + idPost);
+                        RestClient client = new RestClient(context,"https://api.partybay.fr/users/" + myUser_id + "/love/" + idPost);
                         System.out.println("https://api.partybay.fr/users/1/love/" + idPost);
                         String access_token = client.getTokenValid();
                         client.AddHeader("Authorization", "Bearer " + access_token);

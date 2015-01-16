@@ -88,7 +88,7 @@ public class Story extends Fragment  implements SwipeRefreshLayout.OnRefreshList
         // ThreadLoadPost = new LoadListenerThread(pos_debut,nbr_item);
         // ThreadLoadPost.start();
 
-        RestClient client = new RestClient("https://api.partybay.fr/users/"+user.getId()+"/posts?limit="+nbr_item+"&offset=0&side=desc");
+        RestClient client = new RestClient(getActivity(),"https://api.partybay.fr/users/"+user.getId()+"/posts?limit="+nbr_item+"&offset=0&side=desc");
         //System.out.println("https://api.partybay.fr/users/"+user.getId()+"/posts?limit="+nbr_item+"&offset=0&side=desc");
 
         // je recupere un token dans la sd carte
@@ -110,7 +110,7 @@ public class Story extends Fragment  implements SwipeRefreshLayout.OnRefreshList
                     // System.out.println("js : "+s.startsWith("["));
                     // if(s.startsWith("[")){}
                     JSONObject obj = new JSONObject(s);
-                    post = new Post(obj);
+                    post = new Post(getActivity(),obj);
                     if(post!=null){
                         //System.out.println("jajoute le poste numero = "+post.getId());
                         posts.add(post);

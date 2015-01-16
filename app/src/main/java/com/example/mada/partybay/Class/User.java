@@ -44,6 +44,8 @@ public class User implements Serializable{
             registered = obj.getString("registered");
             hash = obj.getString("hash");
             active = obj.getString("active");
+            phone = "0"+phone;
+
         } catch (JSONException e) {
             System.out.println("Err : "+e.getMessage());
         }

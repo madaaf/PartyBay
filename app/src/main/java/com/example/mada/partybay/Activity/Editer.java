@@ -14,7 +14,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -100,7 +99,7 @@ public class Editer extends Activity {
 
                 new ImageUploaderTask().execute();
             }else{
-                afficherPopup("Connectez vous à internet pour pouvoir envoyer une photo." , new redirection());
+                afficherPopup(getResources().getString(R.string.editer_error_internet) , new redirection());
             }
 
         }
@@ -132,7 +131,7 @@ public class Editer extends Activity {
         String user_id = user.getId();
 
 
-        RestClient client = new RestClient("https://api.partybay.fr/users/"+user_id+"/posts");
+        RestClient client = new RestClient(this,"https://api.partybay.fr/users/"+user_id+"/posts");
         // Recupere un token valid
         String access_token = client.getTokenValid();
 
@@ -154,7 +153,7 @@ public class Editer extends Activity {
 
         try {
             rep = client.Execute("FILE");
-            System.out.println("Execite file reponse  : "+rep);
+            System.out.println(" reponse de L'API pour envoyer une image : "+rep);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -165,19 +164,19 @@ public class Editer extends Activity {
             JSONObject obj = new JSONObject(rep);
             if(obj.has("success")){
                 if(obj.getString("success").equals("post moment")){
-                    System.out.println("SUCCESS ENVOIE FICHIER");
-                    afficherPopup("Votre image a bien été envoyée !" + obj.get("description").toString(), new redirection());
+                    //System.out.println("SUCCESS ENVOIE FICHIER");
+                    afficherPopup(getResources().getString(R.string.editer_image_envoye), new redirection());
                 } else{
-                    System.out.println("ERROR ENVOIE FICHIER");
-                    afficherPopup("Erreur lors de l'envoie de l'image." + obj.get("description").toString() , new redirection());
+                    //System.out.println("ERROR ENVOIE FICHIER");
+                    afficherPopup(getResources().getString(R.string.editer_error_image_envoye), new redirection());
                 }
 
             }else{;
-                System.out.println("IMAGE NON POSTER");
-                afficherPopup("Erreur lors de l'envoie de l'image.",new redirection());
+                //System.out.println("IMAGE NON POSTER");
+                afficherPopup(getResources().getString(R.string.editer_error_image_envoye),new redirection());
             }
         } catch (JSONException e) {
-            System.out.println("err "+e.getMessage());
+            System.out.println("err envoie de l'image "+e.getMessage());
 
         }
 
@@ -218,7 +217,7 @@ public class Editer extends Activity {
 
         @Override
         protected void onPreExecute(){
-            simpleWaitDialog = ProgressDialog.show(Editer.this, "Patientez", "Envoie de l'image en cour ...");
+            simpleWaitDialog = ProgressDialog.show(Editer.this, getResources().getString(R.string.patientez), getResources().getString(R.string.editer_envoie_cour));
         }
 
         @Override
@@ -234,7 +233,7 @@ public class Editer extends Activity {
     }
 
     public Bitmap decodeSampledBitmapFromFile(String path, int reqWidth, int reqHeight) {
-        Log.d("Camera ", "decodeSampledBitmapFromFile class Camera");
+        //Log.d("Camera ", "decodeSampledBitmapFromFile class Camera");
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(path, options);

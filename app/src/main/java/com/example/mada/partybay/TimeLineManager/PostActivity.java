@@ -138,7 +138,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         // ThreadLoadPost = new LoadListenerThread(pos_debut,nbr_item);
         // ThreadLoadPost.start();
 
-        RestClient client = new RestClient("https://api.partybay.fr/posts?limit="+nbr_item+"&offset="+pos_debut+"&side=desc&order=id");
+        RestClient client = new RestClient(this,"https://api.partybay.fr/posts?limit="+nbr_item+"&offset="+pos_debut+"&side=desc&order=id");
         // je recupere un token dans la sd carte
         String access_token = client.getTokenValid();
 
@@ -166,7 +166,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
             while (it.hasNext()) {
                 String s = it.next();
                 JSONObject obj = new JSONObject(s);
-                post = new Post(obj);
+                post = new Post(this, obj);
                 posts.add(post);
             }
 

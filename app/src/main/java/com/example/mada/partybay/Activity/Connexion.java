@@ -28,6 +28,7 @@ public class Connexion extends Activity{
     private Button connexion = null;
     private SerializeurMono<User> serializeur;
     private SerializeurMono<Token> serializeur_token;
+    private String access_token = null;
 
 
 
@@ -56,7 +57,7 @@ public class Connexion extends Activity{
             String m = mdp.getText().toString();
 
 
-            RestClient client = new RestClient("https://api.partybay.fr/token");
+            RestClient client = new RestClient(view.getContext(),"https://api.partybay.fr/token");
             client.AddParam("grant_type", "password");
             client.AddParam("username", p);
             client.AddParam("password", m);
@@ -73,8 +74,9 @@ public class Connexion extends Activity{
 
             JSONObject obj = null;
             Token token = null ;
-            String access_token = null;
+            access_token = null;
             try {
+                System.out.println("RESPONSE "+response);
                 obj = new JSONObject(response);
                 token = new Token(obj);
                 serializeur_token.setObjet(token);
@@ -93,7 +95,7 @@ public class Connexion extends Activity{
 
             }else{
                 // 2ieme requetes
-                RestClient client_connect = new RestClient("https://api.partybay.fr/login");
+                RestClient client_connect = new RestClient(view.getContext(),"https://api.partybay.fr/login");
                 client_connect.AddHeader("Authorization","Bearer "+access_token);
                 client_connect.AddParam("ident",p);
                 client_connect.AddParam("password",m);
@@ -105,10 +107,18 @@ public class Connexion extends Activity{
                     User user = new User(obj);
                     // j'enregistre dans mon fichier user les info
                     serializeur.setObjet(user);
+                    String active = user.getActive();
+                    if(active.equals("1")){
+                        Intent intent = new Intent(Connexion.this, PostActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }else{
+                        Intent intent = new Intent(Connexion.this, Activation.class);
+                        startActivity(intent);
+                        finish();
+                    }
 
-                    Intent intent = new Intent(Connexion.this, PostActivity.class);
-                    startActivity(intent);
-                    finish();
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

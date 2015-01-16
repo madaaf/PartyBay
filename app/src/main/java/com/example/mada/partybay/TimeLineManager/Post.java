@@ -1,17 +1,18 @@
 package com.example.mada.partybay.TimeLineManager;
 
+import android.content.Context;
+
 import com.example.mada.partybay.Class.Love;
 import com.example.mada.partybay.Class.MyDate;
 import com.example.mada.partybay.Class.SerializeurMono;
 import com.example.mada.partybay.Class.User;
+import com.example.mada.partybay.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 
 /**
@@ -19,6 +20,7 @@ import java.util.Iterator;
  */
 public class Post {
 
+    private Context context;
     private String id = null;
     private String user_id = null;
     private String link = null;
@@ -37,17 +39,9 @@ public class Post {
     String myUser_id;
 
 
-    public static String getCurrentTimeStamp() {
-        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//dd/MM/yyyy
-        Date now = new Date();
-        String strDate = sdfDate.format(now);
-        return strDate;
-
-    }
-
-    public Post(JSONObject obj) {
-
-        serializeur = new SerializeurMono<User>("/storage/sdcard0/PartyBay2/user.serial");
+    public Post(Context c, JSONObject obj) {
+        this.context = c;
+        serializeur = new SerializeurMono<User>(context.getResources().getString(R.string.sdcard_user));
         User user = serializeur.getObject();
         myUser_id = user.getId();
        // tabLoverLovers = new ArrayList<Love>();
@@ -104,9 +98,6 @@ public class Post {
                 //tabLoverLovers=null;
             }
 
-           //System.out.println("DANS LE POSTE num "+id+" size :"+tabLoverLovers.size());
-          // System.out.println("DANS LE POSTE num "+id+" size :"+
-          // .toString());
 
 
             // je transforme la date en bon format
