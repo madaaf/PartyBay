@@ -22,9 +22,10 @@
             android:background="@drawable/reglage"/>
 
         <TextView
+            android:id="@+id/entete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Party"
+            android:text="PartyBay"
             android:textColor="@color/white"
             android:textSize="33dp"
             android:layout_centerHorizontal="true"

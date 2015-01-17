@@ -13,15 +13,11 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.mada.partybay.Activity.CameraSelfie;
 import com.example.mada.partybay.Class.SerializeurMono;
 import com.example.mada.partybay.Class.User;
 import com.example.mada.partybay.R;
-import com.example.mada.partybay.TimeLineManager.PostActivity;
-
 import org.json.JSONObject;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -49,6 +45,7 @@ public class ProfileViewPagerActivity extends FragmentActivity{
     ImageView profile_photo;
     ImageView font;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -69,10 +66,10 @@ public class ProfileViewPagerActivity extends FragmentActivity{
         markerMoments= (View)findViewById(R.id.markerMoments);
         markerTrackers=(View)findViewById(R.id.markerTrackers);
         markerTracking=(View)findViewById(R.id.markerTracking);
-        retour_b=(ImageButton)findViewById(R.id.PROFILEretour);
         pseudoTv = (TextView)findViewById(R.id.profile_pseudo);
         profile_photo = (ImageView)findViewById(R.id.profile_photo);
         font=(ImageView)findViewById(R.id.ItemPorfileFont);
+
 
 
         String path = getResources().getString(R.string.sdcard_selfie);
@@ -139,7 +136,6 @@ public class ProfileViewPagerActivity extends FragmentActivity{
         mViewPager.setAdapter(mAppSectionsPagerAdapter);
 
 
-        retour_b.setOnClickListener(retourListener);
 
 
         // modifier l'indicateur lorsqu'on swippe
@@ -175,15 +171,7 @@ public class ProfileViewPagerActivity extends FragmentActivity{
 
     }
 
-    View.OnClickListener retourListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Intent i = new Intent(ProfileViewPagerActivity.this, PostActivity.class );
-            startActivity(i);
-            finish();
 
-        }
-    };
 
     public int getAge (int _year, int _month, int _day) {
 

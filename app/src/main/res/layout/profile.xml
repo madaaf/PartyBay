@@ -16,13 +16,6 @@
             android:adjustViewBounds="true"/>
 
 
-        <ImageButton
-            android:id="@+id/PROFILEretour"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/retour"
-            android:layout_margin="15dp"/>
-
         <com.example.mada.partybay.Class.MLRoundedImageView
             android:id="@+id/profile_photo"
             android:layout_width="160dp"

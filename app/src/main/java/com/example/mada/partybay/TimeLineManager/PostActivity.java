@@ -3,6 +3,7 @@ package com.example.mada.partybay.TimeLineManager;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mada.partybay.Activity.CameraAc;
@@ -44,6 +46,8 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
     private boolean onScroolStateChange = false;
     private Thread ThreadLoadPost;
     private ArrayList<Post> posts = null;
+    private Typeface font;
+    private TextView entete;
 
 
     private int nbr_scroll = 0 ;
@@ -68,10 +72,16 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
                 R.color.swype_3,
                 R.color.swype_4);
 
+        font = Typeface.createFromAsset(getAssets(), "fonts/havana.otf");
         menu = (ImageButton) findViewById(R.id.reglage);
         profile = (ImageButton) findViewById(R.id.profile);
         moment = (ImageButton) findViewById(R.id.moment);
         listView = (ListView) findViewById(R.id.lvPost);
+        entete = (TextView)findViewById(R.id.entete);
+        entete.setTypeface(font);
+
+        entete.setOnClickListener(enteteListener);
+
 
         posts = new ArrayList<Post>();
         // post.setImageDrawable();
@@ -293,6 +303,14 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         public void onClick(View view) {
             Intent intent = new Intent(PostActivity.this, CameraAc.class);
             startActivity(intent);
+        }
+    };
+
+    View.OnClickListener enteteListener = new View.OnClickListener(){
+        // revenir en haut de la liste
+        @Override
+        public void onClick(View v) {
+            listView.setSelection(0);
         }
     };
 

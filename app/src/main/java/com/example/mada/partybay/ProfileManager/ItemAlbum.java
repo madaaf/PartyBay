@@ -2,6 +2,7 @@ package com.example.mada.partybay.ProfileManager;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -51,6 +52,8 @@ public class ItemAlbum extends Activity{
         ActionBar bar = this.getActionBar();
         bar.hide();
 
+
+
         fond = (ImageView)findViewById(R.id.item_album_post_photo_fond);
         pseudo = (TextView)findViewById(R.id.item_album_post_pseudo);
         selfie = (ImageView)findViewById(R.id.item_album_post_photo);
@@ -59,18 +62,18 @@ public class ItemAlbum extends Activity{
         coeur = (ImageButton) findViewById(R.id.item_album_post_coeur);
         nbr_like = (TextView)findViewById(R.id.item_album_post_like);
         com = (TextView)findViewById(R.id.item_album_post_texte);
-
         suivant = (ImageButton)findViewById(R.id.item_album_droite);
         retour = (ImageButton)findViewById(R.id.item_album_gauche);
 
-
         suivant.setOnClickListener(suivantListener);
-        //retour.setOnClickListener(retourListener);
+
 
         Bundle bundle = getIntent().getExtras();
         item_id = bundle.getString("item_id");
         my_id = bundle.getString("my_user_id");
         my_pseudo = bundle.getString("my_pseudo");
+
+        System.out.println("je suis dans le oncreate, j'afiche le poste id = "+item_id);
 
 
         //récupere information du post sur l'api
@@ -120,9 +123,9 @@ public class ItemAlbum extends Activity{
         @Override
         public void onClick(View v) {
 
+
             //récupere information du post sur l'api
             RestClient client = new RestClient(v.getContext(),"https://api.partybay.fr/users/"+my_id+"/posts?offset=0");
-
             // je recupere un token dans la sd carte
             String access_token = client.getTokenValid();
             client.AddHeader("Authorization","Bearer "+access_token);
@@ -154,40 +157,21 @@ public class ItemAlbum extends Activity{
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            int index = tabId.indexOf(item_id);
-            //System.out.println("POST MTN  "+posts.get(index));
-           // Post postSuiv = posts.get(index+1);
-            //System.out.println("POST SUIVANT "+postSuiv.getId());
-
-/*
-
-            System.out.println("index DU POST mtn "+tabId.indexOf(item_id));
-            System.out.println("ID DU POST mtn "+posts.get(tabId.indexOf(item_id)));
-
-            System.out.println("index DU POST suivant "+tabId.indexOf(item_id)+1);
-            System.out.println("ID DU POST suivant "+posts.get(tabId.indexOf(item_id)+1));
 
 
-           // System.out.println("index DU POST avant "+ tabId.indexOf(item_id)-1);
-            //System.out.println("ID DU POST suivant "+posts.get(tabId.indexOf(item_id)-1));
+            int indexPostActuel = tabId.indexOf(item_id);
+            //prend la valeur du suivant
+           // item_id = posts.get(indexPostActuel+1).getId();
+            Post postSuivant = posts.get(indexPostActuel+1);
 
-            int indexSuiv = tabId.indexOf(item_id)+1;
+            System.out.println("je suis dans le ONCLICKLISTENRE, le poste avant  = "+item_id+" et le poste suivant est "+ postSuivant.getId());
 
-            System.out.println("index DU POST SUIVANT"+tabId.indexOf(49));
-*/
-            System.out.println("id derniere"+item_id);
-            System.out.println("index DU POST 49"+tabId.indexOf(49));
-            System.out.println("index DU POST 39"+tabId.indexOf(39));
-            System.out.println("index DU POST 38 "+tabId.indexOf(38));
-            System.out.println("index DU POST37 "+tabId.indexOf(37));
-
-            System.out.println("POST 49"+posts.get(tabId.indexOf(49)).getId());
-            System.out.println("POST 39"+posts.get(tabId.indexOf(39)).getId());
-            System.out.println("POST 38 "+posts.get(tabId.indexOf(38)).getId());
-            System.out.println("POST37 "+posts.get(tabId.indexOf(37)).getId());
-
-            //Intent i = new Intent(ItemAlbum.this,ItemAlbum.class);
-            //i.putExtra("item_id",posts.get())
+            Intent i = new Intent(ItemAlbum.this,ItemAlbum.class);
+            i.putExtra("item_id",postSuivant.getId());
+            i.putExtra("my_user_id",postSuivant.getUser_id());
+            i.putExtra("my_pseudo",postSuivant.getUser_pseudo());
+            startActivity(i);
+            finish();
 
 
         }

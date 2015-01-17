@@ -11,14 +11,6 @@
         android:background="@drawable/reddark"
         android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/MENUretour"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="20px"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/retour"/>
 
         <TextView
             android:layout_width="wrap_content"

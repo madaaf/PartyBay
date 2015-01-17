@@ -32,6 +32,8 @@ public class User implements Serializable{
         try {
             id = obj.getString("id");
             pseudo = obj.getString("pseudo");
+            String chaineMaj=pseudo.replaceFirst(".",(pseudo.charAt(0)+"").toUpperCase());
+            pseudo = chaineMaj;
             email = obj.getString("email");
             country_code = obj.getString("country_code");
             phone = obj.getString("phone");
