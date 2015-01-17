@@ -1,4 +1,4 @@
-package com.example.mada.partybay.Activity;
+package com.example.mada.partybay.Annex;
 
 import android.content.Context;
 import android.hardware.Camera;

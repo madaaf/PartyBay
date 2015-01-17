@@ -56,7 +56,7 @@
             android:label="@style/AppTheme"/>
 
         <activity
-            android:name=".Activity.CameraActivity"
+            android:name=".Annex.CameraActivity"
             android:label="@style/AppTheme"/>
 
 
@@ -79,9 +79,7 @@
              android:name=".MenuManager.ViewPagerActivity"
              android:label="@style/AppTheme"/>
 
-        <activity
-            android:name=".MenuManager.ViewPagerActivity"
-            android:label="@style/AppTheme"/>
+
 
         <!-- PACKAGE TIMELINE -->
         <activity
@@ -92,6 +90,8 @@
             android:name=".TimeLineManager.LoversListActivity"
             android:label="@style/AppTheme"/>
 
+
+
         <!-- PACKAGE PROFILE MANAGER -->
         <activity
             android:name=".ProfileManager.ProfileViewPagerActivity"
@@ -100,6 +100,12 @@
         <activity
             android:name=".ProfileManager.ItemAlbum"
             android:label="@style/AppTheme"/>
+
+        <!-- PACKAGE PROFILE MANAGER -->
+        <activity
+            android:name=".Album.AlbumActivity"
+            android:label="@style/AppTheme"/>
+
 
 
 

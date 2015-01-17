@@ -1,4 +1,4 @@
-package com.example.mada.partybay.Activity;
+package com.example.mada.partybay.Annex;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -15,6 +15,8 @@ import android.view.TextureView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import com.example.mada.partybay.Activity.Editer;
 import com.example.mada.partybay.R;
 import com.example.mada.partybay.TimeLineManager.PostActivity;
 

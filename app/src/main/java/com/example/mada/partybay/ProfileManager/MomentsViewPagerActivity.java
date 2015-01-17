@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.example.mada.partybay.Album.AlbumActivity;
 import com.example.mada.partybay.Class.RestClient;
 import com.example.mada.partybay.Class.SerializeurMono;
 import com.example.mada.partybay.Class.User;
@@ -135,7 +136,7 @@ public class MomentsViewPagerActivity extends Fragment implements SwipeRefreshLa
         // retrieve the GridView item
         Post item = posts.get(position);
 
-        Intent i = new Intent(getActivity(),ItemAlbum.class);
+        Intent i = new Intent(getActivity(),AlbumActivity.class);
         i.putExtra("item_id", item.getId());
         i.putExtra("my_user_id",user.getId());
         i.putExtra("my_pseudo",user.getPseudo());
