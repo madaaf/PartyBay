@@ -42,7 +42,6 @@ public class MomentsViewPagerActivity extends Fragment implements SwipeRefreshLa
         posts = new ArrayList<Post>();
         Resources resources = getResources();
 
-
         serializeur_user = new SerializeurMono<User>(getResources().getString(R.string.sdcard_user));
         JSONObject obj = new JSONObject();
         user =new User(obj);
@@ -55,7 +54,6 @@ public class MomentsViewPagerActivity extends Fragment implements SwipeRefreshLa
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
 
@@ -73,7 +71,6 @@ public class MomentsViewPagerActivity extends Fragment implements SwipeRefreshLa
          gridView.setOnItemClickListener(this);
 
          return fragmentView;
-
     }
 
 
@@ -84,7 +81,6 @@ public class MomentsViewPagerActivity extends Fragment implements SwipeRefreshLa
             for (int i = 0; i < jsonArray.length(); i++) {
                 stringArray.add(jsonArray.getString(i));
             }
-
         }
         return stringArray;
     }
@@ -92,10 +88,8 @@ public class MomentsViewPagerActivity extends Fragment implements SwipeRefreshLa
 
     // get posts from api
     public void getPostFromApi(int pos_debut, int nbr_item) throws Exception {
-
         // ThreadLoadPost = new LoadListenerThread(pos_debut,nbr_item);
         // ThreadLoadPost.start();
-
         RestClient client = new RestClient(getActivity(),"https://api.partybay.fr/users/"+user.getId()+"/posts?limit="+nbr_item+"&offset=0&side=desc");
         //System.out.println("https://api.partybay.fr/users/"+user.getId()+"/posts?limit="+nbr_item+"&offset=0&side=desc");
 
@@ -126,12 +120,9 @@ public class MomentsViewPagerActivity extends Fragment implements SwipeRefreshLa
 
                 }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
     @Override

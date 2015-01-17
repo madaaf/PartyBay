@@ -22,6 +22,10 @@
     <string name="sdcard_token">/storage/sdcard0/PartyBay2/token.serial</string>
     <string name="sdcard_photo">/storage/sdcard0/PartyBay2/photo.jpeg</string>
     <string name="sdcard_video">/storage/sdcard0/PartyBay2/video.mp4</string>
+    <string name="sdcard_selfie">storage/emulated/0/Pictures/PartyBay/selfie.jpg</string>
+    <string name="sdcard_selfie_blr">storage/emulated/0/Pictures/PartyBay/selfie_blr.jpg</string>
+
+
 
 
     <!--TEXT CLASS ACTIVATION-->

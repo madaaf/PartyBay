@@ -10,7 +10,6 @@ import android.util.Log;
 
 import com.example.mada.partybay.ProfileManager.ProfileViewPagerActivity;
 import com.example.mada.partybay.R;
-import com.example.mada.partybay.TimeLineManager.PostActivity;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -46,8 +45,10 @@ public class CameraSelfie extends Activity {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         Uri fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
+       // Uri fileUri2 = getOutputMediaFileUri(MEDIA_TYPE_IMAGE,"selfie_blr.jpg");
 
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
+        //intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri2);
 
 
         // start the image capture Intent
@@ -59,7 +60,8 @@ public class CameraSelfie extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                System.out.println("je suis avant le intent "+path_photo);
+
+                /***Transformer l'image en flouté et la réangistré ***/
                 Intent intent = new Intent(CameraSelfie.this, ProfileViewPagerActivity.class);
                 intent.putExtra("photo_path",path_photo);
                 startActivity(intent);
@@ -67,7 +69,7 @@ public class CameraSelfie extends Activity {
                 // Image captured and saved to fileUri specified in the Intent
                 // Toast.makeText(this, "Image saved to:\n" + data.getData(), Toast.LENGTH_LONG).show();
             } else if (resultCode == RESULT_CANCELED) {
-                Intent intent = new Intent(CameraSelfie.this, PostActivity.class);
+                Intent intent = new Intent(CameraSelfie.this, ProfileViewPagerActivity.class);
                 startActivity(intent);
                 finish();
 
@@ -97,6 +99,7 @@ public class CameraSelfie extends Activity {
 
     /** Create a File for saving an image or video */
     private  File getOutputMediaFile(int type){
+        System.out.println("PHOTO");
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
 
@@ -133,7 +136,6 @@ public class CameraSelfie extends Activity {
         System.out.println("File.separator"+File.separator);
         return mediaFile;
     }
-
 
 
 

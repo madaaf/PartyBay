@@ -7,7 +7,7 @@
     <RelativeLayout
         android:id="@+id/post_image"
         android:layout_width="fill_parent"
-        android:layout_height="350dp"
+        android:layout_height="345dp"
         android:scaleType="centerCrop">
 
         <ImageView
@@ -21,7 +21,7 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15px">
+            android:background="@drawable/degrader_haut" >
 
             <TextView
                 android:id="@+id/post_pseudo"
@@ -29,21 +29,21 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="Marie"
-                android:textSize="45px"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="3dp"
+                android:textSize="22dp"
                 android:textStyle="bold"
-                android:textColor="@color/white"
-                />
+                android:textColor="@color/white" />
 
-            <ImageView
+                <com.example.mada.partybay.Class.MLRoundedImageView
                 android:id="@+id/post_photo"
-                android:layout_width="100px"
-                android:layout_height="100px"
-                android:layout_marginRight="15px"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/photo_profil"
-                android:layout_toLeftOf="@id/post_pseudo"/>
-
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_toLeftOf="@id/post_pseudo"
+                android:scaleType="centerCrop"
+                />
 
 
             <TextView
@@ -52,10 +52,21 @@
                 android:layout_height="wrap_content"
                 android:text="il y a 12 min"
                 android:layout_centerHorizontal="true"
+                android:textSize="15dp"
                 android:textColor="@color/white"
                 android:layout_below="@+id/post_pseudo"/>
 
         </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/degrader_bas"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" >
+
+    </RelativeLayout>
 
         <TextView
             android:id="@+id/post_lieu"
@@ -68,7 +79,8 @@
             android:layout_margin="20px"/>
     </RelativeLayout>
 
-    <RelativeLayout
+
+<RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/post_image">

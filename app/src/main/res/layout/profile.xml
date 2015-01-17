@@ -7,8 +7,13 @@
     <RelativeLayout
         android:id="@+id/ItemPorfile"
         android:layout_width="fill_parent"
-        android:layout_height="350dp"
-        android:background="@drawable/photo_fond">
+        android:layout_height="350dp">
+        <ImageView
+            android:id="@+id/ItemPorfileFont"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"/>
 
 
         <ImageButton
