@@ -13,10 +13,10 @@ import com.example.mada.partybay.R;
 /**
  * Created by mada on 06/01/15.
  */
-public class ViewPagerAdapter extends FragmentPagerAdapter {
+public class MenuViewPagerAdapter extends FragmentPagerAdapter {
 
 
-    public ViewPagerAdapter(FragmentManager fm) {
+    public MenuViewPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 

@@ -11,9 +11,9 @@ import com.example.mada.partybay.R;
 /**
  * Created by mada on 06/01/15.
  */
-public class ViewPagerActivity extends FragmentActivity{
+public class MenuViewPagerActivity extends FragmentActivity{
 
-    private ViewPagerAdapter mSectionsPagerAdaptater;
+    private MenuViewPagerAdapter mSectionsPagerAdaptater;
     private ViewPager mViewPager;
     private Button activite_b;
     private Button reglage_b;
@@ -31,7 +31,7 @@ public class ViewPagerActivity extends FragmentActivity{
         //set u pthe action bar
        // final ActionBar actionbar = getActionBar();
        // actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        mSectionsPagerAdaptater = new ViewPagerAdapter(getSupportFragmentManager());
+        mSectionsPagerAdaptater = new MenuViewPagerAdapter(getSupportFragmentManager());
 
         // set up the ViewPager
         mViewPager = (ViewPager)findViewById(R.id.menuviewpager);

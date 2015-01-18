@@ -76,7 +76,7 @@
         <!-- PACKAGE MENU MANAGER -->
 
         <activity
-             android:name=".MenuManager.ViewPagerActivity"
+             android:name=".MenuManager.MenuViewPagerActivity"
              android:label="@style/AppTheme"/>
 
 

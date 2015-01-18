@@ -43,6 +43,7 @@ public class PostAdapter extends ArrayAdapter<Post>  {
         ImageView link;
         ImageButton loveButton;
         ImageView loversList;
+        ImageView selfie;
     }
 
     public PostAdapter(Context context, int layoutResourceId, ArrayList<Post> posts) {
@@ -82,26 +83,7 @@ public class PostAdapter extends ArrayAdapter<Post>  {
             viewHolder.link = (ImageView) convertView.findViewById(R.id.post_photo_fond);
             viewHolder.loveButton = (ImageButton) convertView.findViewById(R.id.post_coeur);
             viewHolder.loversList = (ImageView) convertView.findViewById(R.id.spinnerLovers);
-
-            viewHolder.loversList.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    String infoLove = String.valueOf(v.getTag());
-                    //String user_idPost = String.valueOf(posts.get(position).getUser_id());
-                   // ArrayList<Love> tabLoveLovers = posts.get(position).getTabLoverLovers();
-                    //ArrayList<String> tabStringLovers = posts.get(position).getTabStringLovers();
-
-                   // System.out.println("position  "+ position + " id post "+idPost);
-                   // System.out.println("dans le postAdapter "+tabStringLovers.toString());
-                    //System.out.println("dans le postAdapter taille "+tabLoveLovers.size());
-                   // System.out.println("loveListListener position"+position+ " id post "+idPost);
-
-                    Intent i = new Intent(context,LoversListActivity.class);
-                    i.putExtra("infoLove",infoLove);
-                    context.startActivity(i);
-                }
-             });
-
+            viewHolder.selfie = (ImageView)convertView.findViewById(R.id.post_photo);
 
 
             convertView.setTag(viewHolder);
@@ -124,12 +106,22 @@ public class PostAdapter extends ArrayAdapter<Post>  {
         holder.latitude.setText(posts.get(position).getLatitude());
         UrlImageViewHelper.setUrlDrawable(holder.link, "https://static.partybay.fr/images/posts/640x640_" + posts.get(position).getLink());
 
+       holder.user_pseudo.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+
+                //Intent i = new Intent(context,ProfileViewPagerActivity.class);
+                // i.putExtra("user_birth",posts.get(position).getB);
+                // context.startActivity(i);
+           }
+       });
+
         holder.loveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println(" id post "+view.getTag());
-                System.out.println("posts.get(position).getId() "+ posts.get(position).getId());
-                System.out.println("posts.get(position).getPostIsLoved() "+ posts.get(position).getPostIsLoved());
+                //System.out.println(" id post "+view.getTag());
+                //System.out.println("posts.get(position).getId() "+ posts.get(position).getId());
+                //System.out.println("posts.get(position).getPostIsLoved() "+ posts.get(position).getPostIsLoved());
 
                 idPost = String.valueOf(view.getTag());
                 // Envoie une requete a l'API pour le prévenir que j'ai liké
@@ -175,6 +167,16 @@ public class PostAdapter extends ArrayAdapter<Post>  {
                         e.printStackTrace();
                     }
                 }
+            }
+        });
+
+        holder.loversList.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                String infoLove = String.valueOf(v.getTag());
+                Intent i = new Intent(context,LoversListActivity.class);
+                i.putExtra("infoLove",infoLove);
+                context.startActivity(i);
             }
         });
 

@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.example.mada.partybay.Activity.CameraAc;
 import com.example.mada.partybay.Activity.Chargement;
 import com.example.mada.partybay.Class.RestClient;
-import com.example.mada.partybay.MenuManager.ViewPagerActivity;
+import com.example.mada.partybay.MenuManager.MenuViewPagerActivity;
 import com.example.mada.partybay.ProfileManager.ProfileViewPagerActivity;
 import com.example.mada.partybay.R;
 
@@ -279,7 +279,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
     View.OnClickListener reglageListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(PostActivity.this, ViewPagerActivity.class);
+            Intent intent = new Intent(PostActivity.this, MenuViewPagerActivity.class);
             startActivity(intent);
 
         }

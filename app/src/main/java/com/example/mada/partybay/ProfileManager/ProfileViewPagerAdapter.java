@@ -26,7 +26,7 @@ public class ProfileViewPagerAdapter extends FragmentPagerAdapter {
                 return new Story();
             }
             case 1 : {
-                return new MomentsViewPagerActivity();
+                return new MomentsActivity();
             }
             case 2 : {
                 return new Trackers();

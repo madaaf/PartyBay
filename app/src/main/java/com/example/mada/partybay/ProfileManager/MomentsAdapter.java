@@ -18,7 +18,7 @@ import java.util.ArrayList;
 /**
  * Created by mada on 12/01/15.
  */
-public class MomentViewPagerAdapter extends BaseAdapter {
+public class MomentsAdapter extends BaseAdapter {
     private Context mContext;
     private ArrayList<Post> posts;
 
@@ -33,7 +33,7 @@ public class MomentViewPagerAdapter extends BaseAdapter {
     }
 
 
-    public MomentViewPagerAdapter(Context c, ArrayList<Post> posts) {
+    public MomentsAdapter(Context c, ArrayList<Post> posts) {
          this.mContext=c;
          this.posts=posts;
     }

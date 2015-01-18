@@ -28,9 +28,9 @@ import java.util.Iterator;
 /**
  * Created by mada on 11/01/15.
  */
-public class MomentsViewPagerActivity extends Fragment implements SwipeRefreshLayout.OnRefreshListener,AdapterView.OnItemClickListener {
+public class MomentsActivity extends Fragment implements SwipeRefreshLayout.OnRefreshListener,AdapterView.OnItemClickListener {
 
-    private MomentViewPagerAdapter adapter;
+    private MomentsAdapter adapter;
     private ArrayList<Post> posts;
     private SerializeurMono<User> serializeur_user;
     private User user = null;
@@ -64,7 +64,7 @@ public class MomentsViewPagerActivity extends Fragment implements SwipeRefreshLa
          View fragmentView = inflater.inflate(R.layout.moments, container, false);
 
          // initialize the adapter
-         adapter = new MomentViewPagerAdapter(getActivity(), posts);
+         adapter = new MomentsAdapter(getActivity(), posts);
 
          // initialize the GridView
          GridView gridView = (GridView) fragmentView.findViewById(R.id.gridview);
