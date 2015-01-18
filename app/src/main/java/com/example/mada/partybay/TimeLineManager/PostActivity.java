@@ -109,8 +109,6 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount){
                 int lastInScreen = firstVisibleItem + visibleItemCount;
 
-                int tailleTab = posts.size();
-                //System.out.println("taille de la table "+ tailleTab + "TOATL ITEM"+totalItemCount);
 
                 if(lastInScreen == (totalItemCount) && (onScroolStateChange==true)){
                     Log.d(" firstVisibleItem", "YEEEEEEEEHHH");
@@ -120,10 +118,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
                         // on récupere les 10 post suivant car l'utilsateur a scroller jusqu'à la fin de la liste
                         getPostFromApi(nbr_scroll*NBROFITEM,NBROFITEM);
-                        // Create the adapter to convert the array to array to views
-                        //adapter = new PostAdapter(PostActivity,posts);
-                        //Attach the adapter to a ListView
-                        //listView.setAdapter(adapter);
+
 
                     } catch (Exception e) {
                         e.printStackTrace();

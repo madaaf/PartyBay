@@ -109,17 +109,8 @@ public class AlbumAdapter extends FragmentPagerAdapter {
 
         int itemI = Integer.parseInt(item_id);
         indexPostActuel = tabId.indexOf(itemI);
-        System.out.println("tabId " + tabId.toString());
-        System.out.println("tabId " + item_id);
 
-        System.out.println("tabId " + tabId.indexOf(itemI));
-        //prend la valeur du suivant
-        // item_id = posts.get(indexPostActuel+1).getId();
-        Post postSuivant = posts.get(indexPostActuel+1);
-        //idPostSuivant = posts.get(indexPostActuel+1).getId();
-
-        System.out.println("indexPostActuel"+indexPostActuel);
-        System.out.println("je suis dans le ONCLICKLISTENRE, le poste avant  = "+item_id+" et le poste suivant est "+ postSuivant.getId());
+       // System.out.println("je suis dans le ONCLICKLISTENRE, le poste avant  = "+item_id+" et le poste suivant est "+ postSuivant.getId());
 
     }
 
@@ -135,7 +126,7 @@ public class AlbumAdapter extends FragmentPagerAdapter {
 
 
         // permet de voir tout l'album en cercle jusqu'a revenir à la 1 er photo qu'on a ouvert
-       if(index<(posts.size()-1)){
+       if(index<(posts.size())){
            data.putString("item_id",posts.get(index).getId());
            //System.out.println(" compteur "+index + "position "+pos+" id post "+posts.get(index).getId());
         }else{

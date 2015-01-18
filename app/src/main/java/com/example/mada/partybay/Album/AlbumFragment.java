@@ -23,11 +23,12 @@ import java.util.ArrayList;
  * Created by mada on 20/10/2014.
  */
 public class AlbumFragment extends Fragment {
-    String item_id;
-    int mCurrentPage;
-    ArrayList<Integer> tabId = new ArrayList<Integer>();
-    ArrayList<Post> posts = new ArrayList<Post>();
-    Post post  = null;
+    private String item_id;
+    private int mCurrentPage;
+    private ArrayList<Integer> tabId = new ArrayList<Integer>();
+    private ArrayList<Post> posts = new ArrayList<Post>();
+    private Post post  = null;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,19 +62,35 @@ public class AlbumFragment extends Fragment {
 
 
 
-        System.out.println("MCURRENTPAGE + "+mCurrentPage+"ITEMID : "+item_id);
+      //  System.out.println("MCURRENTPAGE + "+mCurrentPage+"ITEMID : "+item_id);
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.albumfragment, container,false);
-        TextView tv = (TextView) v.findViewById(R.id.item_album_post_texte);
+        TextView user_pseudo = (TextView)v.findViewById(R.id.item_album_post_pseudo);
+        TextView date = (TextView)v.findViewById(R.id.item_album_post_time);
+        TextView texte = (TextView) v.findViewById(R.id.item_album_post_texte);
+        TextView nbr_liker =(TextView)v.findViewById(R.id.item_album_post_like);
         ImageView font = (ImageView)v.findViewById(R.id.item_album_post_photo_fond);
+        ImageView coeur = (ImageView)v.findViewById(R.id.item_album_post_coeur);
+
+        Boolean PostIsLoved = post.getPostIsLoved();
+        if(PostIsLoved==true){
+            coeur.setImageResource(R.drawable.coeur);
+        }else{
+            coeur.setImageResource(R.drawable.coeur_unlike);
+        }
+
+
+        user_pseudo.setText(post.getUser_pseudo());
+        date.setText(post.getDate());
+        texte.setText(post.getText());
+        String totalLover = String.valueOf(post.getTotalLovers());
+        nbr_liker.setText(totalLover);
 
         UrlImageViewHelper.setUrlDrawable(font, "https://static.partybay.fr/images/posts/640x640_" + post.getLink());
-
-        tv.setText("item_id  "+item_id+" "+post.getText()+"mCurrentPage"+mCurrentPage);
 
 
         return v;

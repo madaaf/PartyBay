@@ -102,60 +102,7 @@ public class PostAdapter extends ArrayAdapter<Post>  {
                 }
              });
 
-            viewHolder.loveButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    System.out.println(" id post "+view.getTag());
-                    System.out.println("posts.get(position).getId() "+ posts.get(position).getId());
-                    System.out.println("posts.get(position).getPostIsLoved() "+ posts.get(position).getPostIsLoved());
 
-                    idPost = String.valueOf(view.getTag());
-                    // Envoie une requete a l'API pour le prévenir que j'ai liké
-                    threadLove = new LoveThread(view.getContext());
-                    threadLove.start();
-                    int test;
-                    // Colorie le coeur en rouge si j'ai liké et blanc sinon
-                    // rafrechie le chiffre qui indique le nombre de like
-                    if(posts.get(position).getPostIsLoved()==true){
-                        viewHolder.loveButton.setImageResource(R.drawable.coeur_unlike);
-                        posts.get(position).setPostIsLoved(false);
-                        test = (posts.get(position).getTotalLovers())-1;
-                        String ok = String.valueOf(test);
-                        posts.get(position).setTotalLovers(test);
-                        viewHolder.lovers.setText(ok);
-
-                    }else{
-                        viewHolder.loveButton.setImageResource(R.drawable.coeur);
-                        posts.get(position).setPostIsLoved(true);
-                        test = (posts.get(position).getTotalLovers())+1;
-                        String ok = String.valueOf(test);
-                        posts.get(position).setTotalLovers(test);
-                        viewHolder.lovers.setText(ok);
-                    }
-                 }
-
-                class LoveThread extends Thread {
-                    private Context context;
-
-                    public LoveThread(Context context){
-                        this.context=context;
-                    }
-                    public void run() {
-                        // je préviens l'api que j'ai liké/unliké
-                        RestClient client = new RestClient(context,"https://api.partybay.fr/users/" + myUser_id + "/love/" + idPost);
-                        System.out.println("https://api.partybay.fr/users/1/love/" + idPost);
-                        String access_token = client.getTokenValid();
-                        client.AddHeader("Authorization", "Bearer " + access_token);
-                        String rep = "";
-                        try {
-                            rep = client.Execute("POST");
-                            System.out.println("REPONSE DU LOVE" + rep);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-             });
 
             convertView.setTag(viewHolder);
             viewHolder.loveButton.setTag(posts.get(position).getId());
@@ -168,7 +115,7 @@ public class PostAdapter extends ArrayAdapter<Post>  {
             ((ViewHolder)convertView.getTag()).loversList.setTag(posts.get(position).getId() + "/"+posts.get(position).getUser_id());
         }
 
-        ViewHolder holder = (ViewHolder) convertView.getTag();
+        final ViewHolder holder = (ViewHolder) convertView.getTag();
         // Populate the data into the template view using the data object
         holder.user_pseudo.setText(posts.get(position).getUser_pseudo());
         holder.text.setText(posts.get(position).getText()+" position "+position);
@@ -176,6 +123,60 @@ public class PostAdapter extends ArrayAdapter<Post>  {
         holder.date.setText(posts.get(position).getDate());
         holder.latitude.setText(posts.get(position).getLatitude());
         UrlImageViewHelper.setUrlDrawable(holder.link, "https://static.partybay.fr/images/posts/640x640_" + posts.get(position).getLink());
+
+        holder.loveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println(" id post "+view.getTag());
+                System.out.println("posts.get(position).getId() "+ posts.get(position).getId());
+                System.out.println("posts.get(position).getPostIsLoved() "+ posts.get(position).getPostIsLoved());
+
+                idPost = String.valueOf(view.getTag());
+                // Envoie une requete a l'API pour le prévenir que j'ai liké
+                threadLove = new LoveThread(view.getContext());
+                threadLove.start();
+                int test;
+                // Colorie le coeur en rouge si j'ai liké et blanc sinon
+                // rafrechie le chiffre qui indique le nombre de like
+                if(posts.get(position).getPostIsLoved()==true){
+                    holder.loveButton.setImageResource(R.drawable.coeur_unlike);
+                    posts.get(position).setPostIsLoved(false);
+                    test = (posts.get(position).getTotalLovers())-1;
+                    String ok = String.valueOf(test);
+                    posts.get(position).setTotalLovers(test);
+                    holder.lovers.setText(ok);
+
+                }else{
+                    holder.loveButton.setImageResource(R.drawable.coeur);
+                    posts.get(position).setPostIsLoved(true);
+                    test = (posts.get(position).getTotalLovers())+1;
+                    String ok = String.valueOf(test);
+                    posts.get(position).setTotalLovers(test);
+                    holder.lovers.setText(ok);
+                }
+            }
+
+            class LoveThread extends Thread {
+                private Context context;
+
+                public LoveThread(Context context){
+                    this.context=context;
+                }
+                public void run() {
+                    // je préviens l'api que j'ai liké/unliké
+                    RestClient client = new RestClient(context,"https://api.partybay.fr/users/" + myUser_id + "/love/" + idPost);
+                    String access_token = client.getTokenValid();
+                    client.AddHeader("Authorization", "Bearer " + access_token);
+                    String rep = "";
+                    try {
+                        rep = client.Execute("POST");
+                        System.out.println("REPONSE DU LOVE" + rep);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
 
         if( posts.get(position)!=null) {
             String Sid =  posts.get(position).getId();
