@@ -41,6 +41,7 @@ public class AlbumFragment extends Fragment {
         mCurrentPage = data.getInt("current_page", 0);
         item_id = data.getString("item_id","ok");
 
+
         //récupere information du post sur l'api
         RestClient client = new RestClient(getActivity(),"https://api.partybay.fr/users/102/posts/"+item_id);
         System.out.println("https://api.partybay.fr/users/102/posts/"+item_id);

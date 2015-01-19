@@ -27,6 +27,7 @@ public class Post {
     private String date = null;
     private String latitude = null;
     private String longitude = null;
+    private String user_picture = null;
     private String text = null;
     private String user_pseudo = null;
     private String nbrlovers = null;   // nbr de lober en String en string
@@ -47,79 +48,96 @@ public class Post {
        // tabLoverLovers = new ArrayList<Love>();
         try {
             // je recupere la reponse de l'api et je creer le post correspondant
-            id = obj.getString("id");
-            user_pseudo = obj.getString("user_pseudo");
-            text = obj.getString("text") +" ID :"+ obj.getString("id");
-            latitude = obj.getString("latitude");
-            nbrlovers = obj.getString("lovers");
-            user_id=obj.getString("user_id");
+            if(obj.has("id")){
+                id = obj.getString("id");
+            }
+            if(obj.has("user_id")){
+                user_id = obj.getString("user_id");
+            }
+            if(obj.has("link")){
+                link = obj.getString("link");
+            }
+            if(obj.has("user_pseudo")){
+                user_pseudo = obj.getString("user_pseudo");
+            }
+            if(obj.has("text")){
+                text = obj.getString("text") +" ID :"+ obj.getString("id");
+            }
+            if(obj.has("latitude")){
+                latitude = obj.getString("latitude");
+            }
+            if(obj.has("longitude")){
+                longitude = obj.getString("longitude");
+            }
+            if(obj.has("user_picture")){
+                user_picture = obj.getString("user_picture");
+            }
+            if(obj.has("date")){
+                // je transforme la date en bon format
+                String test = obj.getString("date");
+                int year =Integer.parseInt(test.substring(0,4));
+                int month = Integer.parseInt(test.substring(5, 7));
+                int day = Integer.parseInt(test.substring(8, 10));
+                int hour = Integer.parseInt(test.substring(11, 13));
+                int minute = Integer.parseInt(test.substring(14, 16));
 
-            // Transforme l'arret liste en chiffre pour afficher le nbr de like
-            // Je met à jour les données suivant :
-            // lover = nbr de personne qui ont lové le poste
-            // tabLover = ArrayListe de Love du post
-            // postIsLove = true si le poste a été aimé par moi-meme
+                MyDate datePost = new MyDate(year,month,day,hour,minute);
+                String time = datePost.getDifferenceDateToday();
+                date =time;
+            }
+            if(obj.has("lovers")){
+                nbrlovers = obj.getString("lovers");
+                // Transforme l'arret liste en chiffre pour afficher le nbr de like
+                // Je met à jour les données suivant :
+                // lover = nbr de personne qui ont lové le poste
+                // tabLover = ArrayListe de Love du post
+                // postIsLove = true si le poste a été aimé par moi-meme
 
-            if (nbrlovers!="false"){
-                tabStringLovers = jsonStringToArray(nbrlovers);
-                nbrlovers = String.valueOf(tabStringLovers.size());
-                totalLovers = tabStringLovers.size();
+                if (nbrlovers!="false"){
+                    tabStringLovers = jsonStringToArray(nbrlovers);
+                    nbrlovers = String.valueOf(tabStringLovers.size());
+                    totalLovers = tabStringLovers.size();
 
-                Iterator<String> it = tabStringLovers.iterator();
-                Love love = null;
-                Love lovetest = null;
-                try {
-                    while(it.hasNext()){
-                        String s = it.next();
-                        JSONObject objT = null;
-                        objT = new JSONObject(s);
-                        love = new Love(objT);
-                        String test2 = String.valueOf(love.getUser_id());
-                        if (test2.equals(myUser_id)) {
-                            PostIsLoved=true;
-                            break; // pour sortir de la boucle quand il me trouve
-                        }else{
-                            PostIsLoved=false;
-                            //tabLoverLovers.add(love);
+                    Iterator<String> it = tabStringLovers.iterator();
+                    Love love = null;
+                    Love lovetest = null;
+                    try {
+                        while(it.hasNext()){
+                            String s = it.next();
+                            JSONObject objT = null;
+                            objT = new JSONObject(s);
+                            love = new Love(objT);
+                            String test2 = String.valueOf(love.getUser_id());
+                            if (test2.equals(myUser_id)) {
+                                PostIsLoved=true;
+                                break; // pour sortir de la boucle quand il me trouve
+                            }else{
+                                PostIsLoved=false;
+                                //tabLoverLovers.add(love);
+                            }
+
                         }
 
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
+                    if(PostIsLoved==null){PostIsLoved=false;}
 
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                }else{
+                    nbrlovers  = "0";
+                    totalLovers = 0;
+                    //tabLoverLovers=null;
                 }
-                if(PostIsLoved==null){PostIsLoved=false;}
-
-            }else{
-                nbrlovers  = "0";
-                totalLovers = 0;
-                //tabLoverLovers=null;
             }
 
 
-
-            // je transforme la date en bon format
-            String test = obj.getString("date");
-            int year =Integer.parseInt(test.substring(0,4));
-            int month = Integer.parseInt(test.substring(5, 7));
-            int day = Integer.parseInt(test.substring(8, 10));
-            int hour = Integer.parseInt(test.substring(11, 13));
-            int minute = Integer.parseInt(test.substring(14, 16));
-
-            MyDate datePost = new MyDate(year,month,day,hour,minute);
-            String time = datePost.getDifferenceDateToday();
-            date =time;
-
-
-            link = obj.getString("link");
 
         } catch (JSONException e) {
             System.out.println("Err constructeur Post : "+e.getMessage());
         }
     }
 
+    public String getUser_picture(){return user_picture;}
     public int getTotalLovers() { return totalLovers;}
 
     public void setTotalLovers(int totalLovers) {this.totalLovers = totalLovers;}

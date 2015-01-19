@@ -1,7 +1,6 @@
 package com.example.mada.partybay.ProfileManager;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -33,21 +32,31 @@ public class MomentsActivity extends Fragment implements SwipeRefreshLayout.OnRe
     private MomentsAdapter adapter;
     private ArrayList<Post> posts;
     private SerializeurMono<User> serializeur_user;
-    private User user = null;
     private final int NBROFITEM = 15;
+    private String user_id = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // initialize the posts list
         posts = new ArrayList<Post>();
-        Resources resources = getResources();
 
-        serializeur_user = new SerializeurMono<User>(getResources().getString(R.string.sdcard_user));
-        JSONObject obj = new JSONObject();
-        user =new User(obj);
-        user = serializeur_user.getObject();
-        System.out.println("ID USER "+user.getId());
+        /** Getting the arguments to the Bundle object */
+        Bundle data = getArguments();
+
+        if(data!=null){
+            user_id = data.getString("user_id","ok");
+        }else{
+            serializeur_user = new SerializeurMono<User>(getResources().getString(R.string.sdcard_user));
+            JSONObject obj = new JSONObject();
+            User user =new User(obj);
+            user = serializeur_user.getObject();
+            user_id = user.getId();
+        }
+
+
+
+
 
          // on recupere les 10 premier postes
         try {
@@ -91,7 +100,7 @@ public class MomentsActivity extends Fragment implements SwipeRefreshLayout.OnRe
     public void getPostFromApi(int pos_debut, int nbr_item) throws Exception {
         // ThreadLoadPost = new LoadListenerThread(pos_debut,nbr_item);
         // ThreadLoadPost.start();
-        RestClient client = new RestClient(getActivity(),"https://api.partybay.fr/users/"+user.getId()+"/posts?limit="+nbr_item+"&offset=0&side=desc");
+        RestClient client = new RestClient(getActivity(),"https://api.partybay.fr/users/"+user_id+"/posts?limit="+nbr_item+"&offset=0&side=desc");
         //System.out.println("https://api.partybay.fr/users/"+user.getId()+"/posts?limit="+nbr_item+"&offset=0&side=desc");
 
         // je recupere un token dans la sd carte
@@ -138,8 +147,8 @@ public class MomentsActivity extends Fragment implements SwipeRefreshLayout.OnRe
 
         Intent i = new Intent(getActivity(),AlbumActivity.class);
         i.putExtra("item_id", item.getId());
-        i.putExtra("my_user_id",user.getId());
-        i.putExtra("my_pseudo",user.getPseudo());
+        i.putExtra("my_user_id",user_id);
+
         startActivity(i);
 
         // do something

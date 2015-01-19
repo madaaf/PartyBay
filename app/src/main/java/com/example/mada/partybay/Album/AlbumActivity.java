@@ -33,6 +33,7 @@ public class AlbumActivity extends FragmentActivity {
        /** Getting fragment manager */
         FragmentManager fm = getSupportFragmentManager();
        /** Instantiating FragmentPagerAdapter */
+
         System.out.println("ALBUM ACTIVITY "+ item_id);
         AlbumAdapter albumAdapter = new AlbumAdapter(fm,this,item_id);
         viewPager.setAdapter(albumAdapter);

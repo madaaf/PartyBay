@@ -32,6 +32,7 @@ public class Story extends Fragment  implements SwipeRefreshLayout.OnRefreshList
     private SerializeurMono<User> serializeur_user;
     private User user = null;
     private final int NBROFITEM = 15;
+    private String user_id;
 
 
     @Override
@@ -39,22 +40,34 @@ public class Story extends Fragment  implements SwipeRefreshLayout.OnRefreshList
         super.onCreate(savedInstanceState);
         // initialize the posts list
         posts = new ArrayList<Post>();
+        /** Getting the arguments to the Bundle object */
+        Bundle data = getArguments();
+
+        if(data!=null){
+            user_id = data.getString("user_id","ok");
+        }else{
+            //System.out.println( "ACTIVITY" + (ProfileViewPagerActivity) getActivity()).getResult());
+            serializeur_user = new SerializeurMono<User>(getResources().getString(R.string.sdcard_user));
+            JSONObject obj = new JSONObject();
+            user =new User(obj);
+            user = serializeur_user.getObject();
+            System.out.println("ID USER "+user.getId());
+            user_id = user.getId();
+        }
 
 
-        serializeur_user = new SerializeurMono<User>(getResources().getString(R.string.sdcard_user));
-        JSONObject obj = new JSONObject();
-        user =new User(obj);
-        user = serializeur_user.getObject();
-        System.out.println("ID USER "+user.getId());
+
 
         // on recupere les 10 premier postes
+
         try {
             getPostFromApi(0,NBROFITEM);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
+
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -75,7 +88,9 @@ public class Story extends Fragment  implements SwipeRefreshLayout.OnRefreshList
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        //Post item = posts.get(position);
+        //System.out.println("ONITEMCLICK"+parent+ " "+view+" "+position+" "+id);
+        //System.out.println("ONITEMCLICK"+ item.getUser_pseudo());
     }
 
     @Override
@@ -88,7 +103,7 @@ public class Story extends Fragment  implements SwipeRefreshLayout.OnRefreshList
         // ThreadLoadPost = new LoadListenerThread(pos_debut,nbr_item);
         // ThreadLoadPost.start();
 
-        RestClient client = new RestClient(getActivity(),"https://api.partybay.fr/users/"+user.getId()+"/posts?limit="+nbr_item+"&offset=0&side=desc");
+        RestClient client = new RestClient(getActivity(),"https://api.partybay.fr/users/"+user_id+"/posts?limit="+nbr_item+"&offset=0&side=desc");
         //System.out.println("https://api.partybay.fr/users/"+user.getId()+"/posts?limit="+nbr_item+"&offset=0&side=desc");
 
         // je recupere un token dans la sd carte

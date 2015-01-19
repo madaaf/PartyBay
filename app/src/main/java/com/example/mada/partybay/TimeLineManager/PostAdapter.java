@@ -2,18 +2,19 @@ package com.example.mada.partybay.TimeLineManager;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.mada.partybay.Class.RestClient;
 import com.example.mada.partybay.Class.SerializeurMono;
 import com.example.mada.partybay.Class.User;
+import com.example.mada.partybay.ProfileManager.ProfileViewPagerActivity;
 import com.example.mada.partybay.R;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
@@ -44,16 +45,14 @@ public class PostAdapter extends ArrayAdapter<Post>  {
         ImageButton loveButton;
         ImageView loversList;
         ImageView selfie;
+        RelativeLayout user_profile;
     }
 
     public PostAdapter(Context context, int layoutResourceId, ArrayList<Post> posts) {
         super(context,layoutResourceId, posts);
         this.posts = posts;
         this.context=context;
-        Log.d("layoutResourceId ", String.valueOf(layoutResourceId));
-        Log.d("posts in post adapter  ", String.valueOf(posts));
     }
-
 
 
 
@@ -84,17 +83,20 @@ public class PostAdapter extends ArrayAdapter<Post>  {
             viewHolder.loveButton = (ImageButton) convertView.findViewById(R.id.post_coeur);
             viewHolder.loversList = (ImageView) convertView.findViewById(R.id.spinnerLovers);
             viewHolder.selfie = (ImageView)convertView.findViewById(R.id.post_photo);
+            viewHolder.user_profile = (RelativeLayout)convertView.findViewById(R.id.post_profile_user);
 
 
             convertView.setTag(viewHolder);
             viewHolder.loveButton.setTag(posts.get(position).getId());
             viewHolder.lovers.setTag(posts.get(position).getId());
             viewHolder.loversList.setTag(posts.get(position).getId() + "/"+posts.get(position).getUser_id());
+            viewHolder.user_profile.setTag(posts.get(position).getUser_id());
 
         }else{
             ((ViewHolder)convertView.getTag()).loveButton.setTag(posts.get(position).getId());
             ((ViewHolder)convertView.getTag()).lovers.setTag(posts.get(position).getId());
             ((ViewHolder)convertView.getTag()).loversList.setTag(posts.get(position).getId() + "/"+posts.get(position).getUser_id());
+            ((ViewHolder)convertView.getTag()).user_profile.setTag(posts.get(position).getUser_id());
         }
 
         final ViewHolder holder = (ViewHolder) convertView.getTag();
@@ -105,16 +107,12 @@ public class PostAdapter extends ArrayAdapter<Post>  {
         holder.date.setText(posts.get(position).getDate());
         holder.latitude.setText(posts.get(position).getLatitude());
         UrlImageViewHelper.setUrlDrawable(holder.link, "https://static.partybay.fr/images/posts/640x640_" + posts.get(position).getLink());
+        if(posts.get(position).getUser_picture()!=null){
+            UrlImageViewHelper.setUrlDrawable(holder.selfie, "https://static.partybay.fr/images/users/profile/160x160_" + posts.get(position).getUser_picture());
 
-       holder.user_pseudo.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
+        }
 
-                //Intent i = new Intent(context,ProfileViewPagerActivity.class);
-                // i.putExtra("user_birth",posts.get(position).getB);
-                // context.startActivity(i);
-           }
-       });
+
 
         holder.loveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,6 +165,18 @@ public class PostAdapter extends ArrayAdapter<Post>  {
                         e.printStackTrace();
                     }
                 }
+            }
+        });
+
+        holder.user_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String User_id  = String.valueOf(v.getTag());
+                Intent i = new Intent(context, ProfileViewPagerActivity.class);
+                System.out.println("USERID"+User_id);
+                i.putExtra("user_id", User_id);
+                context.startActivity(i);
+
             }
         });
 

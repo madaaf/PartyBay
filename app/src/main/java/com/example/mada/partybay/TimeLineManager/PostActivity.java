@@ -48,8 +48,6 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
     private ArrayList<Post> posts = null;
     private Typeface font;
     private TextView entete;
-
-
     private int nbr_scroll = 0 ;
 
     private final static int NBROFITEM = 15;
@@ -79,6 +77,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         listView = (ListView) findViewById(R.id.lvPost);
         entete = (TextView)findViewById(R.id.entete);
         entete.setTypeface(font);
+
 
         entete.setOnClickListener(enteteListener);
 
@@ -249,7 +248,6 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         return stringArray;
     }
 
-
     @Override
     public void onRefresh() {
         layout.setRefreshing(true);
@@ -308,6 +306,10 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
             listView.setSelection(0);
         }
     };
+
+
+
+
 
 /*
     class LoadListenerThread extends Thread{

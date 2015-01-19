@@ -45,6 +45,7 @@ public class RestClient {
     private MonThreadPost threadPost;
     private String responsePost;
 
+
     private MonThreadPostFile threadPostFile;
     private String responsePostFile;
 
@@ -150,6 +151,19 @@ public class RestClient {
             return threadPostFile.getReponsePostFile();
 
         }
+        /*else if(method.equals("PUT")){
+
+            threadPut = new MonThreadPostFile();
+            threadPut.start();
+
+            try {
+                threadPut.join();
+            } catch (InterruptedException e) {
+                Log.d("Erreur ", "join : " + e.getMessage());
+            }
+            return threadPut.getReponsePut();
+
+        }*/
         return null;
     }
 
@@ -305,6 +319,11 @@ public class RestClient {
         }
     }
 
+    private class threadPut extends  Thread{
+        public void run(){
+
+        }
+    }
 
     private class MonThreadPost extends Thread{
 

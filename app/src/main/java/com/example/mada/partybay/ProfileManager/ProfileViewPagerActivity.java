@@ -13,11 +13,15 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.example.mada.partybay.Activity.CameraSelfie;
+import com.example.mada.partybay.Class.RestClient;
 import com.example.mada.partybay.Class.SerializeurMono;
 import com.example.mada.partybay.Class.User;
 import com.example.mada.partybay.R;
+
 import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -44,6 +48,9 @@ public class ProfileViewPagerActivity extends FragmentActivity{
     TextView pseudoTv;
     ImageView profile_photo;
     ImageView font;
+    User user  = null;
+
+
 
 
     @Override
@@ -54,14 +61,34 @@ public class ProfileViewPagerActivity extends FragmentActivity{
         ActionBar bar = this.getActionBar();
         bar.hide();
 
-        serializeur_user = new SerializeurMono<User>(getResources().getString(R.string.sdcard_user));
-        JSONObject obj = new JSONObject();
-        User user = serializeur_user.getObject();
+        Bundle bundle = getIntent().getExtras();
+        if(bundle!=null){
+            String user_id = bundle.getString("user_id");
+            System.out.println("USERID "+user_id);
+
+            try {
+                RestClient client = new RestClient(this,"https://api.partybay.fr/users/"+user_id);
+                String accessToken = client.getTokenValid();
+                client.AddHeader("Authorization","Bearer " + accessToken);
+                String rep = client.Execute("GET");
+                JSONObject ob = new JSONObject(rep);
+                user = new User(ob);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else{
+            serializeur_user = new SerializeurMono<User>(getResources().getString(R.string.sdcard_user));
+            JSONObject obj = new JSONObject();
+            user = serializeur_user.getObject();
+        }
+
+
 
 
         // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
-        mAppSectionsPagerAdapter = new ProfileViewPagerAdapter(getSupportFragmentManager());
+        mAppSectionsPagerAdapter = new ProfileViewPagerAdapter(getSupportFragmentManager(),user.getId());
 
         markerMoments= (View)findViewById(R.id.markerMoments);
         markerTrackers=(View)findViewById(R.id.markerTrackers);
@@ -114,10 +141,19 @@ public class ProfileViewPagerActivity extends FragmentActivity{
         markerTrackers.setBackgroundResource(0);
         markerTracking.setBackgroundResource(0);
 
-        System.out.println("BIRTHDAY  : "+user.getBirth());
-        String year = user.getBirth().substring(0, 4);
-        String month = user.getBirth().substring(5, 7);
-        String jour = user.getBirth().substring(8, user.getBirth().length());
+
+        String year="0";
+        String month ="0";
+        String jour ="0";
+
+        if(user.getBirth()!="null"){
+
+            year = user.getBirth().substring(0,4);
+            month = user.getBirth().substring(5,7);
+            jour = user.getBirth().substring(8, user.getBirth().length());
+
+        }
+
 
         int year2 = Integer.parseInt(year);
         int month2 = Integer.parseInt(month);
@@ -125,7 +161,7 @@ public class ProfileViewPagerActivity extends FragmentActivity{
         int age = getAge(year2,month2,jour2);
 
 
-        pseudoTv.setText(user.getPseudo()+","+age);
+        pseudoTv.setText(user.getPseudo()+", "+age+"ans");
         mViewPager = (ViewPager)findViewById(R.id.profileviewpager);
         mViewPager.setAdapter(mAppSectionsPagerAdapter);
 
@@ -156,7 +192,6 @@ public class ProfileViewPagerActivity extends FragmentActivity{
                     markerTrackers.setBackgroundResource(0);
                     markerTracking.setBackgroundResource(R.color.red);
                 }
-
 
             }
 
@@ -220,12 +255,11 @@ public class ProfileViewPagerActivity extends FragmentActivity{
         @Override
         public void onClick(View v) {
             Intent i  = new Intent(ProfileViewPagerActivity.this,CameraSelfie.class);
+            i.putExtra("user_id",user.getId());
             startActivity(i);
             finish();
         }
     };
-
-
 
 
 

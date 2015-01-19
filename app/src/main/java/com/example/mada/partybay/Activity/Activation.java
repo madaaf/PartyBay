@@ -69,7 +69,7 @@ public class Activation extends Activity {
                 String authorization = "Bearer " + accessToken;
                 client.AddHeader("Authorization",authorization);
                 String rep = client.Execute("GET");
-                System.out.println("rep"+rep);
+               // System.out.println("rep"+rep);
                 JSONObject ob = new JSONObject(rep);
                 if(ob.has("error")){
 

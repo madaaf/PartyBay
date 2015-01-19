@@ -19,6 +19,7 @@
             android:background="@drawable/photo_fond"/>
 
         <RelativeLayout
+            android:id="@+id/post_profile_user"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/degrader_haut" >
@@ -29,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="Marie"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginBottom="1dp"
                 android:textSize="22dp"
                 android:textStyle="bold"
@@ -40,7 +41,7 @@
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="6dp"
                 android:layout_toLeftOf="@id/post_pseudo"
                 android:scaleType="centerCrop"
                 />

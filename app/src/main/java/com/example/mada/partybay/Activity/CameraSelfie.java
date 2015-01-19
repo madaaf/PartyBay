@@ -1,6 +1,7 @@
 package com.example.mada.partybay.Activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -38,6 +39,7 @@ public class CameraSelfie extends Activity {
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
     public String  path_photo=null;
+    private String user_id = null;
 
 
 
@@ -49,6 +51,9 @@ public class CameraSelfie extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.camera2);
+
+        Bundle bundle = getIntent().getExtras();
+        user_id = bundle.getString("user_id");
 
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -83,6 +88,9 @@ public class CameraSelfie extends Activity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+                Thread thread = new Thread(new EnvoieSelfie(this));
+                thread.start();
 
                 Intent intent = new Intent(CameraSelfie.this, ProfileViewPagerActivity.class);
                 startActivity(intent);
@@ -395,6 +403,37 @@ public class CameraSelfie extends Activity {
         }
         in.close();
         out.close();
+    }
+
+
+    class EnvoieSelfie implements Runnable{
+        Context context;
+        public EnvoieSelfie(Context context){
+            this.context=context;
+        }
+        @Override
+        public void run() {
+ /*
+            RestClient client = new RestClient(context,"https://api.partybay.fr/users/"+user_id);
+            client.AddParam("picture", "password");
+            String access_token = client.getTokenValid();
+            client.AddHeader("Authorization","Bearer "+access_token);
+
+            File file = new File(getResources().getString(R.string.sdcard_selfie));
+            FileBody fileBody = new FileBody(file);
+            client.AddFile(fileBody);
+            client.AddParamFile("picture", "selfie.jpeg");
+            String rep = null;
+
+            try {
+                rep = client.Execute("FILE");
+                System.out.println("SELFIE REPONSE: "+rep);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+*/
+        }
     }
 
 }
