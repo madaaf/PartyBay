@@ -7,31 +7,36 @@
     >
 
     <RelativeLayout
+        android:id="@+id/tracker_profile_user"
         android:layout_width="fill_parent"
         android:layout_height="80dp">
 
 
-    <ImageView
-        android:id="@+id/tracker_item_picture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_margin="15dp"
-        android:background="@drawable/profile_default" />
+        <com.example.mada.partybay.Class.MLRoundedImageView
+            android:id="@+id/tracker_item_picture"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:scaleType="centerCrop" />
 
-    <TextView
-        android:id="@+id/tracker_item_pseudo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_centerVertical="true"
-        android:text="Mada"
-       />
+            <TextView
+                android:id="@+id/tracker_item_pseudo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:text="Mada"
+                android:textSize="18dp" />
+
+
+
+
 
     <ImageButton
         android:id="@+id/tracker_item_button_track"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="90dp"
+        android:layout_height="35dp"
         android:background="@drawable/bouton_track"
         android:layout_centerVertical="true"
         android:layout_margin="15dp"

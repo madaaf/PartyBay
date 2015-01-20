@@ -43,7 +43,7 @@ public class PostAdapter extends ArrayAdapter<Post>  {
         TextView latitude;
         ImageView link;
         ImageButton loveButton;
-        ImageView loversList;
+        TextView loversList;
         ImageView selfie;
         RelativeLayout user_profile;
     }
@@ -65,7 +65,8 @@ public class PostAdapter extends ArrayAdapter<Post>  {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
-        serializeur = new SerializeurMono<User>("/storage/sdcard0/PartyBay2/user.serial");
+        String ressource  = context.getResources().getString(R.string.sdcard_user);
+        serializeur = new SerializeurMono<User>(ressource);
         User user = serializeur.getObject();
         myUser_id = user.getId();
 
@@ -81,7 +82,7 @@ public class PostAdapter extends ArrayAdapter<Post>  {
             viewHolder.latitude = (TextView) convertView.findViewById(R.id.post_lieu);
             viewHolder.link = (ImageView) convertView.findViewById(R.id.post_photo_fond);
             viewHolder.loveButton = (ImageButton) convertView.findViewById(R.id.post_coeur);
-            viewHolder.loversList = (ImageView) convertView.findViewById(R.id.spinnerLovers);
+            viewHolder.loversList = (TextView) convertView.findViewById(R.id.spinnerLovers);
             viewHolder.selfie = (ImageView)convertView.findViewById(R.id.post_photo);
             viewHolder.user_profile = (RelativeLayout)convertView.findViewById(R.id.post_profile_user);
 
@@ -117,9 +118,6 @@ public class PostAdapter extends ArrayAdapter<Post>  {
         holder.loveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //System.out.println(" id post "+view.getTag());
-                //System.out.println("posts.get(position).getId() "+ posts.get(position).getId());
-                //System.out.println("posts.get(position).getPostIsLoved() "+ posts.get(position).getPostIsLoved());
 
                 idPost = String.valueOf(view.getTag());
                 // Envoie une requete a l'API pour le prévenir que j'ai liké

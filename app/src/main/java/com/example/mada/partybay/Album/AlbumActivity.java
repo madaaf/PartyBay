@@ -28,6 +28,9 @@ public class AlbumActivity extends FragmentActivity {
         String item_id = bundle.getString("item_id");
         String my_id = bundle.getString("my_user_id");
 
+        //System.out.println("BUSY item_id"+item_id);
+       // System.out.println("BUSY my_user_id"+my_id);
+
         viewPager = (ViewPager)findViewById(R.id.album_view_pager);
 
        /** Getting fragment manager */
@@ -35,7 +38,7 @@ public class AlbumActivity extends FragmentActivity {
        /** Instantiating FragmentPagerAdapter */
 
         System.out.println("ALBUM ACTIVITY "+ item_id);
-        AlbumAdapter albumAdapter = new AlbumAdapter(fm,this,item_id);
+        AlbumAdapter albumAdapter = new AlbumAdapter(fm,this,item_id,my_id);
         viewPager.setAdapter(albumAdapter);
 
     }

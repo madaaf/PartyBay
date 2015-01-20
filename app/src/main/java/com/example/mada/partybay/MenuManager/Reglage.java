@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.mada.partybay.Activity.Chargement;
@@ -28,7 +27,7 @@ public class Reglage extends Fragment {
     private TextView mail = null;
 
     private SerializeurMono<User> serializeur;
-    private Button deco;
+    private TextView deco;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,7 +36,7 @@ public class Reglage extends Fragment {
         pseudo = (TextView) rootView.findViewById(R.id.pseudo);
         num = (TextView) rootView.findViewById(R.id.num);
         mail = (TextView) rootView.findViewById(R.id.email);
-        deco = (Button) rootView.findViewById(R.id.reglage_deco_button);
+        deco = (TextView) rootView.findViewById(R.id.reglage_deco_button);
 
         serializeur = new SerializeurMono<User>(getResources().getString(R.string.sdcard_user));
         JSONObject obj = new JSONObject();
@@ -49,9 +48,28 @@ public class Reglage extends Fragment {
         mail.setText(user.getEmail());
 
         deco.setOnClickListener(decoListener);
+        num.setOnClickListener(numListener);
+        mail.setOnClickListener(mailListener);
         return  rootView;
     }
 
+    View.OnClickListener numListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent i = new Intent(getActivity(),ItemReglage.class);
+            i.putExtra("activity","num");
+            startActivity(i);
+        }
+    };
+
+    View.OnClickListener mailListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent i = new Intent(getActivity(),ItemReglage.class);
+            i.putExtra("activity","email");
+            startActivity(i);
+        }
+    };
 
     View.OnClickListener decoListener = new View.OnClickListener() {
         @Override

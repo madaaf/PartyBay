@@ -64,7 +64,7 @@ public class StoryAdapter extends BaseAdapter {
 
         if (convertView == null) {  // if it's not recycled, initialize some attributes
 
-            // inflate the GridView item layout
+            // inflate the listview item layout
             LayoutInflater inflater = LayoutInflater.from(mContext);
             convertView = inflater.inflate(R.layout.story_item, parent, false);
 

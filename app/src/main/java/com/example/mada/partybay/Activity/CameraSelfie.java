@@ -11,8 +11,11 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import com.example.mada.partybay.Class.RestClient;
 import com.example.mada.partybay.ProfileManager.ProfileViewPagerActivity;
 import com.example.mada.partybay.R;
+
+import org.apache.http.entity.mime.content.FileBody;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -413,7 +416,7 @@ public class CameraSelfie extends Activity {
         }
         @Override
         public void run() {
- /*
+
             RestClient client = new RestClient(context,"https://api.partybay.fr/users/"+user_id);
             client.AddParam("picture", "password");
             String access_token = client.getTokenValid();
@@ -422,7 +425,8 @@ public class CameraSelfie extends Activity {
             File file = new File(getResources().getString(R.string.sdcard_selfie));
             FileBody fileBody = new FileBody(file);
             client.AddFile(fileBody);
-            client.AddParamFile("picture", "selfie.jpeg");
+            client.AddParamFile("filename", "selfie.jpeg");
+            client.AddParamFile("which", "profile");
             String rep = null;
 
             try {
@@ -432,7 +436,7 @@ public class CameraSelfie extends Activity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-*/
+
         }
     }
 

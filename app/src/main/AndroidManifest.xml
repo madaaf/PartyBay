@@ -79,6 +79,10 @@
              android:name=".MenuManager.MenuViewPagerActivity"
              android:label="@style/AppTheme"/>
 
+        <activity
+            android:name=".MenuManager.ItemReglage"
+            android:label="@style/AppTheme"/>
+
 
 
         <!-- PACKAGE TIMELINE -->
@@ -97,9 +101,6 @@
             android:name=".ProfileManager.ProfileViewPagerActivity"
             android:label="@style/AppTheme"/>
 
-        <activity
-            android:name=".ProfileManager.ItemAlbum"
-            android:label="@style/AppTheme"/>
 
         <!-- PACKAGE PROFILE MANAGER -->
         <activity

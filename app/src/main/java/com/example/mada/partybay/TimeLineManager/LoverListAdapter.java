@@ -1,14 +1,17 @@
 package com.example.mada.partybay.TimeLineManager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.mada.partybay.Class.Love;
+import com.example.mada.partybay.ProfileManager.ProfileViewPagerActivity;
 import com.example.mada.partybay.R;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
@@ -29,6 +32,7 @@ public class LoverListAdapter extends ArrayAdapter<Love> {
         TextView user_id;
         TextView pseudo;
         ImageView picture;
+        RelativeLayout intent_user_profile;
 
     }
 
@@ -39,8 +43,6 @@ public class LoverListAdapter extends ArrayAdapter<Love> {
         this.context = context;
        // System.out.println("DANS L4ADAPTEUR "+ lovers.size());
     }
-
-
 
 
 
@@ -57,16 +59,31 @@ public class LoverListAdapter extends ArrayAdapter<Love> {
             final ViewHolder viewHolder = new ViewHolder();
             viewHolder.pseudo = (TextView) convertView.findViewById(R.id.tracker_item_pseudo);
             viewHolder.picture = (ImageView) convertView.findViewById(R.id.tracker_item_picture);
+            viewHolder.intent_user_profile =(RelativeLayout)convertView.findViewById(R.id.tracker_profile_user);
 
             convertView.setTag(viewHolder);
+            viewHolder.intent_user_profile.setTag(lovers.get(position).getUser_id());
 
         }else{
-            //viewHolder = (ViewHolder) convertView.getTag();
+
+            ((ViewHolder)convertView.getTag()).intent_user_profile.setTag(lovers.get(position).getUser_id());
         }
-        ViewHolder holder = (ViewHolder) convertView.getTag();
 
         // Populate the data into the template view using the data object
+        ViewHolder holder = (ViewHolder) convertView.getTag();
         holder.pseudo.setText(lovers.get(position).getPseudo());
+        holder.intent_user_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String user_id = String.valueOf(v.getTag());
+                Intent i = new Intent (context, ProfileViewPagerActivity.class);
+                i.putExtra("user_id",user_id);
+                context.startActivity(i);
+
+
+            }
+        });
+
         UrlImageViewHelper.setUrlDrawable(holder.picture, "https://static.partybay.fr/images/posts/640x640_" + lovers.get(position).getPicture());
 
         return convertView;

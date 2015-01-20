@@ -26,19 +26,20 @@ public class AlbumAdapter extends FragmentPagerAdapter {
     private ArrayList<Integer> tabId = new ArrayList<Integer>();
     private ArrayList<Post> posts = new ArrayList<Post>();
     private  String item_id;
+    private String my_id;
     private int indexPostActuel;
     private int index ;
     private int compteur=0;
 
-    public AlbumAdapter(FragmentManager fm,Context context,String item_id) {
+    public AlbumAdapter(FragmentManager fm,Context context,String item_id,String my_id) {
         super(fm);
         this.context=context;
         // je récupere l'id de la photo que l'utilsateur a selectionné
-        System.out.println("ID DU POST ==>"+ item_id);
+        System.out.println("BUSY ID DU POST ==>"+ item_id);
         this.item_id = item_id;
 
         //récupere information du post sur l'api
-        RestClient client = new RestClient(context,"https://api.partybay.fr/users/102/posts?offset=0");
+        RestClient client = new RestClient(context,"https://api.partybay.fr/users/"+my_id+"/posts?offset=0");
         // je recupere un token dans la sd carte
         String access_token = client.getTokenValid();
         client.AddHeader("Authorization","Bearer "+access_token);
@@ -72,45 +73,9 @@ public class AlbumAdapter extends FragmentPagerAdapter {
         }
 
 
-
-        //récupere information du post sur l'api
-        RestClient clientP = new RestClient(context,"https://api.partybay.fr/users/102/posts?offset=0");
-        // je recupere un token dans la sd carte
-        String accesstoken = client.getTokenValid();
-        client.AddHeader("Authorization","Bearer "+accesstoken);
-        String rp = "";
-        try {
-            rp =  client.Execute("GET");
-            if (rp!=null && rp.length()>2){
-                // System.out.println("je suis ici encore");
-                ArrayList<String> stringArray = new ArrayList<String>();
-                stringArray=jsonStringToArray(rp);
-
-                Iterator<String> it = stringArray.iterator();
-                Post post = null;
-                while (it.hasNext()) {
-                    String s = it.next();
-                    // System.out.println("js : "+s.startsWith("["));
-                    // if(s.startsWith("[")){}
-                    JSONObject obj = new JSONObject(s);
-                    post = new Post(context,obj);
-                    if(post!=null){
-                        tabId.add(Integer.valueOf(post.getId()));
-                        //System.out.println("jajoute le poste numero = "+post.getId());
-                        posts.add(post);
-                    }
-
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         int itemI = Integer.parseInt(item_id);
         indexPostActuel = tabId.indexOf(itemI);
 
-       // System.out.println("je suis dans le ONCLICKLISTENRE, le poste avant  = "+item_id+" et le poste suivant est "+ postSuivant.getId());
 
     }
 
@@ -120,8 +85,8 @@ public class AlbumAdapter extends FragmentPagerAdapter {
         AlbumFragment albumFragment = new AlbumFragment();
         Bundle data = new Bundle();
 
-
         data.putInt("current_page", pos+1);
+        data.putString("my_id", posts.get(index).getUser_id());
         index = pos+indexPostActuel;
 
 

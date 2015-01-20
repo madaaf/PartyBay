@@ -38,8 +38,8 @@
 
                 <com.example.mada.partybay.Class.MLRoundedImageView
                 android:id="@+id/post_photo"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="6dp"
                 android:layout_toLeftOf="@id/post_pseudo"
@@ -84,14 +84,15 @@
 <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/post_image">
+        android:layout_below="@id/post_image"
+        android:layout_marginBottom="7dp">
 
         <RelativeLayout
             android:id="@+id/like"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15px"
-            android:layout_marginRight="15px">
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="5dp">
 
             <ImageButton
                 android:id="@+id/post_coeur"
@@ -110,14 +111,16 @@
                 android:text="32"
                 android:textColor="@color/redClear"/>
 
-            <ImageView
+            <TextView
                 android:id="@+id/spinnerLovers"
-                android:layout_width="35dp"
-                android:layout_height="30dp"
-                android:layout_marginLeft="7dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_below="@+id/post_coeur"
                 android:layout_toRightOf="@+id/post_like"
-                android:layout_centerVertical="true"
-                android:background="@drawable/bandelov"
+                android:text="Lovers"
+                android:textSize="15dp"
+                android:textColor="@color/redClear"
                 android:onClick="onClickFunctionLover"
                 />
 
@@ -128,7 +131,7 @@
             android:id="@+id/post_texte"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:layout_toRightOf="@id/like"
             android:textSize="15dp"

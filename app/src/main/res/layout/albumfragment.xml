@@ -126,6 +126,18 @@
                     android:text="32"
                     android:textColor="@color/redClear"/>
 
+                <TextView
+                    android:id="@+id/item_album_spinnerLovers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_below="@+id/item_album_post_coeur"
+                    android:layout_toRightOf="@+id/item_album_post_like"
+                    android:text="Lovers"
+                    android:textSize="15dp"
+                    android:textColor="@color/redClear"
+                    android:onClick="onClickFunctionLover"/>
+
             </RelativeLayout>
 
 
@@ -133,7 +145,7 @@
                 android:id="@+id/item_album_post_texte"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
                 android:layout_toRightOf="@id/item_album_like"
                 android:textSize="15dp"

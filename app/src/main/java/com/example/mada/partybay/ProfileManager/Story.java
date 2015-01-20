@@ -56,10 +56,6 @@ public class Story extends Fragment  implements SwipeRefreshLayout.OnRefreshList
         }
 
 
-
-
-        // on recupere les 10 premier postes
-
         try {
             getPostFromApi(0,NBROFITEM);
         } catch (Exception e) {
@@ -88,9 +84,7 @@ public class Story extends Fragment  implements SwipeRefreshLayout.OnRefreshList
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        //Post item = posts.get(position);
-        //System.out.println("ONITEMCLICK"+parent+ " "+view+" "+position+" "+id);
-        //System.out.println("ONITEMCLICK"+ item.getUser_pseudo());
+
     }
 
     @Override

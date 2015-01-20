@@ -60,8 +60,17 @@
             android:layout_column="1"
             android:padding="10dip"
             android:textColor="#747272"
-            android:gravity="right"
+            android:layout_gravity="center"
             />
+
+        <TextView
+            android:text=">"
+            android:textSize="20dp"
+            android:layout_column="1"
+            android:layout_centerVertical="true"
+            android:padding="10dip"
+            android:textColor="#747272"
+            android:gravity="right"/>
 
     </TableRow>
     <TableRow
@@ -81,6 +90,14 @@
             android:textColor="#747272"
             android:gravity="right"
             />
+        <TextView
+            android:text=">"
+            android:textSize="20dp"
+            android:layout_column="1"
+            android:layout_centerVertical="true"
+            android:padding="10dip"
+            android:textColor="#747272"
+            android:gravity="right"/>
 
     </TableRow>
     <TableRow
@@ -196,7 +213,7 @@
     </TableRow>
     <TableRow>
 
-        <Button
+        <TextView
             android:id="@+id/reglage_deco_button"
             android:text="Déconnexion"
             android:layout_column="1"

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/photo_fond"
+    >
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/popup_corner">
+
+
+        <TextView
+            android:id="@+id/item_reglage_poppup_1a"
+            android:layout_width="fill_parent"
+            android:layout_marginTop="35dp"
+            android:layout_height="wrap_content"
+            android:text="@string/poppup_1a"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:gravity="center"/>
+
+
+        <LinearLayout
+            android:id="@+id/item_reglage_LL_pop"
+            android:layout_marginTop="30dp"
+            android:layout_below="@id/item_reglage_poppup_1a"
+            android:layout_centerInParent="true"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="40px"
+            android:layout_marginLeft="40px">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/icofondtel"/>
+            <EditText
+                android:id="@+id/item_reglage_edit_mail"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:inputType="text"
+                android:layout_centerHorizontal="true"
+                android:drawableLeft="@drawable/icone_transparent"
+                android:hint="email ou numéro ici"
+                android:background="@drawable/edit_text"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/item_reglage_button_annuler"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/redDark"
+                android:textColor="#FFFFFF"
+                android:text="Annuler"
+                android:width="400px"
+                android:height="88px"
+                android:layout_weight="1"/>
+            <Button
+                android:id="@+id/item_reglage_button_valider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/redClear"
+                android:textColor="@color/white"
+                android:text="Valider"
+                android:width="400px"
+                android:height="88px"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
