@@ -28,10 +28,18 @@ public class User implements Serializable{
     private String active;
     private String access_token;
 
+
+
+    private String picture;
+
     public User(JSONObject obj) {
         try {
-            id = obj.getString("id");
+            if(obj.has("id")){
+                id = obj.getString("id");
+            }
+
             pseudo = obj.getString("pseudo");
+            picture = obj.getString("picture");
             String chaineMaj=pseudo.replaceFirst(".",(pseudo.charAt(0)+"").toUpperCase());
             pseudo = chaineMaj;
             email = obj.getString("email");
@@ -52,6 +60,9 @@ public class User implements Serializable{
             System.out.println("Err : "+e.getMessage());
         }
     }
+
+
+    public String getPicture() { return picture;}
 
     public String getId() {
         return id;

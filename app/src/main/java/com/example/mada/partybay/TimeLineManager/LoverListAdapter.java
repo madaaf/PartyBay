@@ -84,7 +84,13 @@ public class LoverListAdapter extends ArrayAdapter<Love> {
             }
         });
 
-        UrlImageViewHelper.setUrlDrawable(holder.picture, "https://static.partybay.fr/images/posts/640x640_" + lovers.get(position).getPicture());
+        if(lovers.get(position).getPicture().equals("null")){
+            holder.picture.setImageResource(R.drawable.post);
+        }else{
+            UrlImageViewHelper.setUrlDrawable(holder.picture, "https://static.partybay.fr/images/users/profile/160x160_" + lovers.get(position).getPicture());
+        }
+
+
 
         return convertView;
     }

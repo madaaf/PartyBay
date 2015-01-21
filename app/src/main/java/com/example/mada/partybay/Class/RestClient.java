@@ -1,6 +1,8 @@
 package com.example.mada.partybay.Class;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.Log;
 
@@ -32,15 +34,18 @@ import java.util.ArrayList;
 /**
  * Created by mada on 06/11/2014.
  */
-public class RestClient {
+public class RestClient{
 
     private ArrayList<NameValuePair> params;
     private ArrayList<NameValuePair> headers;
     private MultipartEntityBuilder builder;
     private String url;
 
+
     private MonThreadGet threadGet;
     private String responseGet;
+    private Bitmap bitmap;
+
 
     private MonThreadPost threadPost;
     private String responsePost;
@@ -48,6 +53,9 @@ public class RestClient {
 
     private MonThreadPostFile threadPostFile;
     private String responsePostFile;
+
+    private MonThreadGetBitmap threadBit;
+    private HttpResponse httpResponseBitmap;
 
     private SerializeurMono<Token> tokenSerializeur;
     private SerializeurMono<User> userSerializeur;
@@ -113,6 +121,21 @@ public class RestClient {
     }
 
 
+
+    public Bitmap GetBitmapFromUrl(){
+
+            threadBit = new MonThreadGetBitmap();
+            threadBit.start();
+
+            try {
+                threadBit.join();
+            } catch (InterruptedException e) {
+                Log.d("Erreur ", "join : " + e.getMessage());
+            }
+            return threadBit.getReponseBitmap();
+
+    }
+
     public String Execute(String method) throws Exception {
         if (method.equals("GET")) {
 
@@ -151,21 +174,10 @@ public class RestClient {
             return threadPostFile.getReponsePostFile();
 
         }
-        /*else if(method.equals("PUT")){
 
-            threadPut = new MonThreadPostFile();
-            threadPut.start();
-
-            try {
-                threadPut.join();
-            } catch (InterruptedException e) {
-                Log.d("Erreur ", "join : " + e.getMessage());
-            }
-            return threadPut.getReponsePut();
-
-        }*/
         return null;
     }
+
 
 
     private class MonThreadPostFile extends Thread{
@@ -287,22 +299,15 @@ public class RestClient {
         return access_token;
     }
 
+    private class MonThreadGetBitmap extends Thread{
 
-    private class MonThreadGet extends Thread{
-
-        public String getReponseGet() {
-            return responseGet;
+        public Bitmap getReponseBitmap() {
+            return bitmap;
         }
 
         public void run() {
+            System.out.println("RESTCLIENT "+url);
             HttpGet request = new HttpGet(url);
-
-            for (NameValuePair h : headers) {
-                Log.d("Name ", h.getName());
-                Log.d("Name ", h.getValue());
-                request.addHeader(h.getName(), h.getValue());
-            }
-
             HttpClient client = new DefaultHttpClient();
             HttpResponse httpResponse;
 
@@ -310,20 +315,55 @@ public class RestClient {
                 httpResponse = client.execute(request);
                 HttpEntity httpentity = httpResponse.getEntity();
                 InputStream instream = httpentity.getContent();
-                responseGet = convertStreamToString(instream);
+                bitmap = BitmapFactory.decodeStream(instream);
+                System.out.println("RESTCLIENT"+bitmap.toString());
+                System.out.println("RESTCLIENT"+instream.toString());
 
             } catch (IOException e) {
-                Log.d("Erreur ", e.getMessage());
+                Log.d("RESTCLIENT", e.getMessage());
             }
 
         }
+
     }
 
-    private class threadPut extends  Thread{
-        public void run(){
 
+    private class MonThreadGet extends Thread{
+
+        public String getReponseGet() {
+            return responseGet;
         }
+
+             public void run() {
+              HttpGet request = new HttpGet(url);
+
+              for (NameValuePair h : headers) {
+                  Log.d("Name ", h.getName());
+                  Log.d("Name ", h.getValue());
+                  request.addHeader(h.getName(), h.getValue());
+              }
+
+              HttpClient client = new DefaultHttpClient();
+              HttpResponse httpResponse;
+
+              try {
+                  httpResponse = client.execute(request);
+                  HttpEntity httpentity = httpResponse.getEntity();
+                  InputStream instream = httpentity.getContent();
+                  responseGet = convertStreamToString(instream);
+                 // bitmap = BitmapFactory.decodeStream(instream);
+
+              } catch (IOException e) {
+                  Log.d("Erreur ", e.getMessage());
+              }
+
+          }
+
     }
+
+
+
+
 
     private class MonThreadPost extends Thread{
 

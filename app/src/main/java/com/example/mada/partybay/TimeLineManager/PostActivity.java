@@ -18,6 +18,8 @@ import android.widget.Toast;
 import com.example.mada.partybay.Activity.CameraAc;
 import com.example.mada.partybay.Activity.Chargement;
 import com.example.mada.partybay.Class.RestClient;
+import com.example.mada.partybay.Class.SerializeurMono;
+import com.example.mada.partybay.Class.User;
 import com.example.mada.partybay.MenuManager.MenuViewPagerActivity;
 import com.example.mada.partybay.ProfileManager.ProfileViewPagerActivity;
 import com.example.mada.partybay.R;
@@ -51,6 +53,8 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
     private int nbr_scroll = 0 ;
 
     private final static int NBROFITEM = 15;
+    private SerializeurMono<User> serializeur_user;
+    private String my_user_id;
 
 
     @Override
@@ -59,6 +63,11 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         setContentView(R.layout.timeline);
         ActionBar bar = this.getActionBar();
         bar.hide();
+
+        serializeur_user = new SerializeurMono<User>(getResources().getString(R.string.sdcard_user));
+        User user = serializeur_user.getObject();
+        my_user_id = user.getId();
+
 
         layout = (SwipeRefreshLayout) findViewById(R.id.swype);
         layout.setOnRefreshListener(this);
@@ -287,6 +296,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(PostActivity.this, ProfileViewPagerActivity.class);
+            intent.putExtra("user_id",my_user_id);
             startActivity(intent);
         }
     };

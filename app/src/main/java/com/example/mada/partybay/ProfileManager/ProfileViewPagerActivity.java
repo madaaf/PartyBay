@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -19,12 +20,11 @@ import com.example.mada.partybay.Class.RestClient;
 import com.example.mada.partybay.Class.SerializeurMono;
 import com.example.mada.partybay.Class.User;
 import com.example.mada.partybay.R;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -48,8 +48,12 @@ public class ProfileViewPagerActivity extends FragmentActivity{
     TextView pseudoTv;
     ImageView profile_photo;
     ImageView font;
-    User user  = null;
 
+
+    User user  = null;
+    String user_id_bundle = null;
+    String my_user_id = null;
+    Boolean itIsMe = false;
 
 
 
@@ -62,25 +66,33 @@ public class ProfileViewPagerActivity extends FragmentActivity{
         bar.hide();
 
         Bundle bundle = getIntent().getExtras();
+
         if(bundle!=null){
-            String user_id = bundle.getString("user_id");
-            System.out.println("USERID "+user_id);
+            user_id_bundle = bundle.getString("user_id");
+        }
 
-            try {
-                RestClient client = new RestClient(this,"https://api.partybay.fr/users/"+user_id);
-                String accessToken = client.getTokenValid();
-                client.AddHeader("Authorization","Bearer " + accessToken);
-                String rep = client.Execute("GET");
-                JSONObject ob = new JSONObject(rep);
-                user = new User(ob);
+        serializeur_user = new SerializeurMono<User>(getResources().getString(R.string.sdcard_user));
+        user = serializeur_user.getObject();
+        my_user_id = user.getId();
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }else{
-            serializeur_user = new SerializeurMono<User>(getResources().getString(R.string.sdcard_user));
-            JSONObject obj = new JSONObject();
-            user = serializeur_user.getObject();
+        System.out.println("MY ID /"+my_user_id + "/ /"+user_id_bundle+"/");
+        if(my_user_id.equals(user_id_bundle)){
+            System.out.println("MY ID ok");
+            itIsMe = true;
+        }
+
+        if(itIsMe==false){
+        try {
+            RestClient client = new RestClient(this,"https://api.partybay.fr/users/"+user_id_bundle);
+            String accessToken = client.getTokenValid();
+            client.AddHeader("Authorization","Bearer " + accessToken);
+            String rep = client.Execute("GET");
+            JSONObject ob = new JSONObject(rep);
+            user = new User(ob);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         }
 
 
@@ -98,46 +110,92 @@ public class ProfileViewPagerActivity extends FragmentActivity{
         font=(ImageView)findViewById(R.id.ItemPorfileFont);
 
 
+        if(itIsMe==true){
 
-        String path = getResources().getString(R.string.sdcard_selfie);
-        String pathFont = getResources().getString(R.string.sdcard_selfie_blr);
-        File fichierPhoto = new File(path);
-        File fichierPhotoFont = new File(pathFont);
+            String path = getResources().getString(R.string.sdcard_selfie);
+            String pathFont = getResources().getString(R.string.sdcard_selfie_blr);
+            File fichierPhoto = new File(path);
+            File fichierPhotoFont = new File(pathFont);
+            boolean exist = fichierPhoto.exists();
 
-        boolean exist = fichierPhoto.exists();
-        System.out.println("EXIST"+exist);
-        Thread thread = null;
-        if(fichierPhotoFont.length()==0){
-            fichierPhotoFont.delete();
-        }else{
-            System.out.println("ELSE");
-        }
+            System.out.println("EXIST"+exist);
+            Thread thread = null;
+            if(fichierPhotoFont.length()==0){
+                fichierPhotoFont.delete();
+            }else{
+                System.out.println("ELSE");
+            }
+            // si la photo n'existe paq afficher une photo par default parmis le drawable
+            if(fichierPhoto.length()==0){
+                fichierPhoto.delete();
+                font.setImageResource(R.drawable.photo_fond);
+                profile_photo.setImageResource(R.drawable.post);
 
-        // si la photo n'existe paq afficher une photo par default parmis le drawable
-        if(fichierPhoto.length()==0){
-            fichierPhoto.delete();
-            font.setImageResource(R.drawable.photo_fond);
-            profile_photo.setImageResource(R.drawable.post);
+            }else {
+                Bitmap bmp = decodeSampledBitmapFromFile(path, 500, 300);
+                Bitmap temp = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), Bitmap.Config.RGB_565);
+                Canvas c = new Canvas(temp);
+                c.drawBitmap(bmp, 0, 0, null);
+                profile_photo.setImageBitmap(temp);
 
-        }else {
-            Bitmap bmp = decodeSampledBitmapFromFile(path, 500, 300);
-            Bitmap temp = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), Bitmap.Config.RGB_565);
-            Canvas c = new Canvas(temp);
-            c.drawBitmap(bmp, 0, 0, null);
-            profile_photo.setImageBitmap(temp);
+                Bitmap bmp2 = decodeSampledBitmapFromFile(pathFont, 500, 300);
+                Bitmap temp2 = Bitmap.createBitmap(bmp2.getWidth(), bmp2.getHeight(), Bitmap.Config.RGB_565);
+                Canvas c2 = new Canvas(temp2);
+                c2.drawBitmap(bmp2, 0, 0, null);
+                font.setImageBitmap(bmp2);
 
-            Bitmap bmp2 = decodeSampledBitmapFromFile(pathFont, 500, 300);
-            Bitmap temp2 = Bitmap.createBitmap(bmp2.getWidth(), bmp2.getHeight(), Bitmap.Config.RGB_565);
-            Canvas c2 = new Canvas(temp2);
-            c2.drawBitmap(bmp2, 0, 0, null);
-            font.setImageBitmap(bmp2);
-
-        }
-
-
+            }
         profile_photo.setOnClickListener(ListenerPhotoSelfie);
+        }else{
 
-       // markerMoments.setBackgroundResource(0);
+            String url = "https://static.partybay.fr/images/users/profile/160x160_" + user.getPicture();
+            System.out.println("URL ok "+url);
+            RestClient client = new RestClient(this,url);
+            String autho = "Basic " + Base64.encodeToString(("android_app" + ":" + "MaD0u!ll3").getBytes(), Base64.NO_WRAP);
+            client.AddParam("grant_type", "client_credentials");
+            client.AddHeader("Authorization", autho);
+            try {
+                Bitmap  bit = client.GetBitmapFromUrl();
+                font.setImageBitmap(bit);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+
+
+
+           /* try {
+                Bitmap selfie = decodeSampledBitmapFromUrl(url,500,300);
+                font.setImageBitmap(selfie);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+*/
+
+           //// System.out.println("URL ok "+url);
+             //
+             //font.setImageBitmap(selfie);
+             // Blur blur = new Blur();
+             // final Bitmap bitmap3 = blur.fastblur(selfie,27);
+             // font.setImageBitmap(bitmap3);
+              /*
+              Bitmap temp = Bitmap.createBitmap(selfie.getWidth(), selfie.getHeight(), Bitmap.Config.RGB_565);
+              Canvas c = new Canvas(temp);
+              c.drawBitmap(selfie, 0, 0, null);
+              profile_photo.setImageBitmap(selfie);*/
+
+              UrlImageViewHelper.setUrlDrawable(profile_photo, "https://static.partybay.fr/images/users/profile/160x160_" + user.getPicture());
+             // font.setImageResource(R.drawable.photo_fond);
+
+        }
+
+
+
+
+
+
+        // markerMoments.setBackgroundResource(0);
         markerTrackers.setBackgroundResource(0);
         markerTracking.setBackgroundResource(0);
 
@@ -180,11 +238,11 @@ public class ProfileViewPagerActivity extends FragmentActivity{
                     markerTracking.setBackgroundResource(0);
 
                 }
-               if(position==1){
+                if(position==1){
                     System.out.println("position  1  ====+>"+position);
-                   markerMoments.setBackgroundResource(0);
-                   markerTrackers.setBackgroundResource(R.color.red);
-                   markerTracking.setBackgroundResource(0);
+                    markerMoments.setBackgroundResource(0);
+                    markerTrackers.setBackgroundResource(R.color.red);
+                    markerTracking.setBackgroundResource(0);
                 }
                 if(position==2){
                     System.out.println("position 2 ====+>"+position);
@@ -260,35 +318,6 @@ public class ProfileViewPagerActivity extends FragmentActivity{
             finish();
         }
     };
-
-
-
-    class LoadImage implements Runnable{
-        Bitmap bmp2 = decodeSampledBitmapFromFile(getResources().getString(R.string.sdcard_selfie_blr), 500, 300);
-        Bitmap temp2 = Bitmap.createBitmap(bmp2.getWidth(), bmp2.getHeight(), Bitmap.Config.RGB_565);
-       // Canvas c2 = new Canvas(temp2);
-       // c2.drawBitmap(bmp2, 0, 0, null);
-       // final Bitmap bitmap3 = fastblur(bmp2, 27);
-
-        File image_blur = new File(getResources().getString(R.string.sdcard_selfie_blr));
-        public void run() {
-            try {
-                image_blur.createNewFile();
-                FileOutputStream out = new FileOutputStream(image_blur);
-                //bitmap3.compress(Bitmap.CompressFormat.JPEG, 100, out);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
-           runOnUiThread(new Runnable(){
-                public void run(){
-                  //font.setImageBitmap(bitmap3);
-                }
-            });
-        }
-    }
-
 
 
 

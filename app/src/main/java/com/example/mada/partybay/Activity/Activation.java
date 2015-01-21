@@ -59,9 +59,12 @@ public class Activation extends Activity {
     View.OnClickListener ListenerButtonRenvoyerCode = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
+            phone ="0610919713";
+
             RestClient client = new RestClient(v.getContext(),"https://api.partybay.fr/activate?phone="+phone);
-            System.out.println("https://api.partybay.fr/activate?phone="+phone);
+            System.out.println("https://api.partybay.fr/activate?phone="+phone + user.getId());
             try {
+
                 activation_button_valider.setTextColor(Color.WHITE);
 
                 // je recupere un token dans la sd carte
@@ -69,13 +72,13 @@ public class Activation extends Activity {
                 String authorization = "Bearer " + accessToken;
                 client.AddHeader("Authorization",authorization);
                 String rep = client.Execute("GET");
-               // System.out.println("rep"+rep);
+                System.out.println("ACTIVATION "+rep);
                 JSONObject ob = new JSONObject(rep);
-                if(ob.has("error")){
 
+                if(ob.has("error")){
                     afficherPopup(getResources().getString(R.string.activation_popup_error),null);
                 }else{
-                    afficherPopup(getResources().getString(R.string.activation_popup_message),null);
+                    afficherPopup(getResources().getString(R.string.activation_popup_message)+phone,null);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
