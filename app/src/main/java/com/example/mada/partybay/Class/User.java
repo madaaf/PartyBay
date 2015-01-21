@@ -30,6 +30,7 @@ public class User implements Serializable{
 
 
 
+
     private String picture;
 
     public User(JSONObject obj) {

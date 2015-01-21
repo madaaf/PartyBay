@@ -46,15 +46,7 @@ public class MomentsActivity extends Fragment implements SwipeRefreshLayout.OnRe
 
         if(data!=null){
             user_id = data.getString("user_id","ok");
-        }else{
-            serializeur_user = new SerializeurMono<User>(getResources().getString(R.string.sdcard_user));
-            JSONObject obj = new JSONObject();
-            User user =new User(obj);
-            user = serializeur_user.getObject();
-            user_id = user.getId();
         }
-
-
 
 
 

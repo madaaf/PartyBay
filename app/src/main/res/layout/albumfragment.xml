@@ -2,13 +2,15 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#000000">
 
 
     <RelativeLayout
         android:id="@+id/item_album_photo_fond"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:layout_margin="5dp">
 
         <ImageView
             android:id="@+id/item_album_post_photo_fond"
@@ -20,9 +22,10 @@
 
 
         <RelativeLayout
+            android:id="@+id/item_album_profile_user"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15px">
+            android:background="@drawable/degrader_haut">
 
             <TextView
                 android:id="@+id/item_album_post_pseudo"
@@ -30,21 +33,22 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="Marie"
-                android:textSize="45px"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="1dp"
+                android:textSize="22dp"
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 />
 
-            <ImageView
-                android:id="@+id/item_album_post_photo"
-                android:layout_width="100px"
-                android:layout_height="100px"
-                android:layout_marginRight="15px"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/photo_profil"
-                android:layout_toLeftOf="@id/item_album_post_pseudo"/>
-
+            <com.example.mada.partybay.Class.MLRoundedImageView
+                android:id="@+id/item_album_selfie"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="6dp"
+                android:layout_toLeftOf="@id/item_album_post_pseudo"
+                android:scaleType="centerCrop"
+                />
 
 
             <TextView
@@ -53,6 +57,7 @@
                 android:layout_height="wrap_content"
                 android:text="il y a 12 min"
                 android:layout_centerHorizontal="true"
+                android:textSize="10dp"
                 android:textColor="@color/white"
                 android:layout_below="@+id/item_album_post_pseudo"/>
 
@@ -60,6 +65,11 @@
 
         </RelativeLayout>
 
+
+
+
+
+<!--
         <ImageButton
             android:id="@+id/item_album_gauche"
             android:layout_width="20dp"
@@ -76,7 +86,7 @@
             android:layout_margin="10dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"/>
-
+-->
         <TextView
             android:id="@+id/item_album_post_lieu"
             android:layout_width="wrap_content"
@@ -100,7 +110,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="5dp">
+            android:background="@drawable/degrader_bas"
+            >
 
             <RelativeLayout
                 android:id="@+id/item_album_like"
@@ -147,6 +158,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:layout_toRightOf="@id/item_album_like"
                 android:textSize="15dp"
                 android:textColor="@color/white"

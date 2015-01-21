@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.mada.partybay.Class.RestClient;
 import com.example.mada.partybay.Class.SerializeurMono;
 import com.example.mada.partybay.Class.User;
+import com.example.mada.partybay.ProfileManager.ProfileViewPagerActivity;
 import com.example.mada.partybay.R;
 import com.example.mada.partybay.TimeLineManager.LoversListActivity;
 import com.example.mada.partybay.TimeLineManager.Post;
@@ -84,6 +85,7 @@ public class AlbumFragment extends Fragment {
         ImageView font = (ImageView)v.findViewById(R.id.item_album_post_photo_fond);
         final ImageView coeur = (ImageView)v.findViewById(R.id.item_album_post_coeur);
         final TextView listLovers = (TextView) v.findViewById(R.id.item_album_spinnerLovers);
+        ImageView selfie = (ImageView)v.findViewById(R.id.item_album_selfie);
 
         Boolean PostIsLoved = post.getPostIsLoved();
         if(PostIsLoved==true){
@@ -91,6 +93,16 @@ public class AlbumFragment extends Fragment {
         }else{
             coeur.setImageResource(R.drawable.coeur_unlike);
         }
+
+        selfie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(), ProfileViewPagerActivity.class);
+                i.putExtra("user_id", post.getUser_id());
+                startActivity(i);
+
+            }
+        });
 
         listLovers.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,6 +150,14 @@ public class AlbumFragment extends Fragment {
         nbr_liker.setText(totalLover);
 
         UrlImageViewHelper.setUrlDrawable(font, "https://static.partybay.fr/images/posts/640x640_" + post.getLink());
+
+
+        if(post.getUser_picture()!=null){
+            UrlImageViewHelper.setUrlDrawable(selfie, "https://static.partybay.fr/images/users/profile/160x160_" + post.getUser_picture());
+
+        }
+
+
        // String url = "https://static.partybay.fr/images/posts/640x640_" + post.getLink();
         //Ion.with(font).placeholder(R.drawable.photo_profil).error(R.drawable.photo_profil).load(url);
 

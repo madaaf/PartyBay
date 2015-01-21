@@ -100,6 +100,7 @@
             android:gravity="right"/>
 
     </TableRow>
+    <!--
     <TableRow
         android:background="@drawable/menu_table_border">
 
@@ -119,7 +120,7 @@
             android:textColor="#747272"
             android:gravity="right"/>
 
-    </TableRow>
+    </TableRow>-->
 
     <TableRow
         android:background="@drawable/menu_table">
@@ -199,7 +200,7 @@
             android:gravity="right"
             />
     </TableRow>
-    <TableRow
+ <TableRow
         android:background="@drawable/menu_table">
 
         <TextView
@@ -228,6 +229,8 @@
             android:gravity="right"
             />
     </TableRow>
+
+
 
 </TableLayout>
 </RelativeLayout>

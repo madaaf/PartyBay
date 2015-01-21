@@ -43,16 +43,8 @@ public class Story extends Fragment  implements SwipeRefreshLayout.OnRefreshList
         /** Getting the arguments to the Bundle object */
         Bundle data = getArguments();
 
-        if(data!=null){
-            user_id = data.getString("user_id","ok");
-        }else{
-            //System.out.println( "ACTIVITY" + (ProfileViewPagerActivity) getActivity()).getResult());
-            serializeur_user = new SerializeurMono<User>(getResources().getString(R.string.sdcard_user));
-            JSONObject obj = new JSONObject();
-            user =new User(obj);
-            user = serializeur_user.getObject();
-            System.out.println("ID USER "+user.getId());
-            user_id = user.getId();
+        if(data!=null) {
+            user_id = data.getString("user_id", "ok");
         }
 
 

@@ -77,9 +77,8 @@ public class ProfileViewPagerActivity extends FragmentActivity{
         user = serializeur_user.getObject();
         my_user_id = user.getId();
 
-        System.out.println("MY ID /"+my_user_id + "/ /"+user_id_bundle+"/");
+
         if(my_user_id.equals(user_id_bundle)){
-            System.out.println("MY ID ok");
             itIsMe = true;
         }
 
@@ -171,11 +170,10 @@ public class ProfileViewPagerActivity extends FragmentActivity{
          profile_photo.setOnClickListener(ListenerPhotoSelfie);
 
         }else{
-
             String url = "https://static.partybay.fr/images/users/profile/160x160_" + user.getPicture();
             System.out.println("URL ok "+url+" "+user.getPicture());
 
-            if(user.getPicture().equals("")){
+            if(user.getPicture().equals("") || user.getPicture().equals("null")){
                 font.setImageResource(R.drawable.photo_fond);
                 profile_photo.setImageResource(R.drawable.post);
 

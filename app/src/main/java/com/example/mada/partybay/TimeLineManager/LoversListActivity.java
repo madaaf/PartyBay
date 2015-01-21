@@ -44,9 +44,7 @@ public class LoversListActivity extends Activity{
         String id_post =infoLove.substring(0,index) ;
         String id_user=infoLove.substring(index+1,infoLove.length());
 
-        System.out.println("infoLove" + infoLove);
-        System.out.println("id_user" + id_user);
-        System.out.println("id_post" + id_post);
+
 
         RestClient client = new RestClient(this,"https://api.partybay.fr/users/" + id_user + "/posts/" + id_post);
         System.out.println("https://api.partybay.fr/users/" + id_user + "/posts/" + id_post);

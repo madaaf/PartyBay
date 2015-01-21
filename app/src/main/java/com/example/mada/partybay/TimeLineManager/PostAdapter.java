@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.mada.partybay.Album.AlbumActivity;
 import com.example.mada.partybay.Class.RestClient;
 import com.example.mada.partybay.Class.SerializeurMono;
 import com.example.mada.partybay.Class.User;
@@ -92,12 +93,14 @@ public class PostAdapter extends ArrayAdapter<Post>  {
             viewHolder.lovers.setTag(posts.get(position).getId());
             viewHolder.loversList.setTag(posts.get(position).getId() + "/"+posts.get(position).getUser_id());
             viewHolder.user_profile.setTag(posts.get(position).getUser_id());
+            viewHolder.link.setTag(posts.get(position).getId() + "/"+posts.get(position).getUser_id());
 
         }else{
             ((ViewHolder)convertView.getTag()).loveButton.setTag(posts.get(position).getId());
             ((ViewHolder)convertView.getTag()).lovers.setTag(posts.get(position).getId());
             ((ViewHolder)convertView.getTag()).loversList.setTag(posts.get(position).getId() + "/"+posts.get(position).getUser_id());
             ((ViewHolder)convertView.getTag()).user_profile.setTag(posts.get(position).getUser_id());
+            ((ViewHolder)convertView.getTag()).link.setTag(posts.get(position).getId() + "/"+posts.get(position).getUser_id());
         }
 
         final ViewHolder holder = (ViewHolder) convertView.getTag();
@@ -113,7 +116,21 @@ public class PostAdapter extends ArrayAdapter<Post>  {
 
         }
 
+        holder.link.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String infoItem  = String.valueOf(v.getTag());
 
+                int index = infoItem.indexOf('/');
+                String id_post =infoItem.substring(0,index) ;
+                String id_user=infoItem.substring(index+1,infoItem.length());
+
+                Intent i = new Intent(context, AlbumActivity.class);
+                i.putExtra("my_user_id", id_user);
+                i.putExtra("item_id",id_post);
+                context.startActivity(i);
+            }
+        });
 
         holder.loveButton.setOnClickListener(new View.OnClickListener() {
             @Override

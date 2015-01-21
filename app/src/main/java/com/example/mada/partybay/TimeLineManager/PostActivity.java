@@ -106,6 +106,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         }
         // Create the adapter to convert the array to array to views
         adapter = new PostAdapter(this,R.id.lvPost,posts);
+
         //Attach the adapter to a ListView
         listView.setAdapter(adapter);
 
@@ -116,7 +117,6 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount){
                 int lastInScreen = firstVisibleItem + visibleItemCount;
-
 
                 if(lastInScreen == (totalItemCount) && (onScroolStateChange==true)){
                     Log.d(" firstVisibleItem", "YEEEEEEEEHHH");
@@ -143,6 +143,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
                 }
             }
         });
+
     }
 
     // get posts from api
@@ -259,6 +260,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onRefresh() {
+
         layout.setRefreshing(true);
         Log.d(" onRefresh", "=onRefresh");
         // I create a handler to stop the refresh and show a message after 3s
@@ -270,8 +272,47 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
                     // on récupere les 10 post suivant car l'utilsateur a scroller jusqu'à la fin de la liste
                     posts.clear();
                     getPostFromApi(0, NBROFITEM);
-                    //adapter = new PostAdapter(this,posts);
+                    adapter = new PostAdapter(PostActivity.this,R.id.lvPost,posts);
                     listView.setAdapter(adapter);
+                    listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+                        @Override
+                        public void onScrollStateChanged(AbsListView view, int scrollState) {
+                            onScroolStateChange = true;
+                            System.out.println("BOOOOOO 1 "+scrollState+ " " );
+                        }
+
+                        @Override
+                        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount){
+                            System.out.println("BOOOOOO 2 " +firstVisibleItem+ " " +visibleItemCount+" "+totalItemCount);
+                            int lastInScreen = firstVisibleItem + visibleItemCount +1;
+                            System.out.println("BOOOOOO 3 " + lastInScreen+" " +totalItemCount);
+                           //&& (onScroolStateChange==true)
+                            if(lastInScreen > totalItemCount ){
+                           // if(lastInScreen == (totalItemCount) && (onScroolStateChange==true)){
+                                System.out.println("BOOOOOO 4");
+                                nbr_scroll ++;
+                                try {
+
+                                    // on récupere les 10 post suivant car l'utilsateur a scroller jusqu'à la fin de la liste
+                                    getPostFromApi(nbr_scroll*NBROFITEM,NBROFITEM);
+
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                onScroolStateChange = false;
+                            }
+
+                            if(firstVisibleItem ==0){
+                                //Log.d(" firstVisibleItem", "=0");
+                                layout.setEnabled(true);
+                            }else{
+                                // Log.d(" firstVisibleItem", "!=0");
+                                layout.setEnabled(false);
+                            }
+                        }
+                    });
 
                 } catch (Exception e) {
                     e.printStackTrace();
