@@ -2,7 +2,6 @@ package com.example.mada.partybay.Class;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.Log;
 
@@ -54,8 +53,7 @@ public class RestClient{
     private MonThreadPostFile threadPostFile;
     private String responsePostFile;
 
-    private MonThreadGetBitmap threadBit;
-    private HttpResponse httpResponseBitmap;
+
 
     private SerializeurMono<Token> tokenSerializeur;
     private SerializeurMono<User> userSerializeur;
@@ -122,19 +120,6 @@ public class RestClient{
 
 
 
-    public Bitmap GetBitmapFromUrl(){
-
-            threadBit = new MonThreadGetBitmap();
-            threadBit.start();
-
-            try {
-                threadBit.join();
-            } catch (InterruptedException e) {
-                Log.d("Erreur ", "join : " + e.getMessage());
-            }
-            return threadBit.getReponseBitmap();
-
-    }
 
     public String Execute(String method) throws Exception {
         if (method.equals("GET")) {
@@ -299,33 +284,6 @@ public class RestClient{
         return access_token;
     }
 
-    private class MonThreadGetBitmap extends Thread{
-
-        public Bitmap getReponseBitmap() {
-            return bitmap;
-        }
-
-        public void run() {
-            System.out.println("RESTCLIENT "+url);
-            HttpGet request = new HttpGet(url);
-            HttpClient client = new DefaultHttpClient();
-            HttpResponse httpResponse;
-
-            try {
-                httpResponse = client.execute(request);
-                HttpEntity httpentity = httpResponse.getEntity();
-                InputStream instream = httpentity.getContent();
-                bitmap = BitmapFactory.decodeStream(instream);
-                System.out.println("RESTCLIENT"+bitmap.toString());
-                System.out.println("RESTCLIENT"+instream.toString());
-
-            } catch (IOException e) {
-                Log.d("RESTCLIENT", e.getMessage());
-            }
-
-        }
-
-    }
 
 
     private class MonThreadGet extends Thread{

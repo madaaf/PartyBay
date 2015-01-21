@@ -94,9 +94,10 @@ public class StoryAdapter extends BaseAdapter {
         viewHolder.nbr_lovers.setText(String.valueOf(item.getTotalLovers()));
 
 
-        //viewHolder.link.setImageDrawable(R.drawable.photo_fond);
         UrlImageViewHelper.setUrlDrawable(viewHolder.link, "https://static.partybay.fr/images/posts/640x640_" + item.getLink());
 
+       // String url = "https://static.partybay.fr/images/posts/640x640_" + item.getLink();
+       // Ion.with(viewHolder.link).placeholder(R.drawable.photo_profil).error(R.drawable.photo_profil).load(url);
 
         return convertView;
     }

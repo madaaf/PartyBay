@@ -75,6 +75,9 @@ public class TrackersAdapter extends BaseAdapter {
             viewHolder.picture.setImageResource(R.drawable.post);
         }else{
             UrlImageViewHelper.setUrlDrawable(viewHolder.picture, "https://static.partybay.fr/images/users/profile/160x160_" + item.getPicture());
+           // String url =  "https://static.partybay.fr/images/users/profile/160x160_" + item.getPicture();
+            //Ion.with(viewHolder.picture).placeholder(R.drawable.photo_profil).error(R.drawable.photo_profil).load(url);
+
         }
 
 

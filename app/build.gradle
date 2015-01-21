@@ -41,4 +41,5 @@ dependencies {
     compile files('libs/httpmime-4.3.4.jar')
     compile files('libs/library-2.1-sources.jar')
     compile files('libs/urlimageviewhelper-1.0.4.jar')
+    compile files('libs/ion-2.0.5.jar')
 }

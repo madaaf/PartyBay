@@ -138,7 +138,8 @@ public class AlbumFragment extends Fragment {
         nbr_liker.setText(totalLover);
 
         UrlImageViewHelper.setUrlDrawable(font, "https://static.partybay.fr/images/posts/640x640_" + post.getLink());
-
+       // String url = "https://static.partybay.fr/images/posts/640x640_" + post.getLink();
+        //Ion.with(font).placeholder(R.drawable.photo_profil).error(R.drawable.photo_profil).load(url);
 
         return v;
 

@@ -88,6 +88,10 @@ public class LoverListAdapter extends ArrayAdapter<Love> {
             holder.picture.setImageResource(R.drawable.post);
         }else{
             UrlImageViewHelper.setUrlDrawable(holder.picture, "https://static.partybay.fr/images/users/profile/160x160_" + lovers.get(position).getPicture());
+            //String url =  "https://static.partybay.fr/images/users/profile/160x160_" + lovers.get(position).getPicture();
+            //Ion.with(holder.picture).placeholder(R.drawable.photo_profil).error(R.drawable.photo_profil).load(url);
+
+
         }
 
 
