@@ -13,12 +13,25 @@ public class Love implements Serializable {
     private int user_id;
     private String picture;
     private String pseudo;
+    private Boolean doubleTrack;
 
     public Love(JSONObject obj) {
         try {
-            user_id = Integer.parseInt(obj.getString("id"));
-            picture =obj.getString("picture");
-            pseudo = obj.getString("pseudo");
+
+            if(obj.has("id")){
+                user_id = Integer.parseInt(obj.getString("id"));
+            }
+            if(obj.has("picture")){
+                picture =obj.getString("picture");
+            }
+            if(obj.has("pseudo")){
+                pseudo = obj.getString("pseudo");
+            }
+            if(obj.has("doubleTrack")){
+                doubleTrack = Boolean.valueOf(obj.getString("doubleTrack"));
+            }
+
+
         } catch (JSONException e) {
             System.out.println("Err : "+e.getMessage());
         }
