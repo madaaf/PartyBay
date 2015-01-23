@@ -146,7 +146,7 @@ public class ProfileViewPagerActivity extends FragmentActivity{
 
 
                 // photo par defautl si l'image sur l'api n'existe pas
-                if(user.getPicture().equals("")){
+                if(user.getPicture().equals("") || user.getPicture().equals("null")){
                     font.setImageResource(R.drawable.photo_fond);
                     profile_photo.setImageResource(R.drawable.post);
 

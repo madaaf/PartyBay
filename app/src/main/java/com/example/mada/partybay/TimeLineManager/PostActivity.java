@@ -7,7 +7,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ImageButton;
@@ -52,7 +51,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
     private TextView entete;
     private int nbr_scroll = 0 ;
 
-    private final static int NBROFITEM = 15;
+    private final static int NBROFITEM = 5;
     private SerializeurMono<User> serializeur_user;
     private String my_user_id;
 
@@ -73,11 +72,8 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         layout.setOnRefreshListener(this);
 
         // Set the refresh swype color scheme
-        layout.setColorScheme(
-                R.color.swype_1,
-                R.color.swype_2,
-                R.color.swype_3,
-                R.color.swype_4);
+        layout.setColorScheme( R.color.swype_1, R.color.swype_2, R.color.swype_3, R.color.swype_4);
+
 
         font = Typeface.createFromAsset(getAssets(), "fonts/havana.otf");
         menu = (ImageButton) findViewById(R.id.reglage);
@@ -97,35 +93,40 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         profile.setOnClickListener(profileListener);
         moment.setOnClickListener(momentListener);
 
-
         // on recupere les 10 premier postes
         try {
-            getPostFromApi(0,NBROFITEM);
+            String url = "https://api.partybay.fr/posts?limit="+NBROFITEM+"&offset="+0+"&side=desc&order=id";
+            getPostFromApi(url,false);
         } catch (Exception e) {
             e.printStackTrace();
         }
         // Create the adapter to convert the array to array to views
         adapter = new PostAdapter(this,R.id.lvPost,posts);
-
-        //Attach the adapter to a ListView
         listView.setAdapter(adapter);
-
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) { onScroolStateChange = true; }
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                onScroolStateChange = true;
+                System.out.println("onScrollStateChanged" );
+                System.out.println("onScrollStateChanged view" +view);
+                System.out.println("onScrollStateChanged scrollState" +scrollState);
+            }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount){
-                int lastInScreen = firstVisibleItem + visibleItemCount;
+               // System.out.println("LOAD" );
+                //System.out.println("LOAD  firstVisibleItem" + firstVisibleItem);
 
+
+                int lastInScreen = firstVisibleItem + visibleItemCount;
                 if(lastInScreen == (totalItemCount) && (onScroolStateChange==true)){
-                    Log.d(" firstVisibleItem", "YEEEEEEEEHHH");
-                    System.out.println("JE LOAAAAAAD encore ");
                     nbr_scroll ++;
                     try {
 
                         // on récupere les 10 post suivant car l'utilsateur a scroller jusqu'à la fin de la liste
-                        getPostFromApi(nbr_scroll*NBROFITEM,NBROFITEM);
+                        System.out.println("je recupere "+nbr_scroll*NBROFITEM+" item ");
+                        String url = "https://api.partybay.fr/posts?limit="+NBROFITEM+"&offset="+nbr_scroll*NBROFITEM+"&side=desc&order=id";
+                        getPostFromApi(url,false);
 
 
                     } catch (Exception e) {
@@ -146,13 +147,15 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
     }
 
+
     // get posts from api
-    public void getPostFromApi(int pos_debut, int nbr_item) throws Exception {
+    public void getPostFromApi(String urlapi, Boolean addTop) throws Exception {
 
         // ThreadLoadPost = new LoadListenerThread(pos_debut,nbr_item);
         // ThreadLoadPost.start();
+        System.out.println(urlapi);
 
-        RestClient client = new RestClient(this,"https://api.partybay.fr/posts?limit="+nbr_item+"&offset="+pos_debut+"&side=desc&order=id");
+        RestClient client = new RestClient(this,urlapi);
         // je recupere un token dans la sd carte
         String access_token = client.getTokenValid();
 
@@ -166,11 +169,40 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
                 if(obj.has("error")){deconnexion(); }
 
             } catch (JSONException e) {
-                System.out.println("err "+e.getMessage());
+                System.out.println("err getPostfromapi "+e.getMessage());
 
             }
 
-            // System.out.println("je suis ici encore");
+
+
+            System.out.println("PostActovity get rep "+rep);
+            if (rep!=null && rep.length()>2){
+                // System.out.println("je suis ici encore");
+                ArrayList<String> stringArray = new ArrayList<String>();
+                stringArray=jsonStringToArray(rep);
+
+                Iterator<String> it = stringArray.iterator();
+                Post post = null;
+                while (it.hasNext()) {
+                    String s = it.next();
+                    // System.out.println("js : "+s.startsWith("["));
+                    // if(s.startsWith("[")){}
+                    JSONObject obj = new JSONObject(s);
+                    post = new Post(this,obj);
+                    if(post!=null){
+                        if (addTop==true){
+                            posts.add(0,post);
+                        }else{
+                            posts.add(post);
+                        }
+
+                    }
+
+                }
+            }
+
+
+          /*  // System.out.println("je suis ici encore");
             ArrayList<String> stringArray = new ArrayList<String>();
 
             //System.out.println("GET "+rep);
@@ -182,7 +214,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
                 JSONObject obj = new JSONObject(s);
                 post = new Post(this, obj);
                 posts.add(post);
-            }
+            }*/
 
 
         } catch (Exception e) {
@@ -224,6 +256,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
             System.out.println("File is deleted : " + file.getAbsolutePath());
         }
     }
+
     public void  deconnexion(){
         File directory =new File(getResources().getString(R.string.sdcard_path));
 
@@ -260,9 +293,9 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onRefresh() {
+      System.out.println("POSTACTIVITY RESFRESH" );
+       layout.setRefreshing(true);
 
-        layout.setRefreshing(true);
-        Log.d(" onRefresh", "=onRefresh");
         // I create a handler to stop the refresh and show a message after 3s
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -270,32 +303,38 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
                 layout.setRefreshing(false);
                 try {
                     // on récupere les 10 post suivant car l'utilsateur a scroller jusqu'à la fin de la liste
-                    posts.clear();
-                    getPostFromApi(0, NBROFITEM);
+                    //posts.clear(); +posts.get(0).getId()
+                    String lastPost = posts.get(0).getId();
+                    int IlastPosst = Integer.parseInt(lastPost);
+                    int nextPost = IlastPosst+1;
+                    String url = "https://api.partybay.fr/posts?last="+nextPost+"&side=asc&order=id";
+                    getPostFromApi(url, true);
                     adapter = new PostAdapter(PostActivity.this,R.id.lvPost,posts);
                     listView.setAdapter(adapter);
                     listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-
                         @Override
                         public void onScrollStateChanged(AbsListView view, int scrollState) {
                             onScroolStateChange = true;
-                            System.out.println("BOOOOOO 1 "+scrollState+ " " );
+                            System.out.println("onScrollStateChanged" );
+                            System.out.println("onScrollStateChanged view" +view);
+                            System.out.println("onScrollStateChanged scrollState" +scrollState);
                         }
 
                         @Override
                         public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount){
-                            System.out.println("BOOOOOO 2 " +firstVisibleItem+ " " +visibleItemCount+" "+totalItemCount);
-                            int lastInScreen = firstVisibleItem + visibleItemCount +1;
-                            System.out.println("BOOOOOO 3 " + lastInScreen+" " +totalItemCount);
-                           //&& (onScroolStateChange==true)
-                            if(lastInScreen > totalItemCount ){
-                           // if(lastInScreen == (totalItemCount) && (onScroolStateChange==true)){
-                                System.out.println("BOOOOOO 4");
+                            // System.out.println("LOAD" );
+                            //System.out.println("LOAD  firstVisibleItem" + firstVisibleItem);
+
+
+                            int lastInScreen = firstVisibleItem + visibleItemCount;
+                            if(lastInScreen == (totalItemCount) && (onScroolStateChange==true)){
                                 nbr_scroll ++;
                                 try {
 
                                     // on récupere les 10 post suivant car l'utilsateur a scroller jusqu'à la fin de la liste
-                                    getPostFromApi(nbr_scroll*NBROFITEM,NBROFITEM);
+                                    System.out.println("je recupere "+nbr_scroll*NBROFITEM+" item ");
+                                    String url = "https://api.partybay.fr/posts?limit="+NBROFITEM+"&offset="+nbr_scroll*NBROFITEM+"&side=desc&order=id";
+                                    getPostFromApi(url,false);
 
 
                                 } catch (Exception e) {
@@ -313,6 +352,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
                             }
                         }
                     });
+
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -354,7 +394,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         // revenir en haut de la liste
         @Override
         public void onClick(View v) {
-            listView.setSelection(0);
+            //listView.setSelection(0);
         }
     };
 

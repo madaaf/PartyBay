@@ -108,11 +108,14 @@ public class Connexion extends Activity{
                     // j'enregistre dans mon fichier user les info
                     serializeur.setObjet(user);
                     String active = user.getActive();
+
                     if(active.equals("1")){
+                        System.out.println("CHARGEMENT connexion active");
                         Intent intent = new Intent(Connexion.this, PostActivity.class);
                         startActivity(intent);
                         finish();
                     }else{
+                        System.out.println("CHARGEMENT connexion desactive");
                         Intent intent = new Intent(Connexion.this, Activation.class);
                         startActivity(intent);
                         finish();

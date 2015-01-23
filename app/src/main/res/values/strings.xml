@@ -17,13 +17,13 @@
 
 
     <!--PATH SDCARD-->
-    <string name="sdcard_path">/storage/emulated/0/PartyBay/</string>
-    <string name="sdcard_user">/storage/emulated/0/PartyBay/user.serial</string>
-    <string name="sdcard_token">/storage/emulated/0/PartyBay/token.serial</string>
-    <string name="sdcard_photo">/storage/emulated/0/PartyBay/photo.jpeg</string>
-    <string name="sdcard_video">/storage/emulated/0/PartyBay/video.mp4</string>
-    <string name="sdcard_selfie">/storage/emulated/0/PartyBay/selfie.jpeg</string>
-    <string name="sdcard_selfie_blr">/storage/emulated/0/PartyBay/selfie_blr.jpeg</string>
+    <string name="sdcard_path">/storage/sdcard0/PartyBay/</string>
+    <string name="sdcard_user">/storage/sdcard0/PartyBay/user.serial</string>
+    <string name="sdcard_token">/storage/sdcard0/PartyBay/token.serial</string>
+    <string name="sdcard_photo">/storage/sdcard0/PartyBay/photo.jpeg</string>
+    <string name="sdcard_video">/storage/sdcard0/PartyBay/video.mp4</string>
+    <string name="sdcard_selfie">/storage/sdcard0/PartyBay/selfie.jpeg</string>
+    <string name="sdcard_selfie_blr">/storage/sdcard0/PartyBay/selfie_blr.jpeg</string>
 
 
 

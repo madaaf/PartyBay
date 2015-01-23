@@ -75,12 +75,12 @@ public class Chargement extends Activity{
                 System.out.println("USER"+ user.getActive());
 
                 if(user_active.equals("1")){
-                    System.out.println("key active");
+                    System.out.println("CHARGEMENT key active");
                     i = new Intent(Chargement.this, PostActivity.class );
                     startActivity(i);
                     finish();
                 }else{
-                    System.out.println("key don't active");
+                    System.out.println("CHARGEMENT key don't active");
                     i = new Intent(Chargement.this, MyActivity.class );
                     startActivity(i);
                     finish();
@@ -88,7 +88,7 @@ public class Chargement extends Activity{
 
 
             }else{
-                System.out.println("premiere connexion");
+                System.out.println("CHARGEMENT premiere connexion");
                 i = new Intent(Chargement.this, MyActivity.class );
                 startActivity(i);
                 finish();

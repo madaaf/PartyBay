@@ -71,25 +71,45 @@ public class TrackersAdapter extends BaseAdapter {
             viewHolder.trackButton = (ImageButton)convertView.findViewById(R.id.tracker_item_button_track);
             convertView.setTag(viewHolder);
 
+            viewHolder.trackButton.setTag(trackers.get(position).getDoubleTrack());
+
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
+            ((ViewHolder)convertView.getTag()).trackButton.setTag(trackers.get(position).getDoubleTrack());
         }
-        // update the item view
+
+
+
+
+
+        final ViewHolder holder = (ViewHolder) convertView.getTag();
+        // Populate the data into the template view using the data object
         Love item = trackers.get(position);
-        viewHolder.pseudo.setText(item.getPseudo());
+        holder.pseudo.setText(item.getPseudo());
+        if(item.getPicture().equals("null")||item.getPicture().equals("")){
+            holder.picture.setImageResource(R.drawable.post);
+        }else{
+            UrlImageViewHelper.setUrlDrawable(holder.picture, "https://static.partybay.fr/images/users/profile/160x160_" + item.getPicture());
+        }
+
+
+
         //viewHolder.link.setImageDrawable(R.drawable.photo_fond);
         if(doubleTrack.contains(item.getUser_id())){
-            viewHolder.trackButton.setImageResource(R.drawable.button_track);
-        }
-
-        if(item.getPicture().equals("null")||item.getPicture().equals("")){
-            viewHolder.picture.setImageResource(R.drawable.post);
+            holder.trackButton.setImageResource(R.drawable.button_track);
+            item.setDoubleTrack(true);
         }else{
-            UrlImageViewHelper.setUrlDrawable(viewHolder.picture, "https://static.partybay.fr/images/users/profile/160x160_" + item.getPicture());
-            // String url =  "https://static.partybay.fr/images/users/profile/160x160_" + item.getPicture();
-            //Ion.with(viewHolder.picture).placeholder(R.drawable.photo_profil).error(R.drawable.photo_profil).load(url);
-
+            item.setDoubleTrack(false);
         }
+
+        holder.trackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+             //   if(v.item.getDoubleTrack())
+            }
+        });
+
+
 
 
         return convertView;

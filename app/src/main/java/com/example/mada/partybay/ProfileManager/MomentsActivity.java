@@ -116,7 +116,7 @@ public class MomentsActivity extends Fragment implements SwipeRefreshLayout.OnRe
                     JSONObject obj = new JSONObject(s);
                     post = new Post(getActivity(),obj);
                      if(post!=null){
-                        //System.out.println("jajoute le poste numero = "+post.getId());
+                         System.out.println("jajoute le poste numero = "+post.getId());
                          posts.add(post);
                     }
 

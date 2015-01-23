@@ -37,7 +37,8 @@ public class Love implements Serializable {
         }
     }
 
-
+    public Boolean getDoubleTrack() { return doubleTrack; }
+    public void setDoubleTrack(Boolean doubleTrack) { this.doubleTrack = doubleTrack; }
     public int getUser_id(){return user_id;}
     public String getPicture() {return picture;}
     public String getPseudo() {return pseudo;}
