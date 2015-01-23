@@ -40,7 +40,7 @@
                 android:textColor="@color/white"
                 />
 
-            <com.example.mada.partybay.Class.MLRoundedImageView
+            <fr.partybay.android.Class.MLRoundedImageView
                 android:id="@+id/item_album_selfie"
                 android:layout_width="65dp"
                 android:layout_height="65dp"

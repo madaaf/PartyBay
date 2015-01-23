@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.mada.partybay" >
+    package="fr.partybay.android" >
 
 
 
@@ -15,7 +15,7 @@
     <uses-permission android:name="android.permission.FLASHLIGHT"/>
 
     <uses-feature android:name="android.hardware.camera" />
-    <used-feature android:name="android.hardware.camera.setParameters" />
+    <uses-feature android:name="android.hardware.camera.setParameters" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-feature android:name="android.hardware.screen.portrait" />
     <uses-feature android:name="android.hardware.camera.front" android:required="false" />
@@ -115,7 +115,13 @@
             android:label="@style/AppTheme"/>
 
 
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyAsmZkqdinooipr5nMEZ-BxEz4OYzpsKvU"/>
 
     </application>
 

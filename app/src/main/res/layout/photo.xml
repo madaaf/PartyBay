@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".Moments" >
 
-    <com.example.mada.partybay.Class.SquareImageView
+    <fr.partybay.android.Class.SquareImageView
         android:id="@+id/photo_moment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

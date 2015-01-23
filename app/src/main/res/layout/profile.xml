@@ -16,7 +16,7 @@
             android:adjustViewBounds="true"/>
 
 
-        <com.example.mada.partybay.Class.MLRoundedImageView
+        <fr.partybay.android.Class.MLRoundedImageView
             android:id="@+id/profile_photo"
             android:layout_width="160dp"
             android:layout_height="160dp"
