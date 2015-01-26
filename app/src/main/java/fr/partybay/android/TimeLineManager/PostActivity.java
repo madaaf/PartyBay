@@ -125,16 +125,13 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 onScroolStateChange = true;
-                System.out.println("onScrollStateChanged" );
+               /* System.out.println("onScrollStateChanged" );
                 System.out.println("onScrollStateChanged view" +view);
-                System.out.println("onScrollStateChanged scrollState" +scrollState);
+                System.out.println("onScrollStateChanged scrollState" +scrollState);*/
             }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount){
-               // System.out.println("LOAD" );
-                //System.out.println("LOAD  firstVisibleItem" + firstVisibleItem);
-
 
                 int lastInScreen = firstVisibleItem + visibleItemCount;
                 if(lastInScreen == (totalItemCount) && (onScroolStateChange==true)){
@@ -154,10 +151,8 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
                 }
 
                 if(firstVisibleItem ==0){
-                    //Log.d(" firstVisibleItem", "=0");
                     layout.setEnabled(true);
                 }else{
-                    // Log.d(" firstVisibleItem", "!=0");
                     layout.setEnabled(false);
                 }
             }
@@ -168,10 +163,6 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
     // get posts from api
     public void getPostFromApi(String urlapi, Boolean addTop) throws Exception {
-
-        // ThreadLoadPost = new LoadListenerThread(pos_debut,nbr_item);
-        // ThreadLoadPost.start();
-        System.out.println(urlapi);
 
         RestClient client = new RestClient(this,urlapi);
         // je recupere un token dans la sd carte
@@ -192,8 +183,6 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
             }
 
 
-
-            System.out.println("PostActovity get rep "+rep);
             if (rep!=null && rep.length()>2){
                 // System.out.println("je suis ici encore");
                 ArrayList<String> stringArray = new ArrayList<String>();
@@ -218,21 +207,6 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
                 }
             }
-
-
-          /*  // System.out.println("je suis ici encore");
-            ArrayList<String> stringArray = new ArrayList<String>();
-
-            //System.out.println("GET "+rep);
-            stringArray=jsonStringToArray(rep);
-            Iterator<String> it = stringArray.iterator();
-            Post post = null;
-            while (it.hasNext()) {
-                String s = it.next();
-                JSONObject obj = new JSONObject(s);
-                post = new Post(this, obj);
-                posts.add(post);
-            }*/
 
 
         } catch (Exception e) {
@@ -311,7 +285,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onRefresh() {
-      System.out.println("POSTACTIVITY RESFRESH" );
+      //System.out.println("POSTACTIVITY RESFRESH" );
        layout.setRefreshing(true);
 
         // I create a handler to stop the refresh and show a message after 3s
@@ -333,9 +307,10 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
                         @Override
                         public void onScrollStateChanged(AbsListView view, int scrollState) {
                             onScroolStateChange = true;
+                            /*
                             System.out.println("onScrollStateChanged" );
                             System.out.println("onScrollStateChanged view" +view);
-                            System.out.println("onScrollStateChanged scrollState" +scrollState);
+                            System.out.println("onScrollStateChanged scrollState" +scrollState);*/
                         }
 
                         @Override

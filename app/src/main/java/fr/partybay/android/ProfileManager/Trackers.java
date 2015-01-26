@@ -23,11 +23,13 @@ import fr.partybay.android.R;
 /**
  * Created by mada on 11/01/15.
  */
-public class Trackers extends Fragment {
+public class Trackers extends Fragment{
 
     private ArrayList<Love> Trackers = null;
     private TrackersAdapter adapter = null;
     private String user_id;
+    private String infolove;
+    private String id_post;
 
     private TreeMap<Integer, Love> trackersTree = new TreeMap<Integer, Love>();
     private TreeMap<Integer, Love> trackedTree = new TreeMap<Integer, Love>();
@@ -44,6 +46,26 @@ public class Trackers extends Fragment {
         if (data != null) {
             user_id = data.getString("user_id", "ok");
         }
+
+       /* Bundle data = getArguments();
+        if (data != null) {
+            infolove = data.getString("infoLove", "ok");
+
+            System.out.println("TRACKERS infolove"+infolove);
+
+            int index = infolove.indexOf('/');
+            if(index!=-1){
+                id_post =infolove.substring(0,index) ;
+                user_id=infolove.substring(index+1,infolove.length());
+                System.out.println("TRACKERS lover  "+id_post+" "+user_id);
+            }else{
+                user_id=infolove;
+                System.out.println("TRACKERS moi  "+user_id);
+            }
+
+
+        }*/
+
 
 
         try {

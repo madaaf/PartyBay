@@ -1,5 +1,6 @@
 package fr.partybay.android.ProfileManager;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,32 +15,37 @@ import android.support.v4.app.FragmentPagerAdapter;
  * sections of the app.
  */
 public class ProfileViewPagerAdapter extends FragmentPagerAdapter {
-    String user_id = null;
+    private String user_id = null;
+    private Context context;
 
 
 
-    public ProfileViewPagerAdapter(FragmentManager fm,String user_id) {
+    public ProfileViewPagerAdapter(FragmentManager fm,String user_id, Context context) {
         super(fm);
         this.user_id=user_id;
+        this.context=context;
     }
 
     @Override
     public Fragment getItem(int position) {
         Bundle args = new Bundle();
-        args.putString("user_id",user_id);
         //System.out.println(" ma position "+position);
         switch(position){
             case 0 : {
+                args.putString("user_id",user_id);
                 Story story = new Story();
                 story.setArguments(args);
                 return story;
             }
             case 1 : {
+                args.putString("user_id",user_id);
                 MomentsActivity ma = new MomentsActivity();
                 ma.setArguments(args);
                 return ma;
             }
             case 2 : {
+
+                args.putString("user_id",user_id);
                 Trackers trackers = new Trackers();
                 trackers.setArguments(args);
                 return trackers;

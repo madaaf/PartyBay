@@ -14,12 +14,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import fr.partybay.android.Activity.CameraSelfie;
-import fr.partybay.android.Class.Blur;
-import fr.partybay.android.Class.RestClient;
-import fr.partybay.android.Class.SerializeurMono;
-import fr.partybay.android.Class.User;
-import fr.partybay.android.R;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
@@ -29,6 +23,13 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+
+import fr.partybay.android.Activity.CameraSelfie;
+import fr.partybay.android.Class.Blur;
+import fr.partybay.android.Class.RestClient;
+import fr.partybay.android.Class.SerializeurMono;
+import fr.partybay.android.Class.User;
+import fr.partybay.android.R;
 
 /**
  * Created by mada on 10/11/2014.
@@ -101,7 +102,7 @@ public class ProfileViewPagerActivity extends FragmentActivity{
 
         // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
-        mAppSectionsPagerAdapter = new ProfileViewPagerAdapter(getSupportFragmentManager(),user.getId());
+        mAppSectionsPagerAdapter = new ProfileViewPagerAdapter(getSupportFragmentManager(),user.getId(),this);
 
         markerMoments= (View)findViewById(R.id.markerMoments);
         markerTrackers=(View)findViewById(R.id.markerTrackers);

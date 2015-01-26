@@ -20,7 +20,6 @@ import fr.partybay.android.Class.RestClient;
 import fr.partybay.android.Class.SerializeurMono;
 import fr.partybay.android.Class.User;
 import fr.partybay.android.ProfileManager.ProfileViewPagerActivity;
-import fr.partybay.android.ProfileManager.Trackers;
 import fr.partybay.android.R;
 
 /**
@@ -93,14 +92,14 @@ public class PostAdapter extends ArrayAdapter<Post>  {
             convertView.setTag(viewHolder);
             viewHolder.loveButton.setTag(posts.get(position).getId());
             viewHolder.lovers.setTag(posts.get(position).getId());
-            viewHolder.loversList.setTag(posts.get(position).getId() + "/"+posts.get(position).getUser_id());
+            viewHolder.loversList.setTag(posts.get(position).getId() + "/"+posts.get(position).getUser_id()+"/"+myUser_id);
             viewHolder.user_profile.setTag(posts.get(position).getUser_id());
             viewHolder.link.setTag(posts.get(position).getId() + "/"+posts.get(position).getUser_id());
 
         }else{
             ((ViewHolder)convertView.getTag()).loveButton.setTag(posts.get(position).getId());
             ((ViewHolder)convertView.getTag()).lovers.setTag(posts.get(position).getId());
-            ((ViewHolder)convertView.getTag()).loversList.setTag(posts.get(position).getId() + "/"+posts.get(position).getUser_id());
+            ((ViewHolder)convertView.getTag()).loversList.setTag(posts.get(position).getId() + "/"+posts.get(position).getUser_id()+"/"+myUser_id);
             ((ViewHolder)convertView.getTag()).user_profile.setTag(posts.get(position).getUser_id());
             ((ViewHolder)convertView.getTag()).link.setTag(posts.get(position).getId() + "/"+posts.get(position).getUser_id());
         }
@@ -201,9 +200,15 @@ public class PostAdapter extends ArrayAdapter<Post>  {
             @Override
             public void onClick(View v) {
                 String infoLove = String.valueOf(v.getTag());
-                Intent i = new Intent(context,Trackers.class);
+                Intent i = new Intent(context,LoversListActivity.class);
                 i.putExtra("infoLove",infoLove);
                 context.startActivity(i);
+/*
+                Bundle args = new Bundle();
+                Trackers track = new Trackers();
+                track.setArguments(args);
+                return (Fragment)track;*/
+
             }
         });
 
