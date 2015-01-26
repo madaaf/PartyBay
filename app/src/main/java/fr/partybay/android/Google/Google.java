@@ -1,4 +1,4 @@
-package fr.partybay.android.Class;
+package fr.partybay.android.Google;
 
 import android.app.ActionBar;
 import android.app.Activity;

@@ -34,6 +34,8 @@ import fr.partybay.android.ProfileManager.ProfileViewPagerActivity;
 import fr.partybay.android.R;
 
 
+
+
 /**
  * Created by mada on 05/11/2014.
  */
@@ -56,6 +58,8 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
     private String my_user_id;
 
     private SeekBar volumeControl = null;
+
+
 
 
     @Override
@@ -82,6 +86,8 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         listView = (ListView) findViewById(R.id.lvPost);
         entete = (TextView)findViewById(R.id.entete);
         volumeControl = (SeekBar) findViewById(R.id.volume_bar);
+
+
         entete.setTypeface(font);
 
 

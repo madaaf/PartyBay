@@ -87,7 +87,7 @@
             android:label="@style/AppTheme"/>
 
         <activity
-            android:name=".Class.Google"
+            android:name=".Google.Google"
             android:label="@style/AppTheme"/>
 
 

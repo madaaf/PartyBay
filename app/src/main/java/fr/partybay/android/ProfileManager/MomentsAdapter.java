@@ -9,11 +9,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import fr.partybay.android.R;
-import fr.partybay.android.TimeLineManager.Post;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import java.util.ArrayList;
+
+import fr.partybay.android.R;
+import fr.partybay.android.TimeLineManager.Post;
 
 /**
  * Created by mada on 12/01/15.
@@ -66,7 +67,7 @@ public class MomentsAdapter extends BaseAdapter {
         Post item = posts.get(position);
 
 
-        UrlImageViewHelper.setUrlDrawable(viewHolder.link, "https://static.partybay.fr/images/posts/640x640_" + item.getLink());
+        UrlImageViewHelper.setUrlDrawable(viewHolder.link, "https://static.partybay.fr/images/posts/160x160_" + item.getLink());
         //String url = "https://static.partybay.fr/images/posts/640x640_" + item.getLink();
         //Ion.with(viewHolder.link).placeholder(R.drawable.photo_profil).error(R.drawable.photo_profil).load(url);
         return convertView;

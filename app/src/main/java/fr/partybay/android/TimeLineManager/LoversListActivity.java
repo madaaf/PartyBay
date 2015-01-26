@@ -52,7 +52,7 @@ public class LoversListActivity extends Activity{
         String infoLove = bundle.getString("infoLove");
 
         int index = infoLove.indexOf('/');
-        int secondIndex = IndexOfSecond(infoLove, "/"); 
+        int secondIndex = IndexOfSecond(infoLove, "/");
 
         id_post =infoLove.substring(0,index) ;
         id_user = infoLove.substring(index+1,secondIndex);

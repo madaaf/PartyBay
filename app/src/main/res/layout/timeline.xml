@@ -43,23 +43,29 @@
 
     </RelativeLayout>
 
-
-
-<RelativeLayout
-    android:id="@+id/timeline_seekbar"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/PartyBay">
-
-    <SeekBar
-        android:id="@+id/volume_bar"
+ <RelativeLayout
+        android:id="@+id/timeline_seekbar"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:max="100"
-        android:progress="0"
-        android:secondaryProgress="0" />
+        android:layout_below="@+id/PartyBay">
 
+     <TextView
+         android:layout_width="match_parent"
+         android:layout_height="200dp"
+         android:background="@color/swype_3"
+         android:gravity="center"
+         android:text="PARALLAXED"
+         android:textSize="50sp" />
+
+
+     <SeekBar
+            android:id="@+id/volume_bar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:max="100"
+            android:progress="0"
+            android:secondaryProgress="0" />
 
 
 </RelativeLayout>
