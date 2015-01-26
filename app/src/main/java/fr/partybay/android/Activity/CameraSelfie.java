@@ -81,7 +81,7 @@ public class CameraSelfie extends Activity {
                     copy(imageSelfie,imageBlur);
                     Bitmap blr = decodeSampledBitmapFromFile((getResources().getString(R.string.sdcard_selfie_blr)), 500, 300);
                     Blur blur = new Blur();
-                    final Bitmap bitmap3 = blur.fastblur(blr,27);
+                    final Bitmap bitmap3 = blur.fastblur(blr,17);
                     FileOutputStream fOut = new FileOutputStream(imageBlur);
                     bitmap3.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
                     fOut.flush();

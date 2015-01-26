@@ -11,17 +11,9 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import fr.partybay.android.Activity.CameraAc;
-import fr.partybay.android.Activity.Chargement;
-import fr.partybay.android.Class.RestClient;
-import fr.partybay.android.Class.SerializeurMono;
-import fr.partybay.android.Class.User;
-import fr.partybay.android.MenuManager.MenuViewPagerActivity;
-import fr.partybay.android.ProfileManager.ProfileViewPagerActivity;
-import fr.partybay.android.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,6 +23,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import fr.partybay.android.Activity.CameraAc;
+import fr.partybay.android.Activity.Chargement;
+import fr.partybay.android.Class.RestClient;
+import fr.partybay.android.Class.SerializeurMono;
+import fr.partybay.android.Class.User;
+import fr.partybay.android.MenuManager.MenuViewPagerActivity;
+import fr.partybay.android.ProfileManager.ProfileViewPagerActivity;
+import fr.partybay.android.R;
 
 
 /**
@@ -50,10 +51,11 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
     private Typeface font;
     private TextView entete;
     private int nbr_scroll = 0 ;
-
     private final static int NBROFITEM = 5;
     private SerializeurMono<User> serializeur_user;
     private String my_user_id;
+
+    private SeekBar volumeControl = null;
 
 
     @Override
@@ -70,8 +72,6 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
         layout = (SwipeRefreshLayout) findViewById(R.id.swype);
         layout.setOnRefreshListener(this);
-
-        // Set the refresh swype color scheme
         layout.setColorScheme( R.color.swype_1, R.color.swype_2, R.color.swype_3, R.color.swype_4);
 
 
@@ -81,8 +81,25 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         moment = (ImageButton) findViewById(R.id.moment);
         listView = (ListView) findViewById(R.id.lvPost);
         entete = (TextView)findViewById(R.id.entete);
+        volumeControl = (SeekBar) findViewById(R.id.volume_bar);
         entete.setTypeface(font);
 
+
+        volumeControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progressChanged = 0;
+
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
+                progressChanged = progress;
+            }
+
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+
+            public void onStopTrackingTouch(SeekBar seekBar) {
+               System.out.println("ok");
+            }
+        });
 
         entete.setOnClickListener(enteteListener);
 
@@ -103,6 +120,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         // Create the adapter to convert the array to array to views
         adapter = new PostAdapter(this,R.id.lvPost,posts);
         listView.setAdapter(adapter);
+
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -367,6 +385,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         public void onClick(View view) {
             Intent intent = new Intent(PostActivity.this, MenuViewPagerActivity.class);
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
 
         }
     };

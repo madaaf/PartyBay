@@ -45,9 +45,30 @@
 
 
 
+<RelativeLayout
+    android:id="@+id/timeline_seekbar"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/PartyBay">
+
+    <SeekBar
+        android:id="@+id/volume_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:max="100"
+        android:progress="0"
+        android:secondaryProgress="0" />
+
+
+
+</RelativeLayout>
+
+
+
     <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swype"
-        android:layout_below="@+id/PartyBay"
+        android:layout_below="@+id/timeline_seekbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -64,38 +85,6 @@
 </android.support.v4.widget.SwipeRefreshLayout>
 
 
-
-
-
-    <!--
-
-    <com.example.mada.partybay.Class.PullToRefresh
- >
-    </com.example.mada.partybay.Class.PullToRefresh>
-      <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    </android.support.v4.widget.SwipeRefreshLayout>
-
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/rlLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/PartyBay"
-            tools:context="${packageName}.${activityClass}" >
-
-            <ListView
-                android:id="@+id/lvPost"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true" >
-
-            </ListView>
-
-        </RelativeLayout>
-    -->
     <ImageButton
         android:id="@+id/moment"
         android:layout_width="wrap_content"

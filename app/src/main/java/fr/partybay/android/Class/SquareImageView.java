@@ -1,5 +1,9 @@
 package fr.partybay.android.Class;
 
+/**
+ * Created by mada on 25/01/15.
+ */
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ImageView;

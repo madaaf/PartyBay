@@ -2,18 +2,18 @@ package fr.partybay.android.TimeLineManager;
 
 import android.content.Context;
 
-import fr.partybay.android.Class.Love;
-import fr.partybay.android.Class.MyDate;
-import fr.partybay.android.Class.SerializeurMono;
-import fr.partybay.android.Class.User;
-import fr.partybay.android.R;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import fr.partybay.android.Class.Love;
+import fr.partybay.android.Class.MyDate;
+import fr.partybay.android.Class.SerializeurMono;
+import fr.partybay.android.Class.User;
+import fr.partybay.android.R;
 
 /**
  * Created by mada on 07/11/2014.
@@ -40,8 +40,8 @@ public class Post {
     String myUser_id;
 
 
-    public Post(Context c, JSONObject obj) {
-        this.context = c;
+    public Post(Context context, JSONObject obj) {
+        this.context = context;
         serializeur = new SerializeurMono<User>(context.getResources().getString(R.string.sdcard_user));
         User user = serializeur.getObject();
         myUser_id = user.getId();
@@ -106,7 +106,7 @@ public class Post {
                             String s = it.next();
                             JSONObject objT = null;
                             objT = new JSONObject(s);
-                            love = new Love(objT);
+                            love = new Love(objT,context);
                             String test2 = String.valueOf(love.getUser_id());
                             if (test2.equals(myUser_id)) {
                                 PostIsLoved=true;

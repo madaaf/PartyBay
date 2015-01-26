@@ -24,6 +24,7 @@ public class MenuViewPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int pos) {
         switch(pos){
             case 0 : {
+                //Reglage reglage = new Reglage();
                 return new Reglage();
             }
             case 1 : {

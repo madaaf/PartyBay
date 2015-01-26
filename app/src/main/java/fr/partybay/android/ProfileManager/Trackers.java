@@ -7,10 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import fr.partybay.android.Class.Love;
-import fr.partybay.android.Class.RestClient;
-import fr.partybay.android.R;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,6 +15,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
+
+import fr.partybay.android.Class.Love;
+import fr.partybay.android.Class.RestClient;
+import fr.partybay.android.R;
 
 /**
  * Created by mada on 11/01/15.
@@ -31,19 +31,7 @@ public class Trackers extends Fragment {
 
     private TreeMap<Integer, Love> trackersTree = new TreeMap<Integer, Love>();
     private TreeMap<Integer, Love> trackedTree = new TreeMap<Integer, Love>();
-    private ArrayList<Integer> doubleTrack = new ArrayList<Integer>();
 
-/*
-
-    Map<String, Love> trackersTrieAlpha = new TreeMap(Collator.getInstance(Locale.FRENCH));
-    Map<String, Love> trackedTrieAlpha = new TreeMap(Collator.getInstance(Locale.FRENCH));
-
-    private Map<Love,Boolean> arrayTrackers = new TreeMap<Love, Boolean>();
-
-    private Map<Integer,Love> arrayDoubleTrack = new TreeMap<Integer,Love>();
-
-//    private TreeMap<Integer,String,Boolean> trackersMap = new TreeMap<Integer,String,Boolean>();
-*/
 
 
     @Override
@@ -71,38 +59,19 @@ public class Trackers extends Fragment {
         }
 
 
-        // Creer le tableau des doubleTrack
-        for (Map.Entry<Integer, Love> entree : trackersTree.entrySet()){
+        // Parcours des entrées (clef, valeur)
+        for (Map.Entry<Integer, Love> entree  : trackersTree.entrySet()) {
+            // clé +entree.getKey()
+            // valeur entree.getValue()
+            Love love =  entree.getValue();
             if(trackedTree.containsKey(entree.getKey())){
-                doubleTrack.add(entree.getKey());
-            }
-        }
-
-
-
-
-/*
-
-
-
-        // Creer le tableau des doubleTrack
-        for (Map.Entry<Integer, Love> entree : trackersTree.entrySet()){
-            if(arrayDoubleTrack.containsKey(entree.getKey())){
-               // System.out.println("TRACKER key true : "+entree.getKey()+" Valeur : "+entree.getValue());
-                arrayTrackers.put(entree.getValue(),true);
+                love.setDoubleTrack(true);
             }else{
-                System.out.println("TRACKER key false : "+entree.getKey()+" Valeur : "+entree.getValue());
-                arrayTrackers.put(entree.getValue(),false);
+                love.setDoubleTrack(false);
             }
 
         }
 
-
-
-        System.out.println("TRACKER PARCOURIRE TABLEAU "+ arrayDoubleTrack);
-        System.out.println("TRACKER PARCOURIRE TABLEAU tracker array "+ arrayTrackers);
-
-*/
 
 
 
@@ -110,9 +79,7 @@ public class Trackers extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.trackers, container, false);
-        adapter = new TrackersAdapter(getActivity(),Trackers,doubleTrack);
-       // adapter = new TrackersAdapter(getActivity(),trackersTree,trackedTree);
-       // adapter = new LoverListAdapter(getActivity(), R.id.trackerslistView, trackersTree,trackedTree);
+        adapter = new TrackersAdapter(getActivity(),Trackers);
         ListView listView = (ListView) rootView.findViewById(R.id.trackerslistView);
         listView.setAdapter(adapter);
         return rootView;
@@ -145,7 +112,7 @@ public class Trackers extends Fragment {
         while (it.hasNext()) {
             String s = it.next();
             JSONObject obj = new JSONObject(s);
-            tracker = new Love(obj);
+            tracker = new Love(obj,getActivity());
             Trackers.add(tracker);
             trackersTree.put(tracker.getUser_id(), tracker);
 
@@ -191,7 +158,7 @@ public class Trackers extends Fragment {
         while (it.hasNext()) {
             String s = it.next();
             JSONObject obj = new JSONObject(s);
-            tracker = new Love(obj);
+            tracker = new Love(obj,getActivity());
             //  Trackers.add(tracker);
             trackedTree.put(tracker.getUser_id(), tracker);
         }

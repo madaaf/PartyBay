@@ -7,11 +7,11 @@ import android.os.Bundle;
 
 import java.io.File;
 
-import fr.partybay.android.Class.Google;
 import fr.partybay.android.Class.SerializeurMono;
 import fr.partybay.android.Class.Token;
 import fr.partybay.android.Class.User;
 import fr.partybay.android.R;
+import fr.partybay.android.TimeLineManager.PostActivity;
 
 /**
  * Created by mada on 06/11/2014.
@@ -31,7 +31,6 @@ public class Chargement extends Activity{
 
         ActionBar bar = this.getActionBar();
         bar.hide();
-
 
         thread = new chargementThread();
         thread.start();
@@ -76,7 +75,7 @@ public class Chargement extends Activity{
 
                 if(user_active.equals("1")){
                     System.out.println("CHARGEMENT key active");
-                    i = new Intent(Chargement.this, Google.class);
+                    i = new Intent(Chargement.this, PostActivity.class);
                     startActivity(i);
                     finish();
                 }else{

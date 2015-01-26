@@ -10,12 +10,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import fr.partybay.android.Class.Love;
-import fr.partybay.android.ProfileManager.ProfileViewPagerActivity;
-import fr.partybay.android.R;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import java.util.ArrayList;
+
+import fr.partybay.android.Class.Love;
+import fr.partybay.android.ProfileManager.ProfileViewPagerActivity;
+import fr.partybay.android.R;
 
 /**
  * Created by mada on 15/01/15.
@@ -92,10 +93,6 @@ public class LoverListAdapter extends ArrayAdapter<Love> {
             }else{
                 UrlImageViewHelper.setUrlDrawable(holder.picture, "https://static.partybay.fr/images/users/profile/160x160_" + lovers.get(position).getPicture());
             }
-
-            //String url =  "https://static.partybay.fr/images/users/profile/160x160_" + lovers.get(position).getPicture();
-            //Ion.with(holder.picture).placeholder(R.drawable.photo_profil).error(R.drawable.photo_profil).load(url);
-
 
         }
 

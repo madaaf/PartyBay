@@ -34,12 +34,14 @@ public class AlbumAdapter extends FragmentPagerAdapter {
     public AlbumAdapter(FragmentManager fm,Context context,String item_id,String my_id) {
         super(fm);
         this.context=context;
-        // je récupere l'id de la photo que l'utilsateur a selectionné
-        System.out.println("BUSY ID DU POST ==>"+ item_id);
         this.item_id = item_id;
+        this.my_id = my_id;
+
+        System.out.println("ALBUM ADAPTER  item id ==>"+ item_id);
+        System.out.println("ALBUM ADAPTE R my id ==>"+ my_id);
 
         //récupere information du post sur l'api
-        RestClient client = new RestClient(context,"https://api.partybay.fr/users/"+my_id+"/posts?offset=0");
+        RestClient client = new RestClient(context,"https://api.partybay.fr/users/"+my_id+"/posts?limit=50&offset=0&side=desc");
         // je recupere un token dans la sd carte
         String access_token = client.getTokenValid();
         client.AddHeader("Authorization","Bearer "+access_token);
@@ -61,7 +63,6 @@ public class AlbumAdapter extends FragmentPagerAdapter {
                     post = new Post(context,obj);
                     if(post!=null){
                         tabId.add(Integer.valueOf(post.getId()));
-                        //System.out.println("jajoute le poste numero = "+post.getId());
                         posts.add(post);
                     }
 
@@ -84,11 +85,13 @@ public class AlbumAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int pos) {
         AlbumFragment albumFragment = new AlbumFragment();
         Bundle data = new Bundle();
-
         data.putInt("current_page", pos+1);
-        data.putString("my_id", posts.get(index).getUser_id());
+        //data.putString("my_id", posts.get(index).getUser_id());
+        data.putString("my_id", my_id);
         index = pos+indexPostActuel;
 
+        //System.out.println("ALBUM ADAPTER  current_page=>"+ pos+1 );
+       // System.out.println("ALBUM ADAPTER  index=>"+ index );
 
         // permet de voir tout l'album en cercle jusqu'a revenir à la 1 er photo qu'on a ouvert
        if(index<(posts.size())){
@@ -107,7 +110,10 @@ public class AlbumAdapter extends FragmentPagerAdapter {
 
 
     @Override
-    public int getCount() {return posts.size();}
+    public int getCount() {
+       // System.out.println("ALBUM ADAPTER  posts.size()=>"+  posts.size());
+        return posts.size();
+    }
 
     public ArrayList<String> jsonStringToArray(String jsonString) throws JSONException {
         ArrayList<String> stringArray = new ArrayList<String>();

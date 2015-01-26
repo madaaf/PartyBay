@@ -10,19 +10,19 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import fr.partybay.android.Album.AlbumActivity;
-import fr.partybay.android.Class.RestClient;
-import fr.partybay.android.Class.SerializeurMono;
-import fr.partybay.android.Class.User;
-import fr.partybay.android.R;
-import fr.partybay.android.TimeLineManager.Post;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import fr.partybay.android.Album.AlbumActivity;
+import fr.partybay.android.Class.RestClient;
+import fr.partybay.android.Class.SerializeurMono;
+import fr.partybay.android.Class.User;
+import fr.partybay.android.R;
+import fr.partybay.android.TimeLineManager.Post;
 
 /**
  * Created by mada on 11/01/15.
@@ -52,7 +52,7 @@ public class MomentsActivity extends Fragment implements SwipeRefreshLayout.OnRe
 
          // on recupere les 10 premier postes
         try {
-            getPostFromApi(0,NBROFITEM);
+            getPostFromApi(0,50);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -92,6 +92,7 @@ public class MomentsActivity extends Fragment implements SwipeRefreshLayout.OnRe
     public void getPostFromApi(int pos_debut, int nbr_item) throws Exception {
         // ThreadLoadPost = new LoadListenerThread(pos_debut,nbr_item);
         // ThreadLoadPost.start();
+       // RestClient client = new RestClient(getActivity(),"https://api.partybay.fr/users/"+user_id+"/posts");
         RestClient client = new RestClient(getActivity(),"https://api.partybay.fr/users/"+user_id+"/posts?limit="+nbr_item+"&offset=0&side=desc");
         //System.out.println("https://api.partybay.fr/users/"+user.getId()+"/posts?limit="+nbr_item+"&offset=0&side=desc");
 
@@ -116,7 +117,6 @@ public class MomentsActivity extends Fragment implements SwipeRefreshLayout.OnRe
                     JSONObject obj = new JSONObject(s);
                     post = new Post(getActivity(),obj);
                      if(post!=null){
-                         System.out.println("jajoute le poste numero = "+post.getId());
                          posts.add(post);
                     }
 

@@ -1,21 +1,25 @@
 package fr.partybay.android.Class;
 
+import android.content.Context;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.Serializable;
 
 /**
  * Created by mada on 07/01/15.
  */
-public class Love implements Serializable {
+public class Love {
 
     private int user_id;
+    private String my_user_id;
     private String picture;
     private String pseudo;
-    private Boolean doubleTrack;
+    private Boolean doubleTrack = false;
+    private Context context;
 
-    public Love(JSONObject obj) {
+    public Love(JSONObject obj, Context context) {
+        this.context = context;
+
         try {
 
             if(obj.has("id")){
@@ -35,6 +39,11 @@ public class Love implements Serializable {
         } catch (JSONException e) {
             System.out.println("Err : "+e.getMessage());
         }
+/*
+        serializeurUser = new SerializeurMono<User>(context.getResources().getString(R.string.sdcard_user));
+        User user = serializeurUser.getObject();
+        my_user_id = user.getId();
+*/
     }
 
     public Boolean getDoubleTrack() { return doubleTrack; }
@@ -42,11 +51,14 @@ public class Love implements Serializable {
     public int getUser_id(){return user_id;}
     public String getPicture() {return picture;}
     public String getPseudo() {return pseudo;}
-    @Override
-    public String toString(){
-        //System.out.println("id: "+user_id+" picture: "+picture+" pseudo: "+pseudo);
-        return null;
-    }
+
+
+
+
+
+
+
+
 
 
 }

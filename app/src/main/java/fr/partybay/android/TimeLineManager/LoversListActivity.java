@@ -5,15 +5,15 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ListView;
 
-import fr.partybay.android.Class.Love;
-import fr.partybay.android.Class.RestClient;
-import fr.partybay.android.R;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import fr.partybay.android.Class.Love;
+import fr.partybay.android.Class.RestClient;
+import fr.partybay.android.R;
 
 /**
  * Created by mada on 15/01/15.
@@ -73,7 +73,7 @@ public class LoversListActivity extends Activity{
                 String s = it.next();
                 JSONObject objT = null;
                 objT = new JSONObject(s);
-                love = new Love(objT);
+                love = new Love(objT,this);
                 Lovers.add(love);
 
             } catch (JSONException e) {
@@ -83,7 +83,7 @@ public class LoversListActivity extends Activity{
 
         //System.out.println("tabLoveLovers SIZE "+Lovers.size());
 
-         adapter = new LoverListAdapter(this,R.id.loversListView,Lovers);
+        adapter = new LoverListAdapter(this,R.id.loversListView,Lovers);
         loversListView.setAdapter(adapter);
 
 

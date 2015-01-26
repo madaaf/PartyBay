@@ -11,15 +11,17 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+
+import java.util.ArrayList;
+
 import fr.partybay.android.Album.AlbumActivity;
 import fr.partybay.android.Class.RestClient;
 import fr.partybay.android.Class.SerializeurMono;
 import fr.partybay.android.Class.User;
 import fr.partybay.android.ProfileManager.ProfileViewPagerActivity;
+import fr.partybay.android.ProfileManager.Trackers;
 import fr.partybay.android.R;
-import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
-
-import java.util.ArrayList;
 
 /**
  * Created by mada on 05/11/2014.
@@ -199,13 +201,13 @@ public class PostAdapter extends ArrayAdapter<Post>  {
             @Override
             public void onClick(View v) {
                 String infoLove = String.valueOf(v.getTag());
-                Intent i = new Intent(context,LoversListActivity.class);
+                Intent i = new Intent(context,Trackers.class);
                 i.putExtra("infoLove",infoLove);
                 context.startActivity(i);
             }
         });
 
-        if( posts.get(position)!=null) {
+        if(posts.get(position)!=null) {
             String Sid =  posts.get(position).getId();
             if (Sid != null) {
                 int i = Integer.parseInt( posts.get(position).getId());

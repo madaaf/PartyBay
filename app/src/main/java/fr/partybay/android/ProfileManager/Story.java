@@ -9,18 +9,18 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import fr.partybay.android.Class.RestClient;
-import fr.partybay.android.Class.SerializeurMono;
-import fr.partybay.android.Class.User;
-import fr.partybay.android.R;
-import fr.partybay.android.TimeLineManager.Post;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import fr.partybay.android.Class.RestClient;
+import fr.partybay.android.Class.SerializeurMono;
+import fr.partybay.android.Class.User;
+import fr.partybay.android.R;
+import fr.partybay.android.TimeLineManager.Post;
 
 /**
  * Created by mada on 11/01/15.
@@ -108,12 +108,9 @@ public class Story extends Fragment  implements SwipeRefreshLayout.OnRefreshList
                 Post post = null;
                 while (it.hasNext()) {
                     String s = it.next();
-                    // System.out.println("js : "+s.startsWith("["));
-                    // if(s.startsWith("[")){}
                     JSONObject obj = new JSONObject(s);
                     post = new Post(getActivity(),obj);
                     if(post!=null){
-                        //System.out.println("jajoute le poste numero = "+post.getId());
                         posts.add(post);
                     }
 
