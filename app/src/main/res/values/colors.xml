@@ -10,5 +10,6 @@
     <color name="swype_2">#ffffbc00</color>
     <color name="swype_3">#ff12ffa0</color>
     <color name="swype_4">#ffff6724</color>
+    <color name="transparent">#00000000 </color>
 
 </resources>

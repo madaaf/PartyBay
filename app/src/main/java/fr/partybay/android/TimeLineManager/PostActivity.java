@@ -3,17 +3,23 @@ package fr.partybay.android.TimeLineManager;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.nirhart.parallaxscroll.views.ParallaxListView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,6 +39,8 @@ import fr.partybay.android.MenuManager.MenuViewPagerActivity;
 import fr.partybay.android.ProfileManager.ProfileViewPagerActivity;
 import fr.partybay.android.R;
 
+// import android.widget.LinearLayout.LayoutParams;
+
 
 
 
@@ -45,7 +53,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
     private ImageButton profile = null;
     private ImageButton moment = null;
     private SwipeRefreshLayout layout;
-    private ListView listView;
+    private ParallaxListView listView;
     private PostAdapter adapter;
     private boolean onScroolStateChange = false;
     private Thread ThreadLoadPost;
@@ -57,7 +65,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
     private SerializeurMono<User> serializeur_user;
     private String my_user_id;
 
-    private SeekBar volumeControl = null;
+
 
 
 
@@ -83,30 +91,9 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         menu = (ImageButton) findViewById(R.id.reglage);
         profile = (ImageButton) findViewById(R.id.profile);
         moment = (ImageButton) findViewById(R.id.moment);
-        listView = (ListView) findViewById(R.id.lvPost);
+        listView = (ParallaxListView) findViewById(R.id.lvPost);
         entete = (TextView)findViewById(R.id.entete);
-        volumeControl = (SeekBar) findViewById(R.id.volume_bar);
-
-
         entete.setTypeface(font);
-
-
-        volumeControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progressChanged = 0;
-
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
-                progressChanged = progress;
-            }
-
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
-            }
-
-            public void onStopTrackingTouch(SeekBar seekBar) {
-               System.out.println("ok");
-            }
-        });
-
         entete.setOnClickListener(enteteListener);
 
 
@@ -123,9 +110,53 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         } catch (Exception e) {
             e.printStackTrace();
         }
-        // Create the adapter to convert the array to array to views
+
+
+        TextView v = new TextView(this);
+        v.setGravity(Gravity.CENTER);
+        v.setTextSize(40);
+        v.setHeight(800);
+        listView.addParallaxedHeaderView(v);
+
+
+        SeekBar seekBar = new SeekBar(this);;
+        seekBar.setMinimumHeight(150);
+        ShapeDrawable thumb = new ShapeDrawable(new OvalShape());
+        thumb.setIntrinsicHeight(70);
+        thumb.setIntrinsicWidth(70);
+        thumb.setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
+        seekBar.setThumb(thumb);
+        listView.addParallaxedHeaderView(seekBar);
+
+        //listView.addHeaderView();
+
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            public void onStopTrackingTouch(SeekBar arg0) {
+                // TODO Auto-generated method stub
+                System.out.println(".....111......."+arg0);
+
+            }
+
+            public void onStartTrackingTouch(SeekBar arg0) {
+                // TODO Auto-generated method stub
+                System.out.println(".....222......."+arg0);
+            }
+
+            public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
+                // TODO Auto-generated method stub
+                System.out.println(".....333......."+arg0+ " " +arg1+" "+arg2);
+            }
+        });
+        listView.addParallaxedHeaderView(seekBar);
+
+
+
+       // Create the adapter to convert the array to array to views
         adapter = new PostAdapter(this,R.id.lvPost,posts);
         listView.setAdapter(adapter);
+
 
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override

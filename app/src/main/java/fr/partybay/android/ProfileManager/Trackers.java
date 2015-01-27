@@ -47,26 +47,6 @@ public class Trackers extends Fragment{
             user_id = data.getString("user_id", "ok");
         }
 
-       /* Bundle data = getArguments();
-        if (data != null) {
-            infolove = data.getString("infoLove", "ok");
-
-            System.out.println("TRACKERS infolove"+infolove);
-
-            int index = infolove.indexOf('/');
-            if(index!=-1){
-                id_post =infolove.substring(0,index) ;
-                user_id=infolove.substring(index+1,infolove.length());
-                System.out.println("TRACKERS lover  "+id_post+" "+user_id);
-            }else{
-                user_id=infolove;
-                System.out.println("TRACKERS moi  "+user_id);
-            }
-
-
-        }*/
-
-
 
         try {
             getTrackersFromApi();

@@ -10,6 +10,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 import fr.partybay.android.Class.RestClient;
 import fr.partybay.android.Class.SerializeurMono;
 import fr.partybay.android.Class.User;
@@ -17,11 +23,6 @@ import fr.partybay.android.ProfileManager.ProfileViewPagerActivity;
 import fr.partybay.android.R;
 import fr.partybay.android.TimeLineManager.LoversListActivity;
 import fr.partybay.android.TimeLineManager.Post;
-import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
-
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 /*
  * Created by mada on 20/10/2014.
@@ -107,7 +108,8 @@ public class AlbumFragment extends Fragment {
         listLovers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String infoLove = post.getId()+"/"+post.getUser_id();
+                String infoLove = post.getId()+"/"+post.getUser_id()+"/"+my_id;
+                System.out.println("INFOLOVE dans album fragment"+infoLove);
                 Intent i = new Intent(v.getContext(),LoversListActivity.class);
                 i.putExtra("infoLove",infoLove);
                 startActivity(i);

@@ -50,13 +50,16 @@ public class LoversListActivity extends Activity{
 
         Bundle bundle = getIntent().getExtras();
         String infoLove = bundle.getString("infoLove");
+        System.out.println("INFOLOVE"+infoLove);
 
         int index = infoLove.indexOf('/');
-        int secondIndex = IndexOfSecond(infoLove, "/");
-
         id_post =infoLove.substring(0,index) ;
+
+        int secondIndex = IndexOfSecond(infoLove, "/");
+        System.out.println("INFOLOVE secondIndex "+secondIndex);
         id_user = infoLove.substring(index+1,secondIndex);
         my_user_id=infoLove.substring(secondIndex+1,infoLove.length());
+
 
 
         try {

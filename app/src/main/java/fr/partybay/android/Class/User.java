@@ -27,11 +27,11 @@ public class User implements Serializable{
     private String hash;
     private String active;
     private String access_token;
-
-
-
-
+    private Boolean doubleTrack;
     private String picture;
+
+
+
 
     public User(JSONObject obj) {
         try {
@@ -128,5 +128,11 @@ public class User implements Serializable{
     public String getStr_password() {
         return str_password;
     }
+
+    public void setDoubleTrack(Boolean doubleTrack) {
+        this.doubleTrack = doubleTrack;
+    }
+
+    public Boolean getDoubleTrack(){return doubleTrack;}
 
 }

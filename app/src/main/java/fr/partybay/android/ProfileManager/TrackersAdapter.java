@@ -102,6 +102,7 @@ public class TrackersAdapter extends BaseAdapter {
                 Intent i = new Intent (context, ProfileViewPagerActivity.class);
                 i.putExtra("user_id",user_id);
                 context.startActivity(i);
+
             }
         });
 

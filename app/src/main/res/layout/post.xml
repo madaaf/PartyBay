@@ -2,13 +2,15 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <RelativeLayout
         android:id="@+id/post_image"
         android:layout_width="fill_parent"
         android:layout_height="345dp"
-        android:scaleType="centerCrop">
+        android:scaleType="centerCrop"
+        android:layout_marginTop="10dp" >
 
         <ImageView
             android:id="@+id/post_photo_fond"
@@ -85,14 +87,16 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/post_image"
-        android:layout_marginBottom="7dp">
+        android:background="@color/white"
+        >
 
         <RelativeLayout
             android:id="@+id/like"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:layout_marginRight="5dp">
+            android:layout_marginRight="5dp"
+            >
 
             <ImageButton
                 android:id="@+id/post_coeur"

@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -69,6 +71,13 @@ public class MomentsActivity extends Fragment implements SwipeRefreshLayout.OnRe
 
          // initialize the GridView
          GridView gridView = (GridView) fragmentView.findViewById(R.id.gridview);
+
+         TextView v = new TextView(getActivity());
+         v.setGravity(Gravity.CENTER);
+         v.setHeight(1050);
+
+         //gridView.addView(v);
+
          gridView.setAdapter(adapter);
          gridView.setOnItemClickListener(this);
 

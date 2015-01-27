@@ -3,11 +3,14 @@ package fr.partybay.android.ProfileManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.TextView;
+
+import com.nirhart.parallaxscroll.views.ParallaxListView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,6 +36,7 @@ public class Story extends Fragment  implements SwipeRefreshLayout.OnRefreshList
     private User user = null;
     private final int NBROFITEM = 15;
     private String user_id;
+    private ParallaxListView lv;
 
 
     @Override
@@ -64,7 +68,12 @@ public class Story extends Fragment  implements SwipeRefreshLayout.OnRefreshList
         // initialize the adapter
         adapter = new StoryAdapter(getActivity(), posts);
         // initialize the GridView
-        ListView lv = (ListView) rootView.findViewById(R.id.TrackinglistView);
+        lv = (ParallaxListView) rootView.findViewById(R.id.TrackinglistView);
+
+        TextView v = new TextView(getActivity());
+        v.setGravity(Gravity.CENTER);
+        v.setHeight(1050);
+        lv.addParallaxedHeaderView(v);
 
 
         lv.setAdapter(adapter);
@@ -86,9 +95,6 @@ public class Story extends Fragment  implements SwipeRefreshLayout.OnRefreshList
 
     // get posts from api
     public void getPostFromApi(int pos_debut, int nbr_item) throws Exception {
-        // ThreadLoadPost = new LoadListenerThread(pos_debut,nbr_item);
-        // ThreadLoadPost.start();
-
         RestClient client = new RestClient(getActivity(),"https://api.partybay.fr/users/"+user_id+"/posts?limit="+nbr_item+"&offset=0&side=desc");
         //System.out.println("https://api.partybay.fr/users/"+user.getId()+"/posts?limit="+nbr_item+"&offset=0&side=desc");
 

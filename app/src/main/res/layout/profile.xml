@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <RelativeLayout
         android:id="@+id/ItemPorfile"
         android:layout_width="fill_parent"
@@ -15,6 +16,13 @@
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"/>
 
+        <ImageView
+            android:id="@+id/profile_track"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="125dp"
+            android:layout_marginLeft="230dp"
+            />
 
         <fr.partybay.android.Class.MLRoundedImageView
             android:id="@+id/profile_photo"
@@ -26,15 +34,16 @@
             />
 
 
+
         <TextView
             android:id="@+id/profile_pseudo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:textColor="#FFFFFF"
             android:layout_below="@+id/profile_photo"
             android:layout_centerHorizontal="true"
-            android:textSize="30dp"
+            android:textSize="25dp"
             android:textStyle="bold"
             android:text="Claire, 23 ans"/>
 
@@ -45,7 +54,7 @@
             android:textColor="#FFFFFF"
             android:layout_centerHorizontal="true"
             android:gravity="center"
-            android:textSize="15dp"
+            android:textSize="11dp"
             android:layout_below="@id/profile_pseudo"
             android:text="Voici une courte description de mon profil blabla blaednjke..."/>
 
@@ -63,6 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Story"
+                android:textStyle="bold"
                 android:textColor="#F83838"
                 android:background="@null"/>
             <View
@@ -76,6 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Moments"
+                android:textStyle="bold"
                 android:textColor="#F83838"
                 android:background="@null" />
 
@@ -90,6 +101,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Relations"
+                android:textStyle="bold"
                 android:textColor="#F83838"
                 android:background="@null"/>
 
@@ -140,11 +152,7 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/ItemPorfile">
-
-
-
+        android:layout_height="wrap_content" >
 
         <android.support.v4.view.ViewPager
             xmlns:android="http://schemas.android.com/apk/res/android"

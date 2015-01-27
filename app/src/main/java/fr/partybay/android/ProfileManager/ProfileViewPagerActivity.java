@@ -1,6 +1,7 @@
 package fr.partybay.android.ProfileManager;
 
 import android.app.ActionBar;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,14 +19,20 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
+import java.util.TreeMap;
 
 import fr.partybay.android.Activity.CameraSelfie;
 import fr.partybay.android.Class.Blur;
+import fr.partybay.android.Class.Love;
 import fr.partybay.android.Class.RestClient;
 import fr.partybay.android.Class.SerializeurMono;
 import fr.partybay.android.Class.User;
@@ -51,12 +58,12 @@ public class ProfileViewPagerActivity extends FragmentActivity{
     TextView pseudoTv;
     ImageView profile_photo;
     ImageView font;
-
-
     User user  = null;
     String user_id_bundle = null;
     String my_user_id = null;
     Boolean itIsMe = false;
+    ImageView Buttontrack = null;
+    private TreeMap<Integer, Love> trackedTree = new TreeMap<Integer, Love>();
 
 
 
@@ -109,6 +116,7 @@ public class ProfileViewPagerActivity extends FragmentActivity{
         markerTracking=(View)findViewById(R.id.markerTracking);
         pseudoTv = (TextView)findViewById(R.id.profile_pseudo);
         profile_photo = (ImageView)findViewById(R.id.profile_photo);
+        Buttontrack = (ImageView)findViewById(R.id.profile_track);
         font=(ImageView)findViewById(R.id.ItemPorfileFont);
 
 
@@ -118,7 +126,6 @@ public class ProfileViewPagerActivity extends FragmentActivity{
             File fichierPhoto = new File(path);
             File fichierPhotoFont = new File(pathFont);
             boolean exist = fichierPhoto.exists();
-
             System.out.println("EXIST"+exist);
             Thread thread = null;
 
@@ -158,7 +165,7 @@ public class ProfileViewPagerActivity extends FragmentActivity{
                                 @Override
                                 public void onCompleted(Exception e, Bitmap result) {
                                     Blur blur = new Blur();
-                                    Bitmap bit = blur.fastblur(result,27);
+                                    Bitmap bit = blur.fastblur(result,7);
                                     font.setImageBitmap(bit);
                                 }
                             });
@@ -170,9 +177,9 @@ public class ProfileViewPagerActivity extends FragmentActivity{
             }
          profile_photo.setOnClickListener(ListenerPhotoSelfie);
 
+
         }else{
             String url = "https://static.partybay.fr/images/users/profile/160x160_" + user.getPicture();
-            System.out.println("URL ok "+url+" "+user.getPicture());
 
             if(user.getPicture().equals("") || user.getPicture().equals("null")){
                 font.setImageResource(R.drawable.photo_fond);
@@ -184,11 +191,10 @@ public class ProfileViewPagerActivity extends FragmentActivity{
                             @Override
                             public void onCompleted(Exception e, Bitmap result) {
                                 Blur blur = new Blur();
-                                Bitmap bit = blur.fastblur(result,27);
+                                Bitmap bit = blur.fastblur(result,7);
                                 font.setImageBitmap(bit);
                             }
                         });
-
 
 
                 UrlImageViewHelper.setUrlDrawable(profile_photo, url);
@@ -199,8 +205,43 @@ public class ProfileViewPagerActivity extends FragmentActivity{
 
 
 
+        try {
+            getTrackedFromApi();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
+
+           int id = Integer.parseInt(user.getId());
+            if(trackedTree.containsKey(id)){
+                Buttontrack.setImageResource(R.drawable.bouton_tracker);
+                user.setDoubleTrack(true);
+            }else{
+                Buttontrack.setImageResource(R.drawable.bouton_untracker);
+                user.setDoubleTrack(false);
+            }
+
+        if(itIsMe==false){
+            Buttontrack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if(user.getDoubleTrack()==true){
+                        Buttontrack.setImageResource(R.drawable.bouton_untracker);
+                        user.setDoubleTrack(false);
+                    }else{
+                        Buttontrack.setImageResource(R.drawable.bouton_tracker);
+                        user.setDoubleTrack(true);
+                    }
+
+                    Thread threadTrack = new ThreadTrack(v.getContext(), user.getId());
+                    threadTrack.start();
+                }
+            });
+        }else{
+            Buttontrack.setImageResource(R.drawable.bouton_edit);
+        }
 
         // markerMoments.setBackgroundResource(0);
         markerTrackers.setBackgroundResource(0);
@@ -329,4 +370,73 @@ public class ProfileViewPagerActivity extends FragmentActivity{
 
 
 
+
+    public void getTrackedFromApi() throws JSONException {
+        RestClient client = new RestClient(this, "https://api.partybay.fr/users/" + my_user_id + "/tracked");
+        String access_token = client.getTokenValid();
+        client.AddHeader("Authorization", "Bearer " + access_token);
+
+        String rep = "";
+        try {
+            rep = client.Execute("GET");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        ArrayList<String> stringArray = new ArrayList<String>();
+        try {
+            stringArray = jsonStringToArray(rep);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Iterator<String> it = stringArray.iterator();
+        Love tracker = null;
+
+        while (it.hasNext()) {
+            String s = it.next();
+            JSONObject obj = new JSONObject(s);
+            tracker = new Love(obj,this);
+            //  Trackers.add(tracker);
+            trackedTree.put(tracker.getUser_id(), tracker);
+        }
+
+    }
+
+    public ArrayList<String> jsonStringToArray(String jsonString) throws JSONException {
+        ArrayList<String> stringArray = new ArrayList<String>();
+        if (jsonString != null && jsonString.length() != 2) {
+            JSONArray jsonArray = new JSONArray(jsonString);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                stringArray.add(jsonArray.getString(i));
+            }
+
+        }
+        return stringArray;
+    }
+
+    class ThreadTrack extends Thread {
+        private Context context;
+        private String user_tracker_id;
+
+        public ThreadTrack(Context context, String user_tracker_id){
+            this.context=context;
+            this.user_tracker_id= user_tracker_id;
+        }
+        @Override
+        public void run() {
+            System.out.println("TRACKERS RUN "+"https://api.partybay.fr/users/"+my_user_id+"/track/"+user_tracker_id);
+            RestClient client  = new RestClient(context,"https://api.partybay.fr/users/"+my_user_id+"/track/"+user_tracker_id);
+            String access_token = client.getTokenValid();
+            client.AddHeader("Authorization","Bearer "+access_token);
+            String rep = "";
+            try {
+                rep =  client.Execute("POST");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            System.out.println("TRACKERS PO "+rep);
+
+        }
+    }
 }
