@@ -5,109 +5,62 @@
     android:layout_height="match_parent">
 
 
-    <RelativeLayout
-        android:id="@+id/ItemPorfile"
-        android:layout_width="fill_parent"
-        android:layout_height="350dp">
-        <ImageView
-            android:id="@+id/ItemPorfileFont"
+
+
+        <RelativeLayout
+            android:id="@+id/ItemPorfile"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:scaleType="centerCrop"
-            android:adjustViewBounds="true"/>
+            android:layout_height="350dp">
+            <ImageView
+                android:id="@+id/ItemPorfileFont"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"/>
 
-        <ImageView
-            android:id="@+id/profile_track"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="125dp"
-            android:layout_marginLeft="230dp"
-            />
+            <ImageView
+                android:id="@+id/profile_track"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="125dp"
+                android:layout_marginLeft="230dp"
+                />
 
-        <fr.partybay.android.Class.MLRoundedImageView
-            android:id="@+id/profile_photo"
-            android:layout_width="160dp"
-            android:layout_height="160dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:scaleType="centerCrop"
-            />
+            <fr.partybay.android.Class.MLRoundedImageView
+                android:id="@+id/profile_photo"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:scaleType="centerCrop"
+                />
 
 
 
-        <TextView
-            android:id="@+id/profile_pseudo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:textColor="#FFFFFF"
-            android:layout_below="@+id/profile_photo"
-            android:layout_centerHorizontal="true"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            android:text="Claire, 23 ans"/>
-
-        <TextView
-            android:id="@+id/profile_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#FFFFFF"
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:textSize="11dp"
-            android:layout_below="@id/profile_pseudo"
-            android:text="Voici une courte description de mon profil blabla blaednjke..."/>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:weightSum="3">
-
-            <Button
-                android:id="@+id/bMoment"
+            <TextView
+                android:id="@+id/profile_pseudo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Story"
+                android:layout_marginTop="20dp"
+                android:textColor="#FFFFFF"
+                android:layout_below="@+id/profile_photo"
+                android:layout_centerHorizontal="true"
+                android:textSize="25dp"
                 android:textStyle="bold"
-                android:textColor="#F83838"
-                android:background="@null"/>
-            <View
-                android:layout_width="1dp"
-                android:layout_height="25dp"
-                android:background="#ffff2218"
-                android:layout_gravity="center"/>
-            <Button
-                android:id="@+id/bTrackers"
+                android:text="Claire, 23 ans"/>
+
+            <TextView
+                android:id="@+id/profile_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Moments"
-                android:textStyle="bold"
-                android:textColor="#F83838"
-                android:background="@null" />
+                android:textColor="#FFFFFF"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:textSize="11dp"
+                android:layout_below="@id/profile_pseudo"
+                android:text="Voici une courte description de mon profil blabla blaednjke..."/>
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="25dp"
-                android:background="#ffff2218"
-                android:layout_gravity="center"/>
-            <Button
-                android:id="@+id/bTraking"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Relations"
-                android:textStyle="bold"
-                android:textColor="#F83838"
-                android:background="@null"/>
-
-            </LinearLayout>
-
-        <LinearLayout
+            <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -115,53 +68,104 @@
                 android:layout_alignParentStart="true"
                 android:weightSum="3">
 
-            <View
-                android:id="@+id/markerMoments"
-                android:layout_width="wrap_content"
-                android:layout_height="5dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="13dp"
-                android:background="#ffff2218"
-                android:layout_weight="1"/>
+                <Button
+                    android:id="@+id/bMoment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Story"
+                    android:textStyle="bold"
+                    android:textColor="#F83838"
+                    android:background="@null"/>
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="25dp"
+                    android:background="#ffff2218"
+                    android:layout_gravity="center"/>
+                <Button
+                    android:id="@+id/bTrackers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Moments"
+                    android:textStyle="bold"
+                    android:textColor="#F83838"
+                    android:background="@null" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="25dp"
+                    android:background="#ffff2218"
+                    android:layout_gravity="center"/>
+                <Button
+                    android:id="@+id/bTraking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Relations"
+                    android:textStyle="bold"
+                    android:textColor="#F83838"
+                    android:background="@null"/>
+
+                </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:weightSum="3">
+
+                <View
+                    android:id="@+id/markerMoments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="5dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="13dp"
+                    android:background="#ffff2218"
+                    android:layout_weight="1"/>
 
 
-            <View
-                android:id="@+id/markerTrackers"
-                android:layout_width="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="8dp"
-                android:layout_height="5dp"
-                android:background="#ffff2218"
-                android:layout_weight="1"/>
+                <View
+                    android:id="@+id/markerTrackers"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_height="5dp"
+                    android:background="#ffff2218"
+                    android:layout_weight="1"/>
 
-            <View
-                android:id="@+id/markerTracking"
-                android:layout_width="wrap_content"
-                android:layout_height="5dp"
-                android:background="#ffff2218"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="15dp"
-                android:layout_weight="1"/>
+                <View
+                    android:id="@+id/markerTracking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="5dp"
+                    android:background="#ffff2218"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_weight="1"/>
 
 
 
+
+            </LinearLayout>
+
+            </RelativeLayout>
+
+
+        <LinearLayout
+            android:id="@+id/profilePager"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@+id/ItemPorfile">
+
+            <android.support.v4.view.ViewPager
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/profileviewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
         </LinearLayout>
-
-        </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
-        <android.support.v4.view.ViewPager
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/profileviewpager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </LinearLayout>
-
 
 </RelativeLayout>
 

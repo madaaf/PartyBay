@@ -1,20 +1,20 @@
 package fr.partybay.android.TimeLineManager;
 
-import android.app.ActionBar;
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.Typeface;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -29,84 +29,34 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import fr.partybay.android.Activity.CameraAc;
 import fr.partybay.android.Activity.Chargement;
 import fr.partybay.android.Class.CustomListView;
-import fr.partybay.android.Class.GestureFunActivity;
 import fr.partybay.android.Class.RestClient;
-import fr.partybay.android.Class.SerializeurMono;
-import fr.partybay.android.Class.User;
-import fr.partybay.android.Google.Google;
-import fr.partybay.android.ProfileManager.ProfileViewPagerActivity;
 import fr.partybay.android.R;
 
-// import android.widget.LinearLayout.LayoutParams;
-
-
-
-
 /**
- * Created by mada on 05/11/2014.
+ * Created by mada on 28/01/15.
  */
-public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefreshListener{
+public class TimeLineFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    private ImageButton menu = null;
-    private ImageButton profile = null;
-    private ImageButton moment = null;
     private SwipeRefreshLayout layout;
     private ListView listView;
     private PostAdapter adapter;
     private boolean onScroolStateChange = false;
     private Thread ThreadLoadPost;
     private ArrayList<Post> posts = null;
-    private Typeface font;
-    private TextView entete;
     private int nbr_scroll = 0 ;
     private final static int NBROFITEM = 5;
-    private SerializeurMono<User> serializeur_user;
-    private String my_user_id;
-
-
+    private Context context;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.timeline_test);
-        ActionBar bar = this.getActionBar();
-        bar.hide();
-
-        serializeur_user = new SerializeurMono<User>(getResources().getString(R.string.sdcard_user));
-        User user = serializeur_user.getObject();
-        my_user_id = user.getId();
-
-
-
-        layout = (SwipeRefreshLayout) findViewById(R.id.swype);
-        layout.setOnRefreshListener(this);
-        layout.setColorScheme( R.color.swype_1, R.color.swype_2, R.color.swype_3, R.color.swype_4);
-
-        listView = new CustomListView(this);
-        font = Typeface.createFromAsset(getAssets(), "fonts/havana.otf");
-        menu = (ImageButton) findViewById(R.id.reglage);
-        profile = (ImageButton) findViewById(R.id.profile);
-        moment = (ImageButton) findViewById(R.id.moment);
-        listView = (ListView) findViewById(R.id.lvPost);
-        entete = (TextView)findViewById(R.id.entete);
-        entete.setTypeface(font);
-
-        entete.setOnClickListener(enteteListener);
-        menu.setOnClickListener(reglageListener);
-        moment.setOnClickListener(momentListener);
-        profile.setOnClickListener(profileListener);
-
-
-
-        posts = new ArrayList<Post>();
-
-
+        context = getActivity().getApplicationContext();
 
         // on recupere les 10 premier postes
+        posts = new ArrayList<Post>();
         try {
             String url = "https://api.partybay.fr/posts?limit="+NBROFITEM+"&offset="+0+"&side=desc&order=id";
             getPostFromApi(url,false);
@@ -115,99 +65,88 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         }
 
 
-        TextView v = new TextView(this);
+    }
+
+        @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View rootView = inflater.inflate(R.layout.timelinezone, container, false);
+
+        layout = (SwipeRefreshLayout)rootView.findViewById(R.id.swype);
+        layout.setOnRefreshListener(this);
+        layout.setColorScheme( R.color.swype_1, R.color.swype_2, R.color.swype_3, R.color.swype_4);
+
+        listView = new CustomListView(context);
+        listView = (ListView)rootView.findViewById(R.id.lvPost);
+
+        TextView v = new TextView(context);
         v.setGravity(Gravity.CENTER);
         v.setTextSize(40);
-        v.setHeight(500);
+        v.setHeight(800);
         listView.addHeaderView(v);
-       // listView.addParallaxedHeaderView(v);
-        v.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(PostActivity.this,Google.class);
-                startActivity(i);
-            }
-        });
 
-
-        SeekBar seekBar = new SeekBar(this);;
+        SeekBar seekBar = new SeekBar(context);
         seekBar.setMinimumHeight(150);
         ShapeDrawable thumb = new ShapeDrawable(new OvalShape());
         thumb.setIntrinsicHeight(70);
         thumb.setIntrinsicWidth(70);
         thumb.setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
         seekBar.setThumb(thumb);
-       //listView.addParallaxedHeaderView(seekBar);
+        //listView.addParallaxedHeaderView(seekBar);
         listView.addHeaderView(seekBar);
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
-            public void onStopTrackingTouch(SeekBar arg0) {
-                // TODO Auto-generated method stub
-                System.out.println(".....111......."+arg0);
 
-            }
 
-            public void onStartTrackingTouch(SeekBar arg0) {
-                // TODO Auto-generated method stub
-                System.out.println(".....222......."+arg0);
-            }
-
-            public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
-                // TODO Auto-generated method stub
-                System.out.println(".....333......."+arg0+ " " +arg1+" "+arg2);
-            }
-        });
-
-       // Create the adapter to convert the array to array to views
-        adapter = new PostAdapter(this,R.id.lvPost,posts);
+        // Create the adapter to convert the array to array to views
+        adapter = new PostAdapter(getActivity(),R.id.lvPost,posts);
         listView.setAdapter(adapter);
 
-
-
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                onScroolStateChange = true;
-               /* System.out.println("onScrollStateChanged" );
-                System.out.println("onScrollStateChanged view" +view);
-                System.out.println("onScrollStateChanged scrollState" +scrollState);*/
-            }
+                @Override
+                public void onScrollStateChanged(AbsListView view, int scrollState) {
+                    onScroolStateChange = true;
 
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount){
+                }
 
-                int lastInScreen = firstVisibleItem + visibleItemCount;
-                if(lastInScreen == (totalItemCount) && (onScroolStateChange==true)){
-                    nbr_scroll ++;
-                    try {
+                @Override
+                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount){
 
-                        // on récupere les 10 post suivant car l'utilsateur a scroller jusqu'à la fin de la liste
-                        System.out.println("je recupere "+nbr_scroll*NBROFITEM+" item ");
-                        String url = "https://api.partybay.fr/posts?limit="+NBROFITEM+"&offset="+nbr_scroll*NBROFITEM+"&side=desc&order=id";
-                        getPostFromApi(url,false);
+                    int lastInScreen = firstVisibleItem + visibleItemCount;
+                    if(lastInScreen == (totalItemCount) && (onScroolStateChange==true)){
+                        nbr_scroll ++;
+                        try {
+
+                            // on récupere les 10 post suivant car l'utilsateur a scroller jusqu'à la fin de la liste
+                            System.out.println("je recupere "+nbr_scroll*NBROFITEM+" item ");
+                            String url = "https://api.partybay.fr/posts?limit="+NBROFITEM+"&offset="+nbr_scroll*NBROFITEM+"&side=desc&order=id";
+                            getPostFromApi(url,false);
 
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        onScroolStateChange = false;
                     }
-                    onScroolStateChange = false;
-                }
 
-                if(firstVisibleItem ==0){
-                    layout.setEnabled(true);
-                }else{
-                    layout.setEnabled(false);
+                    if(firstVisibleItem ==0){
+                        layout.setEnabled(true);
+                    }else{
+                        layout.setEnabled(false);
+                    }
                 }
-            }
-        });
+            });
 
+
+
+
+        return rootView;
     }
 
 
-    // get posts from api
+
     public void getPostFromApi(String urlapi, Boolean addTop) throws Exception {
 
-        RestClient client = new RestClient(this,urlapi);
+        RestClient client = new RestClient(context,urlapi);
         // je recupere un token dans la sd carte
         String access_token = client.getTokenValid();
 
@@ -238,7 +177,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
                     // System.out.println("js : "+s.startsWith("["));
                     // if(s.startsWith("[")){}
                     JSONObject obj = new JSONObject(s);
-                    post = new Post(this,obj);
+                    post = new Post(context,obj);;
                     if(post!=null){
                         if (addTop==true){
                             posts.add(0,post);
@@ -259,7 +198,19 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
 
     }
 
-    public static void delete(File file) throws IOException{
+    public ArrayList<String> jsonStringToArray(String jsonString) throws JSONException {
+        ArrayList<String> stringArray = new ArrayList<String>();
+        if (jsonString!=null && jsonString.length()!=2){
+            JSONArray jsonArray = new JSONArray(jsonString);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                stringArray.add(jsonArray.getString(i));
+            }
+
+        }
+        return stringArray;
+    }
+
+    public static void delete(File file) throws IOException {
 
         if(file.isDirectory()){
             //directory is empty, then delete it
@@ -308,28 +259,16 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
                 System.exit(0);
             }
 
-            Intent i = new Intent(PostActivity.this,Chargement.class);
+            Intent i = new Intent(context,Chargement.class);
             startActivity(i);
-            finish();
+            getActivity().finish();
         }
-    }
-
-    public ArrayList<String> jsonStringToArray(String jsonString) throws JSONException {
-        ArrayList<String> stringArray = new ArrayList<String>();
-        if (jsonString!=null && jsonString.length()!=2){
-            JSONArray jsonArray = new JSONArray(jsonString);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                stringArray.add(jsonArray.getString(i));
-            }
-
-        }
-        return stringArray;
     }
 
     @Override
     public void onRefresh() {
-      //System.out.println("POSTACTIVITY RESFRESH" );
-       layout.setRefreshing(true);
+        //System.out.println("POSTACTIVITY RESFRESH" );
+        layout.setRefreshing(true);
 
         // I create a handler to stop the refresh and show a message after 3s
         new Handler().postDelayed(new Runnable() {
@@ -344,16 +283,12 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
                     int nextPost = IlastPosst+1;
                     String url = "https://api.partybay.fr/posts?last="+nextPost+"&side=asc&order=id";
                     getPostFromApi(url, true);
-                    adapter = new PostAdapter(PostActivity.this,R.id.lvPost,posts);
+                    adapter = new PostAdapter(getActivity(),R.id.lvPost,posts);
                     listView.setAdapter(adapter);
                     listView.setOnScrollListener(new AbsListView.OnScrollListener() {
                         @Override
                         public void onScrollStateChanged(AbsListView view, int scrollState) {
                             onScroolStateChange = true;
-                            /*
-                            System.out.println("onScrollStateChanged" );
-                            System.out.println("onScrollStateChanged view" +view);
-                            System.out.println("onScrollStateChanged scrollState" +scrollState);*/
                         }
 
                         @Override
@@ -391,49 +326,10 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(PostActivity.this, "Cool !", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Cool !", Toast.LENGTH_LONG).show();
             }
 
         }, 3000);
 
     }
-
-    View.OnClickListener reglageListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Intent intent = new Intent(PostActivity.this, GestureFunActivity.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
-
-        }
-    };
-
-    View.OnClickListener profileListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Intent intent = new Intent(PostActivity.this, ProfileViewPagerActivity.class);
-            intent.putExtra("user_id",my_user_id);
-            startActivity(intent);
-        }
-    };
-
-    View.OnClickListener momentListener = new View.OnClickListener(){
-        @Override
-        public void onClick(View view) {
-            Intent intent = new Intent(PostActivity.this, CameraAc.class);
-            startActivity(intent);
-        }
-    };
-
-    View.OnClickListener enteteListener = new View.OnClickListener(){
-        // revenir en haut de la liste
-        @Override
-        public void onClick(View v) {
-            //listView.setSelection(0);
-        }
-    };
-
-
-
-
 }

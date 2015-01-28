@@ -9,16 +9,22 @@
         android:id="@+id/post_image"
         android:layout_width="fill_parent"
         android:layout_height="345dp"
-        android:scaleType="centerCrop"
-        android:layout_marginTop="10dp" >
+        android:scaleType="centerCrop" >
 
-        <ImageView
-            android:id="@+id/post_photo_fond"
+        <FrameLayout
+            android:id="@+id/post_framelayout"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:scaleType="centerCrop"
-            android:adjustViewBounds="true"
-            android:background="@drawable/photo_fond"/>
+            android:layout_height="fill_parent">
+            <ImageView
+                android:id="@+id/post_photo_fond"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                android:background="@drawable/photo_fond"/>
+
+            </FrameLayout>
+
 
         <RelativeLayout
             android:id="@+id/post_profile_user"

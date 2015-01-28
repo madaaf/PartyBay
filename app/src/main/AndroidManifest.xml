@@ -90,6 +90,11 @@
             android:name=".Google.Google"
             android:label="@style/AppTheme"/>
 
+        <activity
+            android:name=".Class.GestureFunActivity"
+            android:label="@style/AppTheme"/>
+
+
 
         <!-- PACKAGE MENU MANAGER -->
 
@@ -110,6 +115,10 @@
 
         <activity
             android:name=".TimeLineManager.LoversListActivity"
+            android:label="@style/AppTheme"/>
+
+        <activity
+            android:name=".TimeLineManager.TimeLine"
             android:label="@style/AppTheme"/>
 
 

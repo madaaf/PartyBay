@@ -117,19 +117,80 @@ public class PostAdapter extends ArrayAdapter<Post>  {
 
         }
 
+
+
         holder.link.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String infoItem  = String.valueOf(v.getTag());
-
+                Context context2 = context.getApplicationContext();
                 int index = infoItem.indexOf('/');
                 String id_post =infoItem.substring(0,index) ;
                 String id_user=infoItem.substring(index+1,infoItem.length());
 
-                Intent i = new Intent(context, AlbumActivity.class);
+                Intent i = new Intent(v.getContext(), AlbumActivity.class);
                 i.putExtra("my_user_id", id_user);
                 i.putExtra("item_id",id_post);
-                context.startActivity(i);
+                v.getContext().startActivity(i);
+            }
+        });
+
+
+
+
+
+
+        holder.link.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                idPost = String.valueOf(v.getTag());
+                // Envoie une requete a l'API pour le prévenir que j'ai liké
+                threadLove = new LoveThread(v.getContext());
+                threadLove.start();
+                int test;
+                // Colorie le coeur en rouge si j'ai liké et blanc sinon
+                // rafrechie le chiffre qui indique le nombre de like
+                if (posts.get(position).getPostIsLoved() == true) {
+                    holder.loveButton.setImageResource(R.drawable.coeur_unlike);
+                    posts.get(position).setPostIsLoved(false);
+                    test = (posts.get(position).getTotalLovers()) - 1;
+                    String ok = String.valueOf(test);
+                    posts.get(position).setTotalLovers(test);
+                    holder.lovers.setText(ok);
+
+                } else {
+                    holder.loveButton.setImageResource(R.drawable.coeur);
+                    posts.get(position).setPostIsLoved(true);
+                    test = (posts.get(position).getTotalLovers()) + 1;
+                    String ok = String.valueOf(test);
+                    posts.get(position).setTotalLovers(test);
+                    holder.lovers.setText(ok);
+                }
+
+                return false;
+            }
+
+            class LoveThread extends Thread {
+                private Context context;
+
+                public LoveThread(Context context) {
+                    this.context = context;
+                }
+
+                public void run() {
+                    // je préviens l'api que j'ai liké/unliké
+                    RestClient client = new RestClient(context, "https://api.partybay.fr/users/" + myUser_id + "/love/" + idPost);
+                    String access_token = client.getTokenValid();
+                    client.AddHeader("Authorization", "Bearer " + access_token);
+                    String rep = "";
+                    try {
+                        rep = client.Execute("POST");
+                        System.out.println("REPONSE DU LOVE" + rep);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
 
@@ -144,18 +205,18 @@ public class PostAdapter extends ArrayAdapter<Post>  {
                 int test;
                 // Colorie le coeur en rouge si j'ai liké et blanc sinon
                 // rafrechie le chiffre qui indique le nombre de like
-                if(posts.get(position).getPostIsLoved()==true){
+                if (posts.get(position).getPostIsLoved() == true) {
                     holder.loveButton.setImageResource(R.drawable.coeur_unlike);
                     posts.get(position).setPostIsLoved(false);
-                    test = (posts.get(position).getTotalLovers())-1;
+                    test = (posts.get(position).getTotalLovers()) - 1;
                     String ok = String.valueOf(test);
                     posts.get(position).setTotalLovers(test);
                     holder.lovers.setText(ok);
 
-                }else{
+                } else {
                     holder.loveButton.setImageResource(R.drawable.coeur);
                     posts.get(position).setPostIsLoved(true);
-                    test = (posts.get(position).getTotalLovers())+1;
+                    test = (posts.get(position).getTotalLovers()) + 1;
                     String ok = String.valueOf(test);
                     posts.get(position).setTotalLovers(test);
                     holder.lovers.setText(ok);
@@ -165,12 +226,13 @@ public class PostAdapter extends ArrayAdapter<Post>  {
             class LoveThread extends Thread {
                 private Context context;
 
-                public LoveThread(Context context){
-                    this.context=context;
+                public LoveThread(Context context) {
+                    this.context = context;
                 }
+
                 public void run() {
                     // je préviens l'api que j'ai liké/unliké
-                    RestClient client = new RestClient(context,"https://api.partybay.fr/users/" + myUser_id + "/love/" + idPost);
+                    RestClient client = new RestClient(context, "https://api.partybay.fr/users/" + myUser_id + "/love/" + idPost);
                     String access_token = client.getTokenValid();
                     client.AddHeader("Authorization", "Bearer " + access_token);
                     String rep = "";
@@ -216,7 +278,7 @@ public class PostAdapter extends ArrayAdapter<Post>  {
             String Sid =  posts.get(position).getId();
             if (Sid != null) {
                 int i = Integer.parseInt( posts.get(position).getId());
-                    if (i > 2 &&  posts.get(position).getId() != null) {
+                if (i > 2 &&  posts.get(position).getId() != null) {
                     // System.out.println("le poste numero "+posts.get(position).getId()+" a une valeur de "+posts.get(position).getPostIsLoved()) ;
                     ViewHolder viewHolder = (ViewHolder) convertView.getTag();
                     // je colorie les coeur en rouge si je les ai déjà liké
@@ -232,4 +294,6 @@ public class PostAdapter extends ArrayAdapter<Post>  {
         return convertView;
 
     }
+
+
 }

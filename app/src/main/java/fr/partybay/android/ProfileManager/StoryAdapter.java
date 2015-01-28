@@ -1,7 +1,6 @@
 package fr.partybay.android.ProfileManager;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import java.util.ArrayList;
 
-import fr.partybay.android.Album.AlbumActivity;
 import fr.partybay.android.R;
 import fr.partybay.android.TimeLineManager.Post;
 
@@ -100,7 +98,7 @@ public class StoryAdapter extends BaseAdapter {
 
 
         UrlImageViewHelper.setUrlDrawable(viewHolder.link, "https://static.partybay.fr/images/posts/640x640_" + item.getLink());
-
+/*
         viewHolder.link.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,7 +115,7 @@ public class StoryAdapter extends BaseAdapter {
                 mContext.startActivity(i);
             }
         });
-
+*/
        // String url = "https://static.partybay.fr/images/posts/640x640_" + item.getLink();
        // Ion.with(viewHolder.link).placeholder(R.drawable.photo_profil).error(R.drawable.photo_profil).load(url);
 

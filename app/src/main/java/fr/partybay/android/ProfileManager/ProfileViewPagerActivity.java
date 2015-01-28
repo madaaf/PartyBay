@@ -41,7 +41,7 @@ import fr.partybay.android.R;
 /**
  * Created by mada on 10/11/2014.
  */
-public class ProfileViewPagerActivity extends FragmentActivity{
+public class ProfileViewPagerActivity extends FragmentActivity  {
 
     /**
      * The {@link ViewPager} that will display the three primary sections of the app, one at a
@@ -415,6 +415,9 @@ public class ProfileViewPagerActivity extends FragmentActivity{
         return stringArray;
     }
 
+
+
+
     class ThreadTrack extends Thread {
         private Context context;
         private String user_tracker_id;
@@ -439,4 +442,6 @@ public class ProfileViewPagerActivity extends FragmentActivity{
 
         }
     }
+
+
 }

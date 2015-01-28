@@ -37,7 +37,6 @@ public class MenuViewPagerActivity extends FragmentActivity{
        // final ActionBar actionbar = getActionBar();
        // actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         mSectionsPagerAdaptater = new MenuViewPagerAdapter(getSupportFragmentManager());
-
         // set up the ViewPager
         mViewPager = (ViewPager)findViewById(R.id.menuviewpager);
         mViewPager.setAdapter(mSectionsPagerAdaptater);

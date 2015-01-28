@@ -5,8 +5,6 @@ import android.graphics.Bitmap;
 import android.util.Base64;
 import android.util.Log;
 
-import fr.partybay.android.R;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -29,6 +27,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+
+import fr.partybay.android.R;
 
 /**
  * Created by mada on 06/11/2014.
@@ -117,8 +117,6 @@ public class RestClient{
         }
         return sb.toString();
     }
-
-
 
 
     public String Execute(String method) throws Exception {

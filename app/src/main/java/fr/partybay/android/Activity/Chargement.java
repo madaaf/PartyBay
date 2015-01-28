@@ -11,7 +11,7 @@ import fr.partybay.android.Class.SerializeurMono;
 import fr.partybay.android.Class.Token;
 import fr.partybay.android.Class.User;
 import fr.partybay.android.R;
-import fr.partybay.android.TimeLineManager.PostActivity;
+import fr.partybay.android.TimeLineManager.TimeLine;
 
 /**
  * Created by mada on 06/11/2014.
@@ -75,7 +75,7 @@ public class Chargement extends Activity{
 
                 if(user_active.equals("1")){
                     System.out.println("CHARGEMENT key active");
-                    i = new Intent(Chargement.this, PostActivity.class);
+                    i = new Intent(Chargement.this, TimeLine.class);
                     startActivity(i);
                     finish();
                 }else{
