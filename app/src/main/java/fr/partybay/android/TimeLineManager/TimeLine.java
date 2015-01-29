@@ -170,6 +170,7 @@ public class TimeLine extends FragmentActivity {
                     public void run(){
                         Intent intent = new Intent(TimeLine.this, CameraAc.class);
                         startActivity(intent);
+                        overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up );
 
                     }
                 });

@@ -17,10 +17,18 @@ public class Token implements Serializable {
 
     public Token(JSONObject obj) {
         try {
-            access_token = obj.getString("access_token");
-            token_type = obj.getString("token_type");
-            expires_in = obj.getString("expires_in");
-            refresh_token = obj.getString("refresh_token");
+            if(obj.has("access_token")){
+                access_token = obj.getString("access_token");
+            }
+            if(obj.has("token_type")){
+                token_type = obj.getString("token_type");
+            }
+            if(obj.has("expires_in")){
+                expires_in = obj.getString("expires_in");
+            }
+            if(obj.has("refresh_token")){
+                refresh_token = obj.getString("refresh_token");
+            }
 
         } catch (JSONException e) {
             System.out.println("Err : "+e.getMessage());

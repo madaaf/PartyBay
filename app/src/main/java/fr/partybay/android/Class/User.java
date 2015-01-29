@@ -87,14 +87,6 @@ public class User implements Serializable{
             }
 
 
-
-
-
-
-
-
-
-
         } catch (JSONException e) {
             System.out.println("Err : "+e.getMessage());
         }

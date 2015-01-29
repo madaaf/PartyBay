@@ -1,9 +1,10 @@
 package fr.partybay.android.TimeLineManager;
 
-import android.app.ActionBar;
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,18 +37,23 @@ public class LoversListActivity extends Activity{
     private TreeMap<Integer, Love> trackedTree = new TreeMap<Integer, Love>();
     private TreeMap<Integer, Love> loversTree = new TreeMap<Integer, Love>();
     private SerializeurMono<User> serializeur_user;
+    private TextView entete = null;
+    private Typeface font;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loverslist);
-        ActionBar bar = this.getActionBar();
-        bar.hide();
+       // ActionBar bar = this.getActionBar();
+        //bar.hide();
 
 
         Lovers = new ArrayList<Love>();
         loversListView = (ListView)findViewById(R.id.loversListView);
+        entete = (TextView)findViewById(R.id.loversListPartyBay);
+        font = Typeface.createFromAsset(getAssets(), "fonts/havana.otf");
+        entete.setTypeface(font);
 
         Bundle bundle = getIntent().getExtras();
         String infoLove = bundle.getString("infoLove");

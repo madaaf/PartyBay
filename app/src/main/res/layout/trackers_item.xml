@@ -34,8 +34,8 @@
 
     <ImageView
         android:id="@+id/tracker_item_button_track"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
+        android:layout_width="75dp"
+        android:layout_height="35dp"
         android:layout_centerVertical="true"
         android:layout_margin="15dp"
         android:layout_alignParentRight="true"

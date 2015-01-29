@@ -91,7 +91,7 @@
             android:label="@style/AppTheme"/>
 
         <activity
-            android:name=".Class.GestureFunActivity"
+            android:name=".Annex.GestureFunActivity"
             android:label="@style/AppTheme"/>
 
 
@@ -115,7 +115,7 @@
 
         <activity
             android:name=".TimeLineManager.LoversListActivity"
-            android:label="@style/AppTheme"/>
+            android:theme="@style/ThemeWithCorners" />
 
         <activity
             android:name=".TimeLineManager.TimeLine"

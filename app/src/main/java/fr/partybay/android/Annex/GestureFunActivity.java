@@ -1,4 +1,4 @@
-package fr.partybay.android.Class;
+package fr.partybay.android.Annex;
 
 /**
  * Created by mada on 28/01/15.

@@ -1,5 +1,6 @@
 package fr.partybay.android.TimeLineManager;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -260,17 +261,14 @@ public class PostAdapter extends ArrayAdapter<Post>  {
         });
 
         holder.loversList.setOnClickListener(new View.OnClickListener(){
+
             @Override
             public void onClick(View v) {
                 String infoLove = String.valueOf(v.getTag());
                 Intent i = new Intent(context,LoversListActivity.class);
                 i.putExtra("infoLove",infoLove);
                 context.startActivity(i);
-/*
-                Bundle args = new Bundle();
-                Trackers track = new Trackers();
-                track.setArguments(args);
-                return (Fragment)track;*/
+                ((Activity) context).overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
 
             }
         });

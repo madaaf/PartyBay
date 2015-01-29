@@ -1,20 +1,23 @@
 package fr.partybay.android.ProfileManager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import java.util.ArrayList;
 
-import fr.partybay.android.R;
+import fr.partybay.android.Album.AlbumActivity;
 import fr.partybay.android.Class.Post;
+import fr.partybay.android.R;
 
 /**
  * Created by mada on 13/01/15.
@@ -33,6 +36,7 @@ public class StoryAdapter extends BaseAdapter {
         ImageView link;
         TextView nbr_lovers;
         ImageButton loveButton;
+        LinearLayout story_item;
     }
 
 
@@ -76,15 +80,16 @@ public class StoryAdapter extends BaseAdapter {
             viewHolder.latitude = (TextView) convertView.findViewById(R.id.story_lieu);
             viewHolder.date = (TextView) convertView.findViewById(R.id.story_time);
             viewHolder.nbr_lovers =(TextView)convertView.findViewById(R.id.story_nbr_lover);
+            viewHolder.story_item = (LinearLayout)convertView.findViewById(R.id.story_item);
 
 
             convertView.setTag(viewHolder);
-            viewHolder.link.setTag(posts.get(position).getId()+"/"+posts.get(position).getUser_id());
+            viewHolder.story_item.setTag(posts.get(position).getId()+"/"+posts.get(position).getUser_id());
 
         } else {
             //((ViewHolder)convertView.getTag()).loveButton.setTag(posts.get(position).getId());
             viewHolder = (ViewHolder) convertView.getTag();
-            viewHolder.link.setTag(posts.get(position).getId()+"/"+posts.get(position).getUser_id());
+            viewHolder.story_item.setTag(posts.get(position).getId()+"/"+posts.get(position).getUser_id());
         }
 
         // update the item view
@@ -98,8 +103,8 @@ public class StoryAdapter extends BaseAdapter {
 
 
         UrlImageViewHelper.setUrlDrawable(viewHolder.link, "https://static.partybay.fr/images/posts/640x640_" + item.getLink());
-/*
-        viewHolder.link.setOnClickListener(new View.OnClickListener() {
+
+        viewHolder.story_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String info = String.valueOf(v.getTag());
@@ -115,7 +120,7 @@ public class StoryAdapter extends BaseAdapter {
                 mContext.startActivity(i);
             }
         });
-*/
+
        // String url = "https://static.partybay.fr/images/posts/640x640_" + item.getLink();
        // Ion.with(viewHolder.link).placeholder(R.drawable.photo_profil).error(R.drawable.photo_profil).load(url);
 

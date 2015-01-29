@@ -206,8 +206,8 @@ public class ProfileViewPagerActivity extends FragmentActivity  {
 
         }else{
             String url = "https://static.partybay.fr/images/users/profile/160x160_" + user.getPicture();
-
-            if(user.getPicture().equals("") || user.getPicture().equals("null")){
+            System.out.println("URL PROFILE "+url);
+            if(user.getPicture().equals("") || user.getPicture().equals("null") || user.getPicture()==null){
                 font.setImageResource(R.drawable.photo_fond);
                 profile_photo.setImageResource(R.drawable.post);
 

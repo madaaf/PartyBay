@@ -32,7 +32,6 @@ import java.util.Iterator;
 import fr.partybay.android.Activity.CameraAc;
 import fr.partybay.android.Activity.Chargement;
 import fr.partybay.android.Class.CustomListView;
-import fr.partybay.android.Class.GestureFunActivity;
 import fr.partybay.android.Class.RestClient;
 import fr.partybay.android.Class.SerializeurMono;
 import fr.partybay.android.Class.User;
