@@ -9,15 +9,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import fr.partybay.android.Class.RestClient;
 import fr.partybay.android.Class.SerializeurMono;
 import fr.partybay.android.Class.Token;
 import fr.partybay.android.Class.User;
 import fr.partybay.android.R;
-import fr.partybay.android.TimeLineManager.PostActivity;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import fr.partybay.android.TimeLineManager.TimeLine;
 
 /**
  * Created by mada on 18/10/2014.
@@ -111,7 +111,7 @@ public class Connexion extends Activity{
 
                     if(active.equals("1")){
                         System.out.println("CHARGEMENT connexion active");
-                        Intent intent = new Intent(Connexion.this, PostActivity.class);
+                        Intent intent = new Intent(Connexion.this, TimeLine.class);
                         startActivity(intent);
                         finish();
                     }else{

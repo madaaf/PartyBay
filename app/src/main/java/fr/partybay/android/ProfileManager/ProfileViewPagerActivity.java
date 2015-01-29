@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -63,6 +64,9 @@ public class ProfileViewPagerActivity extends FragmentActivity  {
     String my_user_id = null;
     Boolean itIsMe = false;
     ImageView Buttontrack = null;
+    Button bStory = null;
+    Button bMoments = null;
+    Button bRelation = null;
     private TreeMap<Integer, Love> trackedTree = new TreeMap<Integer, Love>();
 
 
@@ -115,9 +119,31 @@ public class ProfileViewPagerActivity extends FragmentActivity  {
         markerTrackers=(View)findViewById(R.id.markerTrackers);
         markerTracking=(View)findViewById(R.id.markerTracking);
         pseudoTv = (TextView)findViewById(R.id.profile_pseudo);
+        bStory = (Button)findViewById(R.id.bStory);
+        bMoments = (Button)findViewById(R.id.bMoments);
+        bRelation=(Button)findViewById(R.id.bRelations);
         profile_photo = (ImageView)findViewById(R.id.profile_photo);
         Buttontrack = (ImageView)findViewById(R.id.profile_track);
         font=(ImageView)findViewById(R.id.ItemPorfileFont);
+
+        bStory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewPager.setCurrentItem(0,true);
+            }
+        });
+        bMoments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewPager.setCurrentItem(1,true);
+            }
+        });
+        bRelation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewPager.setCurrentItem(2,true);
+            }
+        });
 
 
         if(itIsMe==true){

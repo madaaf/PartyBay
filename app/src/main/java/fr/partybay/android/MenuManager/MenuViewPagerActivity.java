@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 import android.widget.Button;
 
 import fr.partybay.android.R;
@@ -31,6 +32,19 @@ public class MenuViewPagerActivity extends FragmentActivity{
         bar.hide();
         activite_b = (Button)findViewById(R.id.activite_b);
         reglage_b = (Button)findViewById(R.id.reglage_b);
+
+        activite_b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewPager.setCurrentItem(0, true);
+            }
+        });
+        reglage_b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewPager.setCurrentItem(1, true);
+            }
+        });
 
 
         //set u pthe action bar

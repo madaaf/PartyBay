@@ -16,16 +16,16 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import fr.partybay.android.Activity.Editer;
-import fr.partybay.android.R;
-import fr.partybay.android.TimeLineManager.PostActivity;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import fr.partybay.android.Activity.Editer;
+import fr.partybay.android.R;
+import fr.partybay.android.TimeLineManager.TimeLine;
 
 /**
  * Created by mada on 07/11/2014.
@@ -141,7 +141,7 @@ public class CameraActivity extends Activity implements TextureView.SurfaceTextu
         public void onClick(View view) {
             Log.d("Camera ", "quitter Camera");
             releaseCamera();
-            Intent intent = new Intent(CameraActivity.this, PostActivity.class);
+            Intent intent = new Intent(CameraActivity.this, TimeLine.class);
             startActivity(intent);
             finish();
         }

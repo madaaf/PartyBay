@@ -12,7 +12,7 @@ import fr.partybay.android.Class.SerializeurMono;
 import fr.partybay.android.Class.Token;
 import fr.partybay.android.Class.User;
 import fr.partybay.android.R;
-import fr.partybay.android.TimeLineManager.PostActivity;
+import fr.partybay.android.TimeLineManager.TimeLine;
 
 /**
  * Created by mada on 06/11/2014.
@@ -52,7 +52,7 @@ public class FirstActivity extends Activity {
     View.OnClickListener ListenerGo = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Intent i = new Intent(FirstActivity.this, PostActivity.class);
+            Intent i = new Intent(FirstActivity.this, TimeLine.class);
             startActivity(i);
             finish();
         }

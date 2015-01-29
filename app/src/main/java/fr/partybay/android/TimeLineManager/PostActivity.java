@@ -130,7 +130,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         });
 
 
-        SeekBar seekBar = new SeekBar(this);;
+        SeekBar seekBar = new SeekBar(this);
         seekBar.setMinimumHeight(150);
         ShapeDrawable thumb = new ShapeDrawable(new OvalShape());
         thumb.setIntrinsicHeight(70);

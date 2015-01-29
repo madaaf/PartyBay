@@ -10,6 +10,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -19,19 +22,20 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import org.apache.http.entity.mime.content.FileBody;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.IOException;
+
 import fr.partybay.android.Class.GPSTracker;
 import fr.partybay.android.Class.RestClient;
 import fr.partybay.android.Class.SerializeurMono;
 import fr.partybay.android.Class.Token;
 import fr.partybay.android.Class.User;
 import fr.partybay.android.R;
-import fr.partybay.android.TimeLineManager.PostActivity;
-
-import org.apache.http.entity.mime.content.FileBody;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
+import fr.partybay.android.TimeLineManager.TimeLine;
 
 /**
  * Created by mada on 07/11/2014.
@@ -74,12 +78,28 @@ public class Editer extends Activity {
 
         Bundle bundle = getIntent().getExtras();
         photo_path = bundle.getString("photo_path");
+
+
+
+
+        //image_toedit.setImageBitmap(BitmapFactory.decodeFile(photo_path));
+
         Bitmap bmp = decodeSampledBitmapFromFile(photo_path, 500, 300);
         Bitmap temp = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), Bitmap.Config.RGB_565);
-        Canvas c = new Canvas(temp);
-        c.drawBitmap(bmp, 0, 0, null);
+        //Canvas c = new Canvas(temp);
+        //c.drawBitmap(bmp, 0, 0, null);
+        Canvas canvas = new Canvas(temp);
+        Matrix matrix = new Matrix();
+        canvas.drawBitmap(bmp, matrix, new Paint());
+
+        //RotateBitmap(bmp,180);
+
         image_toedit.setImageBitmap(temp);
 
+
+
+       // Bitmap bitmap  = getCorrectBitmap(null,photo_path);
+        //image_toedit.setImageBitmap(bitmap);
 
         serializeur = new SerializeurMono<User>(getResources().getString(R.string.sdcard_user));
         token_serializeur = new SerializeurMono<Token>(getResources().getString(R.string.sdcard_token));
@@ -109,7 +129,7 @@ public class Editer extends Activity {
         @Override
         public void onClick(View view) {
 
-            Intent i = new Intent(Editer.this, PostActivity.class);
+            Intent i = new Intent(Editer.this, TimeLine.class);
             startActivity(i);
             finish();
         }
@@ -197,7 +217,7 @@ public class Editer extends Activity {
 
     class redirection implements android.content.DialogInterface.OnClickListener{
         public void onClick(DialogInterface dialog, int which) {
-            Intent intent = new Intent(Editer.this, PostActivity.class);
+            Intent intent = new Intent(Editer.this, TimeLine.class);
             startActivity(intent);
             finish();
 
@@ -258,4 +278,59 @@ public class Editer extends Activity {
 
         return BitmapFactory.decodeFile(path, options);
     }
+
+
+
+
+
+    public  Bitmap getCorrectBitmap(Bitmap bitmap, String photo_path) {
+
+
+        Bitmap bmp = decodeSampledBitmapFromFile(photo_path, 500, 300);
+        Bitmap temp = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), Bitmap.Config.RGB_565);
+        Canvas canvas = new Canvas(temp);
+        Matrix matrix = new Matrix();
+
+
+        ExifInterface ei;
+        try {
+            ei = new ExifInterface(photo_path);
+
+            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90: {
+                    matrix.setRotate(90,bmp.getWidth()/2,bmp.getHeight()/2);
+                    canvas.drawBitmap(bmp, matrix, new Paint());
+                    return temp;
+                }
+
+
+                case ExifInterface.ORIENTATION_ROTATE_180:{
+                    matrix.setRotate(180,bmp.getWidth()/2,bmp.getHeight()/2);
+                    canvas.drawBitmap(bmp, matrix, new Paint());
+                    return temp;
+                }
+
+
+                case ExifInterface.ORIENTATION_ROTATE_270:{
+                    matrix.setRotate(270,bmp.getWidth()/2,bmp.getHeight()/2);
+                    canvas.drawBitmap(bmp, matrix, new Paint());
+                    return temp;
+                }
+
+                default:{
+                    canvas.drawBitmap(bmp, 0, 0,null);
+                    return temp;
+                }
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        return bitmap;
+    }
+
 }

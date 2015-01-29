@@ -6,6 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -15,6 +19,7 @@ import org.apache.http.entity.mime.content.FileBody;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -73,10 +78,30 @@ public class CameraSelfie extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                /***Transformer l'image en flouté et la réangistré ***/
 
+                /*** Réorientation de l'image ***/
+
+                path_photo = getResources().getString(R.string.sdcard_selfie);
+                File imageSelfie = new File(path_photo);
+                try {
+                    File filePhotoNoRotated = new File(path_photo);
+                    Bitmap bitmap  = getCorrectBitmap(null,path_photo);
+                    FileOutputStream fOut = new FileOutputStream(filePhotoNoRotated);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                    fOut.flush();
+                    fOut.close();
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                /***Je copie le selfie et le réenregistre dans un autre file ***/
+                /*** je tansformer l'image en flouté  et la réenregistre***/
+
+                // je copie le selfie dans un autre file et je le floute
                 File imageBlur = new File(getResources().getString(R.string.sdcard_selfie_blr));
-                File imageSelfie = new File(getResources().getString(R.string.sdcard_selfie));
                 try {
                     copy(imageSelfie,imageBlur);
                     Bitmap blr = decodeSampledBitmapFromFile((getResources().getString(R.string.sdcard_selfie_blr)), 500, 300);
@@ -98,8 +123,8 @@ public class CameraSelfie extends Activity {
                 intent.putExtra("user_id",user_id);
                 startActivity(intent);
                 finish();
-                // Image captured and saved to fileUri specified in the Intent
-                // Toast.makeText(this, "Image saved to:\n" + data.getData(), Toast.LENGTH_LONG).show();
+
+
             } else if (resultCode == RESULT_CANCELED) {
                 Intent intent = new Intent(CameraSelfie.this, ProfileViewPagerActivity.class);
                 intent.putExtra("user_id",user_id);
@@ -257,5 +282,54 @@ public class CameraSelfie extends Activity {
         });
     }
 
+    public  Bitmap getCorrectBitmap(Bitmap bitmap, String photo_path) {
 
+
+        Bitmap bmp = decodeSampledBitmapFromFile(photo_path, 500, 300);
+        Bitmap temp = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), Bitmap.Config.RGB_565);
+        Canvas canvas = new Canvas(temp);
+        Matrix matrix = new Matrix();
+
+
+        ExifInterface ei;
+        try {
+            ei = new ExifInterface(photo_path);
+
+            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90: {
+                    System.out.println("ROTATE");
+                    matrix.setRotate(90,bmp.getWidth()/2,bmp.getHeight()/2);
+                    canvas.drawBitmap(bmp, matrix, new Paint());
+                    return temp;
+                }
+
+
+                case ExifInterface.ORIENTATION_ROTATE_180:{
+                    matrix.setRotate(180,bmp.getWidth()/2,bmp.getHeight()/2);
+                    canvas.drawBitmap(bmp, matrix, new Paint());
+                    return temp;
+                }
+
+
+                case ExifInterface.ORIENTATION_ROTATE_270:{
+                    matrix.setRotate(270,bmp.getWidth()/2,bmp.getHeight()/2);
+                    canvas.drawBitmap(bmp, matrix, new Paint());
+                    return temp;
+                }
+
+                default:{
+                    canvas.drawBitmap(bmp, 0, 0,null);
+                    return temp;
+                }
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        return bitmap;
+    }
 }

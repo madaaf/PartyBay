@@ -76,16 +76,16 @@ public class TimeLineFragment extends Fragment implements SwipeRefreshLayout.OnR
         layout.setOnRefreshListener(this);
         layout.setColorScheme( R.color.swype_1, R.color.swype_2, R.color.swype_3, R.color.swype_4);
 
-        listView = new CustomListView(context);
+        listView = new CustomListView(getActivity());
         listView = (ListView)rootView.findViewById(R.id.lvPost);
 
-        TextView v = new TextView(context);
+        TextView v = new TextView(getActivity());
         v.setGravity(Gravity.CENTER);
         v.setTextSize(40);
         v.setHeight(800);
         listView.addHeaderView(v);
 
-        SeekBar seekBar = new SeekBar(context);
+        SeekBar seekBar = new SeekBar(getActivity());
         seekBar.setMinimumHeight(150);
         ShapeDrawable thumb = new ShapeDrawable(new OvalShape());
         thumb.setIntrinsicHeight(70);

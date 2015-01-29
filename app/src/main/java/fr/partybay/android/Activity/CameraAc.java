@@ -2,18 +2,27 @@ package fr.partybay.android.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 
-import fr.partybay.android.R;
-import fr.partybay.android.TimeLineManager.PostActivity;
-
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import fr.partybay.android.R;
+import fr.partybay.android.TimeLineManager.TimeLine;
 
 /**
  * Created by mada on 14/01/15.
@@ -58,7 +67,23 @@ public class CameraAc extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                System.out.println("je suis avant le intent "+path_photo);
+                // oriente l'image correctement
+
+                try {
+                    File filePhotoNoRotated = new File(path_photo);
+                    Bitmap bitmap  = getCorrectBitmap(null,path_photo);
+                    FileOutputStream fOut = new FileOutputStream(filePhotoNoRotated);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                    fOut.flush();
+                    fOut.close();
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
                 Intent intent = new Intent(CameraAc.this, Editer.class);
                 intent.putExtra("photo_path",path_photo);
                 startActivity(intent);
@@ -66,7 +91,7 @@ public class CameraAc extends Activity {
                 // Image captured and saved to fileUri specified in the Intent
               // Toast.makeText(this, "Image saved to:\n" + data.getData(), Toast.LENGTH_LONG).show();
             } else if (resultCode == RESULT_CANCELED) {
-                Intent intent = new Intent(CameraAc.this, PostActivity.class);
+                Intent intent = new Intent(CameraAc.this, TimeLine.class);
                 startActivity(intent);
                 finish();
 
@@ -117,7 +142,8 @@ public class CameraAc extends Activity {
         File mediaFile;
         if (type == MEDIA_TYPE_IMAGE){
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "IMG_"+ timeStamp + ".jpg");
+                    "IMG_"+ timeStamp + ".jpeg");
+
 
         } else if(type == MEDIA_TYPE_VIDEO) {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
@@ -125,7 +151,7 @@ public class CameraAc extends Activity {
         } else {
             return null;
         }
-        path_photo  = mediaStorageDir.getPath() + File.separator +"IMG_"+ timeStamp + ".jpg";
+        path_photo  = mediaStorageDir.getPath() + File.separator +"IMG_"+ timeStamp + ".jpeg";
         System.out.println("mediaFile"+ mediaFile);
         System.out.println("mediaFile.toURI"+mediaFile.toURI());
         System.out.println("mediaStorageDir.getPath()"+mediaStorageDir.getPath());
@@ -135,5 +161,81 @@ public class CameraAc extends Activity {
 
 
 
+    public  Bitmap getCorrectBitmap(Bitmap bitmap, String photo_path) {
 
+
+        Bitmap bmp = decodeSampledBitmapFromFile(photo_path, 500, 300);
+        Bitmap temp = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), Bitmap.Config.RGB_565);
+        Canvas canvas = new Canvas(temp);
+        Matrix matrix = new Matrix();
+
+
+        ExifInterface ei;
+        try {
+            ei = new ExifInterface(photo_path);
+
+            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90: {
+                    matrix.setRotate(90,bmp.getWidth()/2,bmp.getHeight()/2);
+                    canvas.drawBitmap(bmp, matrix, new Paint());
+                    return temp;
+                }
+
+
+                case ExifInterface.ORIENTATION_ROTATE_180:{
+                    matrix.setRotate(180,bmp.getWidth()/2,bmp.getHeight()/2);
+                    canvas.drawBitmap(bmp, matrix, new Paint());
+                    return temp;
+                }
+
+
+                case ExifInterface.ORIENTATION_ROTATE_270:{
+                    matrix.setRotate(270,bmp.getWidth()/2,bmp.getHeight()/2);
+                    canvas.drawBitmap(bmp, matrix, new Paint());
+                    return temp;
+                }
+
+                default:{
+                    canvas.drawBitmap(bmp, 0, 0,null);
+                    return temp;
+                }
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        return bitmap;
+    }
+
+
+    public Bitmap decodeSampledBitmapFromFile(String path, int reqWidth, int reqHeight) {
+        //Log.d("Camera ", "decodeSampledBitmapFromFile class Camera");
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
+
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        int inSampleSize = 1;
+
+        if (height > reqHeight) {
+            inSampleSize = Math.round((float)height / (float)reqHeight);
+        }
+
+        int expectedWidth = width / inSampleSize;
+
+        if (expectedWidth > reqWidth) {
+            inSampleSize = Math.round((float)width / (float)reqWidth);
+        }
+
+        options.inSampleSize = inSampleSize;
+        options.inJustDecodeBounds = false;
+
+        return BitmapFactory.decodeFile(path, options);
+    }
 }
