@@ -1,4 +1,4 @@
-package fr.partybay.android.TimeLineManager;
+package fr.partybay.android.Annex;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -39,6 +39,8 @@ import fr.partybay.android.Class.User;
 import fr.partybay.android.Google.Google;
 import fr.partybay.android.ProfileManager.ProfileViewPagerActivity;
 import fr.partybay.android.R;
+import fr.partybay.android.Class.Post;
+import fr.partybay.android.TimeLineManager.PostAdapter;
 
 // import android.widget.LinearLayout.LayoutParams;
 

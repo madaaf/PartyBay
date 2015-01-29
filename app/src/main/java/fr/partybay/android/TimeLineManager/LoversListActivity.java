@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import fr.partybay.android.Class.Love;
+import fr.partybay.android.Class.Post;
 import fr.partybay.android.Class.RestClient;
 import fr.partybay.android.Class.SerializeurMono;
 import fr.partybay.android.Class.User;

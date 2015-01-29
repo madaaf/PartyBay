@@ -16,6 +16,7 @@ import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import java.util.ArrayList;
 
 import fr.partybay.android.Album.AlbumActivity;
+import fr.partybay.android.Class.Post;
 import fr.partybay.android.Class.RestClient;
 import fr.partybay.android.Class.SerializeurMono;
 import fr.partybay.android.Class.User;

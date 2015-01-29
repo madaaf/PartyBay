@@ -24,7 +24,7 @@ import fr.partybay.android.Class.RestClient;
 import fr.partybay.android.Class.SerializeurMono;
 import fr.partybay.android.Class.User;
 import fr.partybay.android.R;
-import fr.partybay.android.TimeLineManager.Post;
+import fr.partybay.android.Class.Post;
 
 /**
  * Created by mada on 11/01/15.

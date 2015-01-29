@@ -31,6 +31,7 @@ import java.util.Iterator;
 
 import fr.partybay.android.Activity.Chargement;
 import fr.partybay.android.Class.CustomListView;
+import fr.partybay.android.Class.Post;
 import fr.partybay.android.Class.RestClient;
 import fr.partybay.android.R;
 

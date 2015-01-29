@@ -14,7 +14,7 @@ import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import java.util.ArrayList;
 
 import fr.partybay.android.R;
-import fr.partybay.android.TimeLineManager.Post;
+import fr.partybay.android.Class.Post;
 
 /**
  * Created by mada on 13/01/15.

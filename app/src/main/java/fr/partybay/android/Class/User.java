@@ -38,24 +38,62 @@ public class User implements Serializable{
             if(obj.has("id")){
                 id = obj.getString("id");
             }
+            if(obj.has("pseudo")){
+                pseudo = obj.getString("pseudo");
+                String chaineMaj=pseudo.replaceFirst(".",(pseudo.charAt(0)+"").toUpperCase());
+                pseudo = chaineMaj;
+            }
+            if(obj.has("picture")){
+                picture = obj.getString("picture");
+            }
+            if(obj.has("email")){
+                email = obj.getString("email");
+            }
+            if(obj.has("country_code")){
+                country_code = obj.getString("country_code");
+            }
+            if(obj.has("phone")){
+                phone = obj.getString("phone");
+            }
+            if(obj.has("password")){
+                password = obj.getString("password");
+            }
+            if(obj.has("firstname")){
+                firstname = obj.getString("firstname");
+            }
+            if(obj.has("lastname")){
+                lastname = obj.getString("lastname");
+            }
+            if(obj.has("sex")){
+                sex= obj.getString("sex");
+            }
+            if(obj.has("birth")){
+                birth= obj.getString("birth");
+            }
+            if(obj.has("last_visit_messages")){
+                last_visit_messages = obj.getString("last_visit_messages");
+            }
+            if(obj.has("registered")){
+                registered = obj.getString("registered");
+            }
+            if(obj.has("hash")){
+                hash = obj.getString("hash");
+            }
+            if(obj.has("active")){
+                active = obj.getString("active");
+            }
+            if(obj.has("phone")){
+                phone = "0"+phone;
+            }
 
-            pseudo = obj.getString("pseudo");
-            picture = obj.getString("picture");
-            String chaineMaj=pseudo.replaceFirst(".",(pseudo.charAt(0)+"").toUpperCase());
-            pseudo = chaineMaj;
-            email = obj.getString("email");
-            country_code = obj.getString("country_code");
-            phone = obj.getString("phone");
-            password = obj.getString("password");
-            firstname = obj.getString("firstname");
-            lastname = obj.getString("lastname");
-            sex= obj.getString("sex");
-            birth = obj.getString("birth");
-            last_visit_messages = obj.getString("last_visit_messages");
-            registered = obj.getString("registered");
-            hash = obj.getString("hash");
-            active = obj.getString("active");
-            phone = "0"+phone;
+
+
+
+
+
+
+
+
 
         } catch (JSONException e) {
             System.out.println("Err : "+e.getMessage());

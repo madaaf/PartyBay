@@ -22,7 +22,7 @@ import fr.partybay.android.Class.User;
 import fr.partybay.android.ProfileManager.ProfileViewPagerActivity;
 import fr.partybay.android.R;
 import fr.partybay.android.TimeLineManager.LoversListActivity;
-import fr.partybay.android.TimeLineManager.Post;
+import fr.partybay.android.Class.Post;
 
 /*
  * Created by mada on 20/10/2014.

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import fr.partybay.android.Class.RestClient;
-import fr.partybay.android.TimeLineManager.Post;
+import fr.partybay.android.Class.Post;
 
 
 /**

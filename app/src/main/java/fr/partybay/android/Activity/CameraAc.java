@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -165,39 +164,45 @@ public class CameraAc extends Activity {
 
 
         Bitmap bmp = decodeSampledBitmapFromFile(photo_path, 500, 300);
-        Bitmap temp = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), Bitmap.Config.RGB_565);
-        Canvas canvas = new Canvas(temp);
         Matrix matrix = new Matrix();
 
 
         ExifInterface ei;
         try {
-            ei = new ExifInterface(photo_path);
 
+            ei = new ExifInterface(photo_path);
             int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
 
             switch (orientation) {
                 case ExifInterface.ORIENTATION_ROTATE_90: {
-                    matrix.setRotate(90,bmp.getWidth()/2,bmp.getHeight()/2);
+                    /*
+                     System.out.println("ORIENTATION 180");
+                    matrix.setRotate(180,bmp.getWidth()/2,bmp.getHeight()/2);
                     canvas.drawBitmap(bmp, matrix, new Paint());
-                    return temp;
+
+                     */
+                    matrix.postRotate(90);
+                    Bitmap bMapRotate = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
+                    return bMapRotate;
                 }
 
 
                 case ExifInterface.ORIENTATION_ROTATE_180:{
-                    matrix.setRotate(180,bmp.getWidth()/2,bmp.getHeight()/2);
-                    canvas.drawBitmap(bmp, matrix, new Paint());
-                    return temp;
+                    matrix.postRotate(180);
+                    Bitmap bMapRotate = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
+                    return bMapRotate;
                 }
 
 
                 case ExifInterface.ORIENTATION_ROTATE_270:{
-                    matrix.setRotate(270,bmp.getWidth()/2,bmp.getHeight()/2);
-                    canvas.drawBitmap(bmp, matrix, new Paint());
-                    return temp;
+                    matrix.postRotate(270);
+                    Bitmap bMapRotate = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
+                    return bMapRotate;
                 }
 
                 default:{
+                    Bitmap temp = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), Bitmap.Config.RGB_565);
+                    Canvas canvas = new Canvas(temp);
                     canvas.drawBitmap(bmp, 0, 0,null);
                     return temp;
                 }

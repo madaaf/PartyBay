@@ -1,4 +1,4 @@
-package fr.partybay.android.TimeLineManager;
+package fr.partybay.android.Class;
 
 import android.content.Context;
 

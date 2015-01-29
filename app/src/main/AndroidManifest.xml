@@ -110,7 +110,7 @@
 
         <!-- PACKAGE TIMELINE -->
         <activity
-            android:name=".TimeLineManager.PostActivity"
+            android:name=".Annex.PostActivity"
             android:label="@style/AppTheme"/>
 
         <activity
