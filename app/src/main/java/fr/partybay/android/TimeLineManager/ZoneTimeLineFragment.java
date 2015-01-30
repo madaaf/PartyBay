@@ -1,5 +1,6 @@
 package fr.partybay.android.TimeLineManager;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -9,6 +10,7 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -38,7 +40,7 @@ import fr.partybay.android.R;
 /**
  * Created by mada on 28/01/15.
  */
-public class TimeLineFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class ZoneTimeLineFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private SwipeRefreshLayout layout;
     private ListView listView;
@@ -49,12 +51,17 @@ public class TimeLineFragment extends Fragment implements SwipeRefreshLayout.OnR
     private int nbr_scroll = 0 ;
     private final static int NBROFITEM = 5;
     private Context context;
+    private Fragment frag ;
+    public static FragmentManager fragmentManager;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getActivity().getApplicationContext();
+
+        fragmentManager = getFragmentManager();
+
 
         // on recupere les 10 premier postes
         posts = new ArrayList<Post>();
@@ -73,6 +80,8 @@ public class TimeLineFragment extends Fragment implements SwipeRefreshLayout.OnR
 
         View rootView = inflater.inflate(R.layout.timelinezone, container, false);
 
+        frag = 	getFragmentManager().findFragmentById(R.id.timelinefragmentmapView);
+
         layout = (SwipeRefreshLayout)rootView.findViewById(R.id.swype);
         layout.setOnRefreshListener(this);
         layout.setColorScheme( R.color.swype_1, R.color.swype_2, R.color.swype_3, R.color.swype_4);
@@ -85,6 +94,18 @@ public class TimeLineFragment extends Fragment implements SwipeRefreshLayout.OnR
         v.setTextSize(40);
         v.setHeight(800);
         listView.addHeaderView(v);
+
+        //  googleMap = ((MapFragment)getFragmentManager().findFragmentById(R.id.mapView)).getMap();
+       // Try to obtain the map from the SupportMapFragment.
+
+
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+             //   Intent i = new Intent(getActivity(), Google.class);
+             //   startActivity(i);
+            }
+        });
 
         SeekBar seekBar = new SeekBar(getActivity());
         seekBar.setMinimumHeight(150);

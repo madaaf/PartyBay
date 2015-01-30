@@ -3,19 +3,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000">
+    >
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        >
-
-    <fragment
-        android:id="@+id/mapView"
-        android:name="com.google.android.gms.maps.MapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="15dp"/>
+        android:layout_height="250dp" >
+<!--
+        <TextView
+            android:id="@+id/google_tv"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="MADA"
+            android:gravity="center"/>
+-->
+        <fragment
+            android:id="@+id/google_mapView"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
     </RelativeLayout>
 

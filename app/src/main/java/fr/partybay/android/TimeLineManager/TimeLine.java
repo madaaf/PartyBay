@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -15,7 +17,6 @@ import fr.partybay.android.Activity.CameraAc;
 import fr.partybay.android.Class.SerializeurMono;
 import fr.partybay.android.Class.User;
 import fr.partybay.android.MenuManager.MenuViewPagerActivity;
-import fr.partybay.android.ProfileManager.ProfileViewPagerActivity;
 import fr.partybay.android.R;
 
 /**
@@ -44,6 +45,7 @@ public class TimeLine extends FragmentActivity {
         ActionBar bar = this.getActionBar();
         bar.hide();
 
+
         serializeur_user = new SerializeurMono<User>(getResources().getString(R.string.sdcard_user));
         User user = serializeur_user.getObject();
         my_user_id = user.getId();
@@ -63,7 +65,7 @@ public class TimeLine extends FragmentActivity {
         menu.setOnClickListener(reglageListener);
 
         profile.setOnClickListener(profileListener);
-        moment.setOnClickListener(mmomentListener);
+        moment.setOnClickListener(momentListener);
 
 
         mSectionsPagerAdaptater = new TimeLineAdapter(getSupportFragmentManager());
@@ -72,7 +74,7 @@ public class TimeLine extends FragmentActivity {
         mViewPager = (ViewPager)findViewById(R.id.timelineviewpager);
         mViewPager.setAdapter(mSectionsPagerAdaptater);
 
-       zone.setOnClickListener(new View.OnClickListener() {
+        zone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mViewPager.setCurrentItem(0, true);
@@ -115,7 +117,9 @@ public class TimeLine extends FragmentActivity {
         public void onClick(View view) {
             Intent intent = new Intent(TimeLine.this, MenuViewPagerActivity.class);
             startActivity(intent);
-            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+            //overridePendingTransition(R.anim.left_to_right_slide, R.anim.right_to_left_slide);
+
+            overridePendingTransition(R.anim.rotate_in, R.anim.rotate_out );
 
         }
     };
@@ -123,15 +127,29 @@ public class TimeLine extends FragmentActivity {
     View.OnClickListener profileListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-          //  Animation rotation = AnimationUtils.loadAnimation(view.getContext(), R.anim.button_rotate);
-           // rotation.setRepeatCount(Animation.INFINITE);
+
+            Animation rotation = AnimationUtils.loadAnimation(view.getContext(), R.anim.button_rotate);
+            profile.startAnimation(rotation);
+/*
             Intent intent = new Intent(TimeLine.this, ProfileViewPagerActivity.class);
             intent.putExtra("user_id",my_user_id);
             startActivity(intent);
-            overridePendingTransition(R.anim.rotate_in,R.anim.rotate_out);
-            //profile.startAnimation(rotation);
-          //  Thread threadPhotoAnim = new ThreadProfile();
-          //  threadPhotoAnim.start();
+            overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
+
+*/
+
+            /*
+
+            Animation rotation = AnimationUtils.loadAnimation(view.getContext(), R.anim.button_rotate);
+            rotation.setRepeatCount(1);
+            profile.startAnimation(rotation);
+
+
+            */
+
+            //
+            //Thread threadPhotoAnim = new ThreadProfile();
+            //threadPhotoAnim.start();
             //profile.clearAnimation();
 
 
@@ -145,18 +163,10 @@ public class TimeLine extends FragmentActivity {
         }
     };
 
-    View.OnClickListener mmomentListener = new View.OnClickListener() {
+    View.OnClickListener momentListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            /*RotateAnimation ra =new RotateAnimation(0, 360);
-            ra.setFillAfter(true);
-            ra.setDuration(500);
 
-            moment.startAnimation(ra);*/
-/*
-            Animation rotation = AnimationUtils.loadAnimation(view.getContext(), R.anim.button_rotate);
-            rotation.setRepeatCount(Animation.INFINITE);
-            moment.startAnimation(rotation);*/
             Thread threadPhotoAnim = new ThreadMoments();
             threadPhotoAnim.start();
 
@@ -170,6 +180,7 @@ public class TimeLine extends FragmentActivity {
                     public void run(){
                         Intent intent = new Intent(TimeLine.this, CameraAc.class);
                         startActivity(intent);
+                        // animation de bat en haut
                         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up );
 
                     }

@@ -19,11 +19,12 @@ public class MenuViewPagerActivity extends FragmentActivity{
     private Button activite_b;
     private Button reglage_b;
 
+    /*
     @Override
     public void onBackPressed() {
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+        overridePendingTransition(R.anim.left_to_right_slide,  R.anim.right_to_left_slide);
         super.onBackPressed();
-    }
+    }*/
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

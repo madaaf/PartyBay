@@ -404,7 +404,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         public void onClick(View view) {
             Intent intent = new Intent(PostActivity.this, GestureFunActivity.class);
             startActivity(intent);
-            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+            overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
 
         }
     };

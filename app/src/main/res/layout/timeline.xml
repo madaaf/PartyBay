@@ -34,6 +34,7 @@
 
         <ImageButton
             android:id="@+id/profile"
+            android:interpolator="@anim/button_rotate"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dp"

@@ -17,7 +17,7 @@ public class TimeLineAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int pos) {
 
         TrackTimeLineFragment ttlf = new TrackTimeLineFragment();
-        TimeLineFragment tlf = new TimeLineFragment();
+        ZoneTimeLineFragment tlf = new ZoneTimeLineFragment();
 
         switch(pos){
             case 0 : {
