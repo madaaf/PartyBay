@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Dictionary;
 import java.util.Iterator;
 
 import fr.partybay.android.Activity.Chargement;
@@ -42,6 +44,7 @@ public class TrackTimeLineFragment extends Fragment implements SwipeRefreshLayou
     private int nbr_scroll = 0 ;
     private final static int NBROFITEM = 5;
     private Context context;
+
 
 
     @Override
@@ -72,6 +75,7 @@ public class TrackTimeLineFragment extends Fragment implements SwipeRefreshLayou
 
         listView = new CustomListView(context);
         listView = (ListView)rootView.findViewById(R.id.tlt_lvPost);
+
 
 
         // Create the adapter to convert the array to array to views

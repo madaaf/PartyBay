@@ -1,25 +1,22 @@
 package fr.partybay.android.TimeLineManager;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -51,8 +48,12 @@ public class ZoneTimeLineFragment extends Fragment implements SwipeRefreshLayout
     private int nbr_scroll = 0 ;
     private final static int NBROFITEM = 5;
     private Context context;
-    private Fragment frag ;
     public static FragmentManager fragmentManager;
+
+    private SeekBar mStickyView;
+    private View mPlaceholderView;
+    private View mItemTop;
+
 
 
     @Override
@@ -75,47 +76,57 @@ public class ZoneTimeLineFragment extends Fragment implements SwipeRefreshLayout
 
     }
 
+
         @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.timelinezone, container, false);
 
-        frag = 	getFragmentManager().findFragmentById(R.id.timelinefragmentmapView);
+       // frag = 	getFragmentManager().findFragmentById(R.id.timelineHeaderfragmentmapView);
+       // seekBar = (SeekBar)rootView.findViewById(R.id.timelinezone_seekBar1);
+
 
         layout = (SwipeRefreshLayout)rootView.findViewById(R.id.swype);
+
+        mStickyView = (SeekBar) rootView.findViewById(R.id.sticky);
+        mItemTop = rootView.findViewById(R.id.itemTop);
         layout.setOnRefreshListener(this);
         layout.setColorScheme( R.color.swype_1, R.color.swype_2, R.color.swype_3, R.color.swype_4);
-
         listView = new CustomListView(getActivity());
         listView = (ListView)rootView.findViewById(R.id.lvPost);
 
-        TextView v = new TextView(getActivity());
-        v.setGravity(Gravity.CENTER);
-        v.setTextSize(40);
-        v.setHeight(800);
-        listView.addHeaderView(v);
 
-        //  googleMap = ((MapFragment)getFragmentManager().findFragmentById(R.id.mapView)).getMap();
-       // Try to obtain the map from the SupportMapFragment.
+       View v = inflater.inflate(R.layout.timlinezoneheader, null);
+       mPlaceholderView = v.findViewById(R.id.placeholder);
+       listView.addHeaderView(v);
 
+        listView.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @SuppressLint("NewApi")
+                    @SuppressWarnings("deprecation")
+                    @Override
+                    public void onGlobalLayout() {
+                        //onScrollChanged();
+                        View v = listView.getChildAt(0);
+                        int top = (v == null) ? 0 : v.getTop();
 
-        v.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-             //   Intent i = new Intent(getActivity(), Google.class);
-             //   startActivity(i);
-            }
-        });
+                        // This check is needed because when the first element reaches the top of the window, the top values from top are not longer valid.
+                        if (listView.getFirstVisiblePosition() == 0) {
+                            mStickyView.setTranslationY(  Math.max(0, mPlaceholderView.getTop() + top));
 
-        SeekBar seekBar = new SeekBar(getActivity());
-        seekBar.setMinimumHeight(150);
-        ShapeDrawable thumb = new ShapeDrawable(new OvalShape());
-        thumb.setIntrinsicHeight(70);
-        thumb.setIntrinsicWidth(70);
-        thumb.setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
-        seekBar.setThumb(thumb);
-        //listView.addParallaxedHeaderView(seekBar);
-        listView.addHeaderView(seekBar);
+                            // Set the image to scroll half of the amount scrolled in the ListView.
+                            mItemTop.setTranslationY(top / 2);
+                        }
+
+                        ViewTreeObserver obs = listView.getViewTreeObserver();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            obs.removeOnGlobalLayoutListener(this);
+                        } else {
+                            obs.removeGlobalOnLayoutListener(this);
+                        }
+                    }
+                });
+
 
 
 
@@ -132,6 +143,18 @@ public class ZoneTimeLineFragment extends Fragment implements SwipeRefreshLayout
 
                 @Override
                 public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount){
+                    View v = listView.getChildAt(0);
+                    int top = (v == null) ? 0 : v.getTop();
+
+                    // This check is needed because when the first element reaches the top of the window, the top values from top are not longer valid.
+                    if (listView.getFirstVisiblePosition() == 0) {
+                        mStickyView.setTranslationY(  Math.max(0, mPlaceholderView.getTop() + top));
+
+                        // Set the image to scroll half of the amount scrolled in the ListView.
+                        mItemTop.setTranslationY(top / 2);
+                    }
+
+
 
                     int lastInScreen = firstVisibleItem + visibleItemCount;
                     if(lastInScreen == (totalItemCount) && (onScroolStateChange==true)){
@@ -354,4 +377,83 @@ public class ZoneTimeLineFragment extends Fragment implements SwipeRefreshLayout
         }, 3000);
 
     }
+
+
+
+
+    /**
+     * Populate the ListView with example data.
+     * @return
+     */
+
+
+
+
+
+
+
 }
+
+
+
+
+
+
+            /*
+// debut du set Offset
+        final View v = rootView.findViewById(R.id.timlinezoneheaderheaderbottom);
+        ViewTreeObserver vto = v.getViewTreeObserver();
+
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+            @Override
+            public void onGlobalLayout() {
+
+                lowerHeaderHeight = v.getMeasuredHeight();
+                ViewTreeObserver vto1 = header.getViewTreeObserver();
+
+                vto1.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+                    @Override
+                    public void onGlobalLayout() {
+
+                        if (!offsetSet) {
+                            headerHeight = header.getMeasuredHeight() - lowerHeaderHeight;
+                            floatingBarHeader.setY(headerHeight);
+                            offsetSet = true;
+                        }
+
+                    }
+                });
+            }
+        });
+ // fin du set Offset
+ // placeFloatingViewWhenReady
+        View v2 = rootView.findViewById(R.id.timelinzoneeseekbar);
+        ViewTreeObserver vto2 = v2.getViewTreeObserver();
+        vto2.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+
+                int scrollY = 0;
+                View c = listView.getChildAt(0);
+                if (c != null) {
+                    scrollY = -c.getTop();
+                    listViewItemHeights.put(listView.getFirstVisiblePosition(), c.getHeight());
+                    for (int i = 0; i < listView.getFirstVisiblePosition(); ++i) {
+                        if (listViewItemHeights.get(i) != null)
+                            scrollY += listViewItemHeights.get(i);
+                    }
+                }
+
+
+                if (scrollY < headerHeight + baseScrollHeight) {
+                    floatingBarHeader.setTop(-1 * scrollY + baseScrollHeight);
+                } else {
+                    floatingBarHeader.setTop(-1 * headerHeight);
+                }
+            }
+        });
+
+
+*/

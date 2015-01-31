@@ -38,6 +38,7 @@ public class AlbumActivity extends FragmentActivity {
        /** Instantiating FragmentPagerAdapter */
 
         System.out.println("ALBUM ACTIVITY "+ item_id);
+       // viewPager.setPageTransformer(false, new ParallaxPagerTransformer(R.id.item_album_photo_fond));
         AlbumAdapter albumAdapter = new AlbumAdapter(fm,this,item_id,my_id);
         viewPager.setAdapter(albumAdapter);
 

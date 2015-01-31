@@ -65,7 +65,7 @@ public class GoogleFragment extends Fragment {
         gps=new GPSTracker(getActivity());
         latitude = gps.getLatitude();
         longitude = gps.getLongitude();
-        LOCATION_SURRREY = new LatLng(48.8456853, 2.3109669);
+        LOCATION_SURRREY = new LatLng(latitude, longitude);
 
         FragmentManager fm = getChildFragmentManager();
         mMapFragment = (SupportMapFragment) fm.findFragmentById(R.id.google_mapView);

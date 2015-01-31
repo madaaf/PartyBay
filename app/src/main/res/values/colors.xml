@@ -6,6 +6,9 @@
 
     <color name="red">#ffff2218</color>
 
+    <color name="sticky_item">#fff</color>
+    <color name="sticky_item_text">#09c</color>
+    <color name="listview_item">#282828</color>
     <color name="swype_1">#ff92ff2f</color>
     <color name="swype_2">#ffffbc00</color>
     <color name="swype_3">#ff12ffa0</color>

@@ -94,6 +94,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/post_image"
         android:background="@color/white"
+        android:layout_marginBottom="7dp"
+
+
         >
 
         <RelativeLayout
@@ -144,7 +147,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:layout_toRightOf="@id/like"
-            android:textSize="15dp"
+            android:textSize="15dp" android:layout_marginBottom="7dp"
             android:text="Cest de la folie dans le jardin de Laura pour feter son anniv !"/>
 
     </RelativeLayout>
