@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import fr.partybay.android.Class.Internet;
 import fr.partybay.android.Class.RestClient;
 import fr.partybay.android.Class.SerializeurMono;
 import fr.partybay.android.Class.User;
@@ -35,12 +36,14 @@ public class Story extends Fragment  implements SwipeRefreshLayout.OnRefreshList
     private final int NBROFITEM = 15;
     private String user_id;
     private ParallaxListView lv;
+    private Internet internet = null;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // initialize the posts list
+        internet = new Internet(getActivity());
         posts = new ArrayList<Post>();
         /** Getting the arguments to the Bundle object */
         Bundle data = getArguments();
@@ -100,38 +103,43 @@ public class Story extends Fragment  implements SwipeRefreshLayout.OnRefreshList
 
     // get posts from api
     public void getPostFromApi(int pos_debut, int nbr_item) throws Exception {
-        RestClient client = new RestClient(getActivity(),"https://api.partybay.fr/users/"+user_id+"/posts?limit="+nbr_item+"&offset=0&side=desc");
-        //System.out.println("https://api.partybay.fr/users/"+user.getId()+"/posts?limit="+nbr_item+"&offset=0&side=desc");
+        if(internet.internet()){
+            RestClient client = new RestClient(getActivity(),"https://api.partybay.fr/users/"+user_id+"/posts?limit="+nbr_item+"&offset=0&side=desc");
+            //System.out.println("https://api.partybay.fr/users/"+user.getId()+"/posts?limit="+nbr_item+"&offset=0&side=desc");
 
-        // je recupere un token dans la sd carte
-        String access_token = client.getTokenValid();
-        client.AddHeader("Authorization","Bearer "+access_token);
-        String rep = "";
-        try {
-            rep =  client.Execute("GET");
-            //System.out.println("RESPONSE DE EXECITE GET : " + rep.toString()+ "taille ="+rep.length()) ;
-            if (rep!=null && rep.length()>2){
-                 System.out.println("je suis ici encore" +rep);
-                ArrayList<String> stringArray = new ArrayList<String>();
-                stringArray=jsonStringToArray(rep);
+            // je recupere un token dans la sd carte
+            String access_token = client.getTokenValid();
+            client.AddHeader("Authorization","Bearer "+access_token);
+            String rep = "";
+            try {
+                rep =  client.Execute("GET");
+                //System.out.println("RESPONSE DE EXECITE GET : " + rep.toString()+ "taille ="+rep.length()) ;
+                if (rep!=null && rep.length()>2){
+                    System.out.println("je suis ici encore" +rep);
+                    ArrayList<String> stringArray = new ArrayList<String>();
+                    stringArray=jsonStringToArray(rep);
 
-                Iterator<String> it = stringArray.iterator();
-                Post post = null;
-                while (it.hasNext()) {
-                    String s = it.next();
-                    JSONObject obj = new JSONObject(s);
-                    post = new Post(getActivity(),obj);
-                    if(post!=null){
-                        posts.add(post);
+                    Iterator<String> it = stringArray.iterator();
+                    Post post = null;
+                    while (it.hasNext()) {
+                        String s = it.next();
+                        JSONObject obj = new JSONObject(s);
+                        post = new Post(getActivity(),obj);
+                        if(post!=null){
+                            posts.add(post);
+                        }
+
                     }
-
                 }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+        }else{
 
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+
 
 
     }

@@ -7,16 +7,17 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.xgc1986.parallaxPagerTransformer.ParallaxPagerTransformer;
 
 import fr.partybay.android.Activity.CameraAc;
 import fr.partybay.android.Class.SerializeurMono;
 import fr.partybay.android.Class.User;
 import fr.partybay.android.MenuManager.MenuViewPagerActivity;
+import fr.partybay.android.ProfileManager.ProfileViewPagerActivity;
 import fr.partybay.android.R;
 
 /**
@@ -87,7 +88,10 @@ public class TimeLine extends FragmentActivity {
             }
         });
 
-
+        mViewPager.setPageTransformer(false, new ParallaxPagerTransformer(R.id.timelinezoneContainer));
+        mViewPager.setPageTransformer(false, new ParallaxPagerTransformer(R.id.timelineTrackContainer));
+        mViewPager.setPageMargin(3);
+        mViewPager.setPageMarginDrawable(R.color.redClear);
         mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 
         @Override
@@ -117,9 +121,9 @@ public class TimeLine extends FragmentActivity {
         public void onClick(View view) {
             Intent intent = new Intent(TimeLine.this, MenuViewPagerActivity.class);
             startActivity(intent);
-            //overridePendingTransition(R.anim.left_to_right_slide, R.anim.right_to_left_slide);
+            overridePendingTransition(R.anim.left_to_right_slide, R.anim.right_to_left_slide);
 
-            overridePendingTransition(R.anim.rotate_in, R.anim.rotate_out );
+           // overridePendingTransition(R.anim.rotate_in, R.anim.rotate_out );
 
         }
     };
@@ -128,15 +132,15 @@ public class TimeLine extends FragmentActivity {
         @Override
         public void onClick(View view) {
 
-            Animation rotation = AnimationUtils.loadAnimation(view.getContext(), R.anim.button_rotate);
-            profile.startAnimation(rotation);
-/*
+          //  Animation rotation = AnimationUtils.loadAnimation(view.getContext(), R.anim.button_rotate);
+          //  profile.startAnimation(rotation);
+
             Intent intent = new Intent(TimeLine.this, ProfileViewPagerActivity.class);
             intent.putExtra("user_id",my_user_id);
             startActivity(intent);
             overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
 
-*/
+
 
             /*
 

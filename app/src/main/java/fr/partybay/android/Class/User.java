@@ -54,10 +54,10 @@ public class User implements Serializable{
             }
             if(obj.has("phone")){
                 phone = obj.getString("phone");
-            }
+            }/*
             if(obj.has("password")){
                 password = obj.getString("password");
-            }
+            }*/
             if(obj.has("firstname")){
                 firstname = obj.getString("firstname");
             }

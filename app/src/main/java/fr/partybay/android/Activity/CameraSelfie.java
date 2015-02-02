@@ -1,7 +1,6 @@
 package fr.partybay.android.Activity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -27,6 +26,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import fr.partybay.android.Class.Blur;
+import fr.partybay.android.Class.Internet;
+import fr.partybay.android.Class.PopupActivity;
 import fr.partybay.android.Class.RestClient;
 import fr.partybay.android.ProfileManager.ProfileViewPagerActivity;
 import fr.partybay.android.R;
@@ -48,6 +49,8 @@ public class CameraSelfie extends Activity {
     public static final int MEDIA_TYPE_VIDEO = 2;
     public String  path_photo=null;
     private String user_id = null;
+    private Internet internet = null;
+    private PopupActivity popupActivity = null;
 
 
 
@@ -59,7 +62,7 @@ public class CameraSelfie extends Activity {
 
         Bundle bundle = getIntent().getExtras();
         user_id = bundle.getString("user_id");
-
+        popupActivity = new PopupActivity(this);
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -132,7 +135,7 @@ public class CameraSelfie extends Activity {
 
             } else {
                 // Image capture failed, advise user
-                afficherPopup("Une erreur est survenue lors de la prise de photo",null);
+               // popupActivity.afficherPopup("Une erreur est survenue lors de la prise de photo",null);
                 Intent intent = new Intent(CameraSelfie.this, ProfileViewPagerActivity.class);
                 intent.putExtra("user_id",user_id);
                 startActivity(intent);
@@ -245,41 +248,35 @@ public class CameraSelfie extends Activity {
         }
         @Override
         public void run() {
+            if (internet.internet()){
+                RestClient client = new RestClient(context,"https://api.partybay.fr/users/"+user_id);
+                client.AddParam("picture", "password");
+                String access_token = client.getTokenValid();
+                client.AddHeader("Authorization","Bearer "+access_token);
 
-            RestClient client = new RestClient(context,"https://api.partybay.fr/users/"+user_id);
-            client.AddParam("picture", "password");
-            String access_token = client.getTokenValid();
-            client.AddHeader("Authorization","Bearer "+access_token);
+                File file = new File(getResources().getString(R.string.sdcard_selfie));
+                FileBody fileBody = new FileBody(file);
+                client.AddFile(fileBody);
+                client.AddParamFile("filename", "selfie.jpeg");
+                client.AddParamFile("which", "profile");
+                String rep = null;
 
-            File file = new File(getResources().getString(R.string.sdcard_selfie));
-            FileBody fileBody = new FileBody(file);
-            client.AddFile(fileBody);
-            client.AddParamFile("filename", "selfie.jpeg");
-            client.AddParamFile("which", "profile");
-            String rep = null;
+                try {
+                    rep = client.Execute("FILE");
+                    System.out.println("SELFIE REPONSE: "+rep);
 
-            try {
-                rep = client.Execute("FILE");
-                System.out.println("SELFIE REPONSE: "+rep);
-
-            } catch (Exception e) {
-                e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }else{
+               // popupActivity.afficherPopup(getResources().getString(R.string.error_internet),null);
             }
+
 
         }
     }
 
-    public void afficherPopup(final String message, final android.content.DialogInterface.OnClickListener listener){
 
-        this.runOnUiThread(new Runnable(){
-            public void run() {
-                AlertDialog.Builder popup = new AlertDialog.Builder(CameraSelfie.this);
-                popup.setMessage(message);
-                popup.setPositiveButton("Ok", listener);
-                popup.show();
-            }
-        });
-    }
 
 
     public  Bitmap getCorrectBitmap(Bitmap bitmap, String photo_path) {

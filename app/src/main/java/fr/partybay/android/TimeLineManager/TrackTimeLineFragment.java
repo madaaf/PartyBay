@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,11 +20,12 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.Iterator;
 
 import fr.partybay.android.Activity.Chargement;
 import fr.partybay.android.Class.CustomListView;
+import fr.partybay.android.Class.Internet;
+import fr.partybay.android.Class.PopupActivity;
 import fr.partybay.android.Class.Post;
 import fr.partybay.android.Class.RestClient;
 import fr.partybay.android.R;
@@ -44,6 +44,8 @@ public class TrackTimeLineFragment extends Fragment implements SwipeRefreshLayou
     private int nbr_scroll = 0 ;
     private final static int NBROFITEM = 5;
     private Context context;
+    private PopupActivity popupActivity = null;
+    private Internet internet = null;
 
 
 
@@ -51,6 +53,9 @@ public class TrackTimeLineFragment extends Fragment implements SwipeRefreshLayou
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getActivity().getApplicationContext();
+
+        popupActivity = new PopupActivity(getActivity());
+        internet = new Internet(getActivity());
 
         // on recupere les 10 premier postes
         posts = new ArrayList<Post>();
@@ -125,59 +130,7 @@ public class TrackTimeLineFragment extends Fragment implements SwipeRefreshLayou
 
 
 
-    public void getPostFromApi(String urlapi, Boolean addTop) throws Exception {
 
-        RestClient client = new RestClient(context,urlapi);
-        // je recupere un token dans la sd carte
-        String access_token = client.getTokenValid();
-
-        client.AddHeader("Authorization","Bearer "+access_token);
-        String rep = "";
-        try {
-            rep =  client.Execute("GET");
-
-            try {
-                JSONObject obj = new JSONObject(rep);
-                if(obj.has("error")){deconnexion(); }
-
-            } catch (JSONException e) {
-                System.out.println("err getPostfromapi "+e.getMessage());
-
-            }
-
-
-            if (rep!=null && rep.length()>2){
-                // System.out.println("je suis ici encore");
-                ArrayList<String> stringArray = new ArrayList<String>();
-                stringArray=jsonStringToArray(rep);
-
-                Iterator<String> it = stringArray.iterator();
-                Post post = null;
-                while (it.hasNext()) {
-                    String s = it.next();
-                    // System.out.println("js : "+s.startsWith("["));
-                    // if(s.startsWith("[")){}
-                    JSONObject obj = new JSONObject(s);
-                    post = new Post(context,obj);;
-                    if(post!=null){
-                        if (addTop==true){
-                            posts.add(0,post);
-                        }else{
-                            posts.add(post);
-                        }
-
-                    }
-
-                }
-            }
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-    }
 
     public ArrayList<String> jsonStringToArray(String jsonString) throws JSONException {
         ArrayList<String> stringArray = new ArrayList<String>();
@@ -313,4 +266,69 @@ public class TrackTimeLineFragment extends Fragment implements SwipeRefreshLayou
         }, 3000);
 
     }
+
+
+    public void getPostFromApi(String urlapi, Boolean addTop) throws Exception {
+
+        if(internet.internet()){
+            RestClient client = new RestClient(context,urlapi);
+            // je recupere un token dans la sd carte
+            String access_token = client.getTokenValid();
+
+            client.AddHeader("Authorization","Bearer "+access_token);
+            String rep = "";
+            try {
+                rep =  client.Execute("GET");
+
+                try {
+                    JSONObject obj = new JSONObject(rep);
+                    if(obj.has("error")){deconnexion(); }
+
+                } catch (JSONException e) {
+                    System.out.println("err getPostfromapi "+e.getMessage());
+
+                }
+
+
+                if (rep!=null && rep.length()>2){
+                    // System.out.println("je suis ici encore");
+                    ArrayList<String> stringArray = new ArrayList<String>();
+                    stringArray=jsonStringToArray(rep);
+
+                    Iterator<String> it = stringArray.iterator();
+                    Post post = null;
+                    while (it.hasNext()) {
+                        String s = it.next();
+                        // System.out.println("js : "+s.startsWith("["));
+                        // if(s.startsWith("[")){}
+                        JSONObject obj = new JSONObject(s);
+                        post = new Post(context,obj);;
+                        if(post!=null){
+                            if (addTop==true){
+                                posts.add(0,post);
+                            }else{
+                                posts.add(post);
+                            }
+
+                        }
+
+                    }
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }else{
+            //upActivity.afficherPopup(getResources().getString(R.string.error_internet),null);
+        }
+
+
+    }
+
+
+
+
+
 }

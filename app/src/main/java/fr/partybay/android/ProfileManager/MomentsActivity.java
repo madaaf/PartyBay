@@ -20,11 +20,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import fr.partybay.android.Album.AlbumActivity;
+import fr.partybay.android.Class.Internet;
+import fr.partybay.android.Class.Post;
 import fr.partybay.android.Class.RestClient;
 import fr.partybay.android.Class.SerializeurMono;
 import fr.partybay.android.Class.User;
 import fr.partybay.android.R;
-import fr.partybay.android.Class.Post;
 
 /**
  * Created by mada on 11/01/15.
@@ -36,10 +37,13 @@ public class MomentsActivity extends Fragment implements SwipeRefreshLayout.OnRe
     private SerializeurMono<User> serializeur_user;
     private final int NBROFITEM = 15;
     private String user_id = null;
+    private Internet internet = null;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        internet = new Internet(getActivity());
         // initialize the posts list
         posts = new ArrayList<Post>();
 
@@ -99,41 +103,42 @@ public class MomentsActivity extends Fragment implements SwipeRefreshLayout.OnRe
 
     // get posts from api
     public void getPostFromApi(int pos_debut, int nbr_item) throws Exception {
-        // ThreadLoadPost = new LoadListenerThread(pos_debut,nbr_item);
-        // ThreadLoadPost.start();
-       // RestClient client = new RestClient(getActivity(),"https://api.partybay.fr/users/"+user_id+"/posts");
-        RestClient client = new RestClient(getActivity(),"https://api.partybay.fr/users/"+user_id+"/posts?limit="+nbr_item+"&offset=0&side=desc");
-        //System.out.println("https://api.partybay.fr/users/"+user.getId()+"/posts?limit="+nbr_item+"&offset=0&side=desc");
 
-        // je recupere un token dans la sd carte
-        String access_token = client.getTokenValid();
-        client.AddHeader("Authorization","Bearer "+access_token);
-        String rep = "";
-        try {
-            rep =  client.Execute("GET");
-            //System.out.println("RESPONSE DE EXECITE GET : " + rep.toString()+ "taille ="+rep.length()) ;
-            if (rep!=null && rep.length()>2){
-                // System.out.println("je suis ici encore");
-                ArrayList<String> stringArray = new ArrayList<String>();
-                stringArray=jsonStringToArray(rep);
+        if(internet.internet()){
+            RestClient client = new RestClient(getActivity(),"https://api.partybay.fr/users/"+user_id+"/posts?limit="+nbr_item+"&offset=0&side=desc");
+            // je recupere un token dans la sd carte
+            String access_token = client.getTokenValid();
+            client.AddHeader("Authorization","Bearer "+access_token);
+            String rep = "";
+            try {
+                rep =  client.Execute("GET");
+                //System.out.println("RESPONSE DE EXECITE GET : " + rep.toString()+ "taille ="+rep.length()) ;
+                if (rep!=null && rep.length()>2){
+                    // System.out.println("je suis ici encore");
+                    ArrayList<String> stringArray = new ArrayList<String>();
+                    stringArray=jsonStringToArray(rep);
 
-                Iterator<String> it = stringArray.iterator();
-                Post post = null;
-                while (it.hasNext()) {
-                    String s = it.next();
-                    // System.out.println("js : "+s.startsWith("["));
-                    // if(s.startsWith("[")){}
-                    JSONObject obj = new JSONObject(s);
-                    post = new Post(getActivity(),obj);
-                     if(post!=null){
-                         posts.add(post);
+                    Iterator<String> it = stringArray.iterator();
+                    Post post = null;
+                    while (it.hasNext()) {
+                        String s = it.next();
+                        // System.out.println("js : "+s.startsWith("["));
+                        // if(s.startsWith("[")){}
+                        JSONObject obj = new JSONObject(s);
+                        post = new Post(getActivity(),obj);
+                        if(post!=null){
+                            posts.add(post);
+                        }
+
                     }
-
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        }else{
+
         }
+
     }
 
     @Override

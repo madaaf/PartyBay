@@ -61,6 +61,9 @@ public class RestClient{
     private String CURRENT_TOKEN;
     private Context c;
 
+    private Internet internet = null;
+
+
 
     public RestClient(Context c,String url) {
         this.url = url;
@@ -182,10 +185,13 @@ public class RestClient{
             HttpResponse httpResponse = null;
 
             try {
-                httpResponse = client.execute(request);
-                HttpEntity httpentity = httpResponse.getEntity();
-                InputStream instream = httpentity.getContent();
-                responsePostFile = convertStreamToString(instream);
+
+                    httpResponse = client.execute(request);
+                    HttpEntity httpentity = httpResponse.getEntity();
+                    InputStream instream = httpentity.getContent();
+                    responsePostFile = convertStreamToString(instream);
+
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -303,11 +309,13 @@ public class RestClient{
               HttpResponse httpResponse;
 
               try {
-                  httpResponse = client.execute(request);
-                  HttpEntity httpentity = httpResponse.getEntity();
-                  InputStream instream = httpentity.getContent();
-                  responseGet = convertStreamToString(instream);
-                 // bitmap = BitmapFactory.decodeStream(instream);
+
+                      httpResponse = client.execute(request);
+                      HttpEntity httpentity = httpResponse.getEntity();
+                      InputStream instream = httpentity.getContent();
+                      responseGet = convertStreamToString(instream);
+                      // bitmap = BitmapFactory.decodeStream(instream);
+
 
               } catch (IOException e) {
                   Log.d("Erreur ", e.getMessage());
@@ -351,10 +359,13 @@ public class RestClient{
             HttpResponse httpResponse;
 
             try {
-                httpResponse = client.execute(request);
-                HttpEntity httpentity = httpResponse.getEntity();
-                InputStream instream = httpentity.getContent();
-                responsePost = convertStreamToString(instream);
+
+                    httpResponse = client.execute(request);
+                    HttpEntity httpentity = httpResponse.getEntity();
+                    InputStream instream = httpentity.getContent();
+                    responsePost = convertStreamToString(instream);
+
+
 
             } catch (IOException e) {
                 Log.d("Erreur ", e.getMessage());
@@ -362,5 +373,8 @@ public class RestClient{
 
         }
     }
+
+
+
 
 }

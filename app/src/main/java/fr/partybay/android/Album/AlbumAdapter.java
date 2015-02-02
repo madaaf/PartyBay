@@ -13,8 +13,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import fr.partybay.android.Class.RestClient;
+import fr.partybay.android.Class.Internet;
+import fr.partybay.android.Class.PopupActivity;
 import fr.partybay.android.Class.Post;
+import fr.partybay.android.Class.RestClient;
+import fr.partybay.android.R;
 
 
 /**
@@ -30,6 +33,8 @@ public class AlbumAdapter extends FragmentPagerAdapter {
     private int indexPostActuel;
     private int index ;
     private int compteur=0;
+    private Internet internet = null;
+    private PopupActivity popupActivity = null;
 
     public AlbumAdapter(FragmentManager fm,Context context,String item_id,String my_id) {
         super(fm);
@@ -37,41 +42,47 @@ public class AlbumAdapter extends FragmentPagerAdapter {
         this.item_id = item_id;
         this.my_id = my_id;
 
+        popupActivity = new PopupActivity(context);
         System.out.println("ALBUM ADAPTER  item id ==>"+ item_id);
         System.out.println("ALBUM ADAPTE R my id ==>"+ my_id);
+        internet = new Internet(context);
+        if (internet.internet()){
+            //récupere information du post sur l'api
+            RestClient client = new RestClient(context,"https://api.partybay.fr/users/"+my_id+"/posts?limit=50&offset=0&side=desc");
+            // je recupere un token dans la sd carte
+            String access_token = client.getTokenValid();
+            client.AddHeader("Authorization","Bearer "+access_token);
+            String rep = "";
+            try {
+                rep =  client.Execute("GET");
+                if (rep!=null && rep.length()>2){
+                    // System.out.println("je suis ici encore");
+                    ArrayList<String> stringArray = new ArrayList<String>();
+                    stringArray=jsonStringToArray(rep);
 
-        //récupere information du post sur l'api
-        RestClient client = new RestClient(context,"https://api.partybay.fr/users/"+my_id+"/posts?limit=50&offset=0&side=desc");
-        // je recupere un token dans la sd carte
-        String access_token = client.getTokenValid();
-        client.AddHeader("Authorization","Bearer "+access_token);
-        String rep = "";
-        try {
-            rep =  client.Execute("GET");
-            if (rep!=null && rep.length()>2){
-                // System.out.println("je suis ici encore");
-                ArrayList<String> stringArray = new ArrayList<String>();
-                stringArray=jsonStringToArray(rep);
+                    Iterator<String> it = stringArray.iterator();
+                    Post post = null;
+                    while (it.hasNext()) {
+                        String s = it.next();
+                        // System.out.println("js : "+s.startsWith("["));
+                        // if(s.startsWith("[")){}
+                        JSONObject obj = new JSONObject(s);
+                        post = new Post(context,obj);
+                        if(post!=null){
+                            tabId.add(Integer.valueOf(post.getId()));
+                            posts.add(post);
+                        }
 
-                Iterator<String> it = stringArray.iterator();
-                Post post = null;
-                while (it.hasNext()) {
-                    String s = it.next();
-                    // System.out.println("js : "+s.startsWith("["));
-                    // if(s.startsWith("[")){}
-                    JSONObject obj = new JSONObject(s);
-                    post = new Post(context,obj);
-                    if(post!=null){
-                        tabId.add(Integer.valueOf(post.getId()));
-                        posts.add(post);
                     }
-
                 }
-            }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else{
+            popupActivity.afficherPopup(context.getResources().getString(R.string.error_internet),null);
         }
+
 
 
         int itemI = Integer.parseInt(item_id);

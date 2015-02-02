@@ -6,6 +6,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 
+import com.xgc1986.parallaxPagerTransformer.ParallaxPagerTransformer;
+
 import fr.partybay.android.R;
 
 /**
@@ -38,7 +40,9 @@ public class AlbumActivity extends FragmentActivity {
        /** Instantiating FragmentPagerAdapter */
 
         System.out.println("ALBUM ACTIVITY "+ item_id);
-       // viewPager.setPageTransformer(false, new ParallaxPagerTransformer(R.id.item_album_photo_fond));
+        viewPager.setPageTransformer(false, new ParallaxPagerTransformer(R.id.albumfragmentcontainer));
+        viewPager.setPageMargin(3);
+        viewPager.setPageMarginDrawable(R.color.redClear);
         AlbumAdapter albumAdapter = new AlbumAdapter(fm,this,item_id,my_id);
         viewPager.setAdapter(albumAdapter);
 

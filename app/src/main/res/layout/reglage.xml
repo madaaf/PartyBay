@@ -10,6 +10,7 @@
     android:layout_below="@id/reglage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:stretchColumns="1"
     >
 
@@ -46,7 +47,8 @@
 
     </TableRow>
     <TableRow
-        android:background="@drawable/menu_table_border">
+        android:background="@drawable/menu_table_border"
+        android:id="@+id/reglage_num_container">
 
         <TextView
             android:layout_width="wrap_content"
@@ -74,7 +76,8 @@
 
     </TableRow>
     <TableRow
-        android:background="@drawable/menu_table_border">
+        android:background="@drawable/menu_table_border"
+        android:id="@+id/reglage_email_container">
 
         <TextView
             android:layout_width="wrap_content"
@@ -212,7 +215,9 @@
             />
 
     </TableRow>
-    <TableRow>
+    <TableRow
+        android:background="@drawable/menu_table_border"
+        android:id="@+id/reglage_deco_container">
 
         <TextView
             android:id="@+id/reglage_deco_button"

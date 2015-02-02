@@ -4,7 +4,6 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,9 +11,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.media.ExifInterface;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -27,9 +23,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.IOException;
 
 import fr.partybay.android.Class.GPSTracker;
+import fr.partybay.android.Class.Internet;
+import fr.partybay.android.Class.PopupActivity;
 import fr.partybay.android.Class.RestClient;
 import fr.partybay.android.Class.SerializeurMono;
 import fr.partybay.android.Class.Token;
@@ -57,6 +54,8 @@ public class Editer extends Activity {
     private ProgressDialog simpleWaitDialog;
     private ImageButton retour;
     private  String photo_path;
+    private  PopupActivity popup = null;
+    private Internet internet = null;
 
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -66,6 +65,8 @@ public class Editer extends Activity {
         ActionBar bar = this.getActionBar();
         bar.hide();
 
+        internet = new Internet(this);
+        popup = new PopupActivity(this);
 
         poster = (ImageButton) findViewById(R.id.button_poster);
         retour = (ImageButton) findViewById(R.id.editer_retour);
@@ -109,17 +110,17 @@ public class Editer extends Activity {
     View.OnClickListener posterListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if(internet()){
+
+            if(internet.internet()){
                 poster.setImageResource(R.drawable.confirmer);
                 gps=new GPSTracker(Editer.this);
                 latitude = gps.getLatitude();
                 longitude = gps.getLongitude();
-                //Log.d("longitude : ", Double.toString(longitude));
-               // Log.d("latitude : ", Double.toString(latitude));
-
                 new ImageUploaderTask().execute();
+
             }else{
-                afficherPopup(getResources().getString(R.string.editer_error_internet) , new redirection());
+                System.out.println("CONTEXT ok  "+ view.getContext());
+                popup.afficherPopup(view.getContext().getString(R.string.error_internet),null);
             }
 
         }
@@ -150,70 +151,65 @@ public class Editer extends Activity {
         User user = serializeur.getObject();
         String user_id = user.getId();
 
+        if(internet.internet()){
 
-        RestClient client = new RestClient(this,"https://api.partybay.fr/users/"+user_id+"/posts");
-        // Recupere un token valid
-        String access_token = client.getTokenValid();
+            RestClient client = new RestClient(this,"https://api.partybay.fr/users/"+user_id+"/posts");
+            // Recupere un token valid
+            String access_token = client.getTokenValid();
 
-        String authorization = "Bearer " + access_token;
-        client.AddHeader("Authorization",authorization);
-
-
-        File file = new File(photo_path);
-        FileBody fileBody = new FileBody(file);
-        client.AddFile(fileBody);
-        client.AddParamFile("filename", "photo.JPEG");
-        client.AddParamFile("user_id", user_id);
-        client.AddParamFile("longitude", Double.toString(longitude));
-        client.AddParamFile("latitude", Double.toString(latitude));
-        client.AddParamFile("text", text);
+            String authorization = "Bearer " + access_token;
+            client.AddHeader("Authorization",authorization);
 
 
-        String rep = null;
+            File file = new File(photo_path);
+            FileBody fileBody = new FileBody(file);
+            client.AddFile(fileBody);
+            client.AddParamFile("filename", "photo.JPEG");
+            client.AddParamFile("user_id", user_id);
+            client.AddParamFile("longitude", Double.toString(longitude));
+            client.AddParamFile("latitude", Double.toString(latitude));
+            client.AddParamFile("text", text);
 
-        try {
-            rep = client.Execute("FILE");
-            System.out.println(" reponse de L'API pour envoyer une image : "+rep);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            String rep = null;
+
+            try {
+                rep = client.Execute("FILE");
+                System.out.println(" reponse de L'API pour envoyer une image : "+rep);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
 
-        try {
-            JSONObject obj = new JSONObject(rep);
-            if(obj.has("success")){
-                if(obj.getString("success").equals("post moment")){
-                    //System.out.println("SUCCESS ENVOIE FICHIER");
-                    afficherPopup(getResources().getString(R.string.editer_image_envoye), new redirection());
-                } else{
-                    //System.out.println("ERROR ENVOIE FICHIER");
-                    afficherPopup(getResources().getString(R.string.editer_error_image_envoye), new redirection());
+            try {
+                JSONObject obj = new JSONObject(rep);
+                if(obj.has("success")){
+                    if(obj.getString("success").equals("post moment")){
+                        //System.out.println("SUCCESS ENVOIE FICHIER");
+                        popup.afficherPopup(getResources().getString(R.string.editer_image_envoye), new redirection());
+                    } else{
+                        //System.out.println("ERROR ENVOIE FICHIER");
+                        popup.afficherPopup(getResources().getString(R.string.editer_error_image_envoye), new redirection());
+                    }
+
+                }else{;
+                    //System.out.println("IMAGE NON POSTER");
+                    popup.afficherPopup(getResources().getString(R.string.editer_error_image_envoye),new redirection());
                 }
+            } catch (JSONException e) {
+                System.out.println("err envoie de l'image "+e.getMessage());
 
-            }else{;
-                //System.out.println("IMAGE NON POSTER");
-                afficherPopup(getResources().getString(R.string.editer_error_image_envoye),new redirection());
             }
-        } catch (JSONException e) {
-            System.out.println("err envoie de l'image "+e.getMessage());
 
+        }else{
+            popup.afficherPopup(getResources().getString(R.string.error_internet),null);
         }
 
 
     }
 
-    public void afficherPopup(final String message, final android.content.DialogInterface.OnClickListener listener){
 
-        this.runOnUiThread(new Runnable(){
-            public void run() {
-                AlertDialog.Builder popup = new AlertDialog.Builder(Editer.this);
-                popup.setMessage(message);
-                popup.setPositiveButton("Ok", listener);
-                popup.show();
-            }
-        });
-    }
 
     class redirection implements android.content.DialogInterface.OnClickListener{
         public void onClick(DialogInterface dialog, int which) {
@@ -224,12 +220,6 @@ public class Editer extends Activity {
         }
     }
 
-
-    public boolean internet() {
-        ConnectivityManager connMgr = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        return (networkInfo != null && networkInfo.isConnected());
-    }
 
 
 
@@ -280,57 +270,5 @@ public class Editer extends Activity {
     }
 
 
-
-
-
-    public  Bitmap getCorrectBitmap(Bitmap bitmap, String photo_path) {
-
-
-        Bitmap bmp = decodeSampledBitmapFromFile(photo_path, 500, 300);
-        Bitmap temp = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), Bitmap.Config.RGB_565);
-        Canvas canvas = new Canvas(temp);
-        Matrix matrix = new Matrix();
-
-
-        ExifInterface ei;
-        try {
-            ei = new ExifInterface(photo_path);
-
-            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-
-            switch (orientation) {
-                case ExifInterface.ORIENTATION_ROTATE_90: {
-                    matrix.setRotate(90,bmp.getWidth()/2,bmp.getHeight()/2);
-                    canvas.drawBitmap(bmp, matrix, new Paint());
-                    return temp;
-                }
-
-
-                case ExifInterface.ORIENTATION_ROTATE_180:{
-                    matrix.setRotate(180,bmp.getWidth()/2,bmp.getHeight()/2);
-                    canvas.drawBitmap(bmp, matrix, new Paint());
-                    return temp;
-                }
-
-
-                case ExifInterface.ORIENTATION_ROTATE_270:{
-                    matrix.setRotate(270,bmp.getWidth()/2,bmp.getHeight()/2);
-                    canvas.drawBitmap(bmp, matrix, new Paint());
-                    return temp;
-                }
-
-                default:{
-                    canvas.drawBitmap(bmp, 0, 0,null);
-                    return temp;
-                }
-
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        return bitmap;
-    }
 
 }

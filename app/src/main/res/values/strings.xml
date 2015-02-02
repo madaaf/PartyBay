@@ -30,6 +30,7 @@
 
     <!-- TEXT CLASS EDITER -->
     <string name="editer_error_internet">Connectez vous à internet pour pouvoir envoyer une photo.</string>
+    <string name="error_internet">Connectez vous à internet pour continuer à surfer sur l\'aplication.</string>
     <string name="editer_image_envoye">Votre image a bien été envoyée.</string>
     <string name="editer_error_image_envoye">Erreur lors de l\'envoie de l\'image.</string>
     <string name="editer_envoie_cour">Envoie de l\'image en cour ...</string>
@@ -48,5 +49,8 @@
     <string name="inscription_error9">Ce pseusdo est déjà utilisé par un autre utilsateur.</string>
     <string name="inscription_error10">Le pseudo, l\'email ou le numéro de telphone sont déjà utilisés par un autre utilisateur.</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="editer_error_internet_connexion">Connectez vous à internet, pour vous connectez à PartyBay. </string>
+
+
 
 </resources>

@@ -16,13 +16,15 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import fr.partybay.android.Class.Internet;
+import fr.partybay.android.Class.PopupActivity;
+import fr.partybay.android.Class.Post;
 import fr.partybay.android.Class.RestClient;
 import fr.partybay.android.Class.SerializeurMono;
 import fr.partybay.android.Class.User;
 import fr.partybay.android.ProfileManager.ProfileViewPagerActivity;
 import fr.partybay.android.R;
 import fr.partybay.android.TimeLineManager.LoversListActivity;
-import fr.partybay.android.Class.Post;
 
 /*
  * Created by mada on 20/10/2014.
@@ -36,12 +38,15 @@ public class AlbumFragment extends Fragment {
     private ArrayList<Post> posts = new ArrayList<Post>();
     private Post post  = null;
     private SerializeurMono<User> serializeurUser;
-
+    private Internet internet = null;
+    private PopupActivity popupActivity = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        popupActivity = new PopupActivity(getActivity());
+        internet = new Internet(getActivity());
         serializeurUser = new SerializeurMono<User>(getResources().getString(R.string.sdcard_user));
         User user = serializeurUser.getObject();
         my_id = user.getId();
@@ -54,24 +59,28 @@ public class AlbumFragment extends Fragment {
         item_id = data.getString("item_id","null");
         id_user = data.getString("my_id","null");
 
+        if(internet.internet()){
+            //récupere information du post sur l'api
+            RestClient client = new RestClient(getActivity(),"https://api.partybay.fr/users/"+id_user+"/posts/"+item_id);
+            System.out.println("https://api.partybay.fr/users/"+id_user+"/posts/"+item_id);
+            // je recupere un token dans la sd carte
+            String access_token = client.getTokenValid();
+            client.AddHeader("Authorization","Bearer "+access_token);
+            String rep = "";
 
-        //récupere information du post sur l'api
-        RestClient client = new RestClient(getActivity(),"https://api.partybay.fr/users/"+id_user+"/posts/"+item_id);
-        System.out.println("https://api.partybay.fr/users/"+id_user+"/posts/"+item_id);
-        // je recupere un token dans la sd carte
-        String access_token = client.getTokenValid();
-        client.AddHeader("Authorization","Bearer "+access_token);
-        String rep = "";
+            try {
+                rep = client.Execute("GET");
+                System.out.println(rep);
+                JSONObject obj = new JSONObject(rep);
+                post = new Post(getActivity(),obj);
 
-        try {
-            rep = client.Execute("GET");
-            System.out.println(rep);
-            JSONObject obj = new JSONObject(rep);
-            post = new Post(getActivity(),obj);
-
-        } catch (Exception e) {
-            e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else{
+           popupActivity.afficherPopup(getResources().getString(R.string.error_internet),null);
         }
+
 
 
     }
@@ -176,18 +185,23 @@ public class AlbumFragment extends Fragment {
             this.context=context;
         }
         public void run() {
-            // je préviens l'api que j'ai liké/unliké
-            RestClient client = new RestClient(context,"https://api.partybay.fr/users/" + my_id + "/love/" + item_id);
-            System.out.println("BLOOM "+ "https://api.partybay.fr/users/" + my_id + "/love/" + item_id);
-            String access_token = client.getTokenValid();
-            client.AddHeader("Authorization", "Bearer " + access_token);
-            String rep = "";
-            try {
-                rep = client.Execute("POST");
-                System.out.println("REPONSE DU LOVE" + rep);
-            } catch (Exception e) {
-                e.printStackTrace();
+            if(internet.internet()){
+                // je préviens l'api que j'ai liké/unliké
+                RestClient client = new RestClient(context,"https://api.partybay.fr/users/" + my_id + "/love/" + item_id);
+                System.out.println("BLOOM "+ "https://api.partybay.fr/users/" + my_id + "/love/" + item_id);
+                String access_token = client.getTokenValid();
+                client.AddHeader("Authorization", "Bearer " + access_token);
+                String rep = "";
+                try {
+                    rep = client.Execute("POST");
+                    System.out.println("REPONSE DU LOVE" + rep);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }else{
+                popupActivity.afficherPopup(getResources().getString(R.string.error_internet),null);
             }
+
         }
     }
 

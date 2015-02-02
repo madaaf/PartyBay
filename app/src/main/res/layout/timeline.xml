@@ -93,14 +93,22 @@
         android:layout_height="match_parent" />
 
 
+<RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="100dp"
+    android:layout_alignParentBottom="true"
+    android:background="@drawable/degrader_bas">
+
     <ImageButton
         android:id="@+id/moment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="15px"
+        android:layout_marginBottom="15dp"
         android:background="@drawable/bouton_photo"/>
+    </RelativeLayout>
+
 
 
 

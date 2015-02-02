@@ -33,6 +33,7 @@ import java.util.TreeMap;
 
 import fr.partybay.android.Activity.CameraSelfie;
 import fr.partybay.android.Class.Blur;
+import fr.partybay.android.Class.Internet;
 import fr.partybay.android.Class.Love;
 import fr.partybay.android.Class.RestClient;
 import fr.partybay.android.Class.SerializeurMono;
@@ -68,6 +69,7 @@ public class ProfileViewPagerActivity extends FragmentActivity  {
     Button bMoments = null;
     Button bRelation = null;
     private TreeMap<Integer, Love> trackedTree = new TreeMap<Integer, Love>();
+    private Internet internet = null;
 
 
 
@@ -78,7 +80,7 @@ public class ProfileViewPagerActivity extends FragmentActivity  {
         setContentView(R.layout.profile);
         ActionBar bar = this.getActionBar();
         bar.hide();
-
+        internet = new Internet(this);
         Bundle bundle = getIntent().getExtras();
 
         if(bundle!=null){
@@ -96,18 +98,21 @@ public class ProfileViewPagerActivity extends FragmentActivity  {
 
         if(itIsMe==false){
         try {
-            RestClient client = new RestClient(this,"https://api.partybay.fr/users/"+user_id_bundle);
-            String accessToken = client.getTokenValid();
-            client.AddHeader("Authorization","Bearer " + accessToken);
-            String rep = client.Execute("GET");
-            JSONObject ob = new JSONObject(rep);
-            user = new User(ob);
+            if(internet.internet()){
+                RestClient client = new RestClient(this,"https://api.partybay.fr/users/"+user_id_bundle);
+                String accessToken = client.getTokenValid();
+                client.AddHeader("Authorization","Bearer " + accessToken);
+                String rep = client.Execute("GET");
+                JSONObject ob = new JSONObject(rep);
+                user = new User(ob);
+            }else{
+                //itIsMe = true;
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
         }
-
 
 
 
@@ -176,28 +181,29 @@ public class ProfileViewPagerActivity extends FragmentActivity  {
                 font.setImageBitmap(bmp2);
             }else{
                 // je cherche dans l'api si la photo existe
-                String url = "https://static.partybay.fr/images/users/profile/160x160_" + user.getPicture();
+                if(internet.internet()){
+                    String url = "https://static.partybay.fr/images/users/profile/160x160_" + user.getPicture();
+
+                    // photo par defautl si l'image sur l'api n'existe pas
+                    if(user.getPicture().equals("") || user.getPicture().equals("null")){
+                        font.setImageResource(R.drawable.photo_fond);
+                        profile_photo.setImageResource(R.drawable.profile_default);
+
+                    }else{
+                        // je transforme l'image de l'api en bitmap pour pouvoir l'inserer dans l'imageView
+                        Ion.with(this).load(url).withBitmap().asBitmap()
+                                .setCallback(new FutureCallback<Bitmap>() {
+                                    @Override
+                                    public void onCompleted(Exception e, Bitmap result) {
+                                        Blur blur = new Blur();
+                                        Bitmap bit = blur.fastblur(result,7);
+                                        font.setImageBitmap(bit);
+                                    }
+                                });
 
 
-                // photo par defautl si l'image sur l'api n'existe pas
-                if(user.getPicture().equals("") || user.getPicture().equals("null")){
-                    font.setImageResource(R.drawable.photo_fond);
-                    profile_photo.setImageResource(R.drawable.post);
-
-                }else{
-                 // je transforme l'image de l'api en bitmap pour pouvoir l'inserer dans l'imageView
-                    Ion.with(this).load(url).withBitmap().asBitmap()
-                            .setCallback(new FutureCallback<Bitmap>() {
-                                @Override
-                                public void onCompleted(Exception e, Bitmap result) {
-                                    Blur blur = new Blur();
-                                    Bitmap bit = blur.fastblur(result,7);
-                                    font.setImageBitmap(bit);
-                                }
-                            });
-
-
-                    UrlImageViewHelper.setUrlDrawable(profile_photo, url);
+                        UrlImageViewHelper.setUrlDrawable(profile_photo, url);
+                    }
                 }
 
             }
@@ -209,7 +215,7 @@ public class ProfileViewPagerActivity extends FragmentActivity  {
             System.out.println("URL PROFILE "+url);
             if(user.getPicture().equals("") || user.getPicture().equals("null") || user.getPicture()==null){
                 font.setImageResource(R.drawable.photo_fond);
-                profile_photo.setImageResource(R.drawable.post);
+                profile_photo.setImageResource(R.drawable.profile_default);
 
             }else{
                 Ion.with(this).load(url).withBitmap().asBitmap()
@@ -398,33 +404,38 @@ public class ProfileViewPagerActivity extends FragmentActivity  {
 
 
     public void getTrackedFromApi() throws JSONException {
-        RestClient client = new RestClient(this, "https://api.partybay.fr/users/" + my_user_id + "/tracked");
-        String access_token = client.getTokenValid();
-        client.AddHeader("Authorization", "Bearer " + access_token);
+        if(internet.internet()){
+            RestClient client = new RestClient(this, "https://api.partybay.fr/users/" + my_user_id + "/tracked");
+            String access_token = client.getTokenValid();
+            client.AddHeader("Authorization", "Bearer " + access_token);
 
-        String rep = "";
-        try {
-            rep = client.Execute("GET");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            String rep = "";
+            try {
+                rep = client.Execute("GET");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
 
-        ArrayList<String> stringArray = new ArrayList<String>();
-        try {
-            stringArray = jsonStringToArray(rep);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Iterator<String> it = stringArray.iterator();
-        Love tracker = null;
+            ArrayList<String> stringArray = new ArrayList<String>();
+            try {
+                stringArray = jsonStringToArray(rep);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Iterator<String> it = stringArray.iterator();
+            Love tracker = null;
 
-        while (it.hasNext()) {
-            String s = it.next();
-            JSONObject obj = new JSONObject(s);
-            tracker = new Love(obj,this);
-            //  Trackers.add(tracker);
-            trackedTree.put(tracker.getUser_id(), tracker);
+            while (it.hasNext()) {
+                String s = it.next();
+                JSONObject obj = new JSONObject(s);
+                tracker = new Love(obj,this);
+                //  Trackers.add(tracker);
+                trackedTree.put(tracker.getUser_id(), tracker);
+            }
+
+        }else{
+
         }
 
     }
@@ -454,17 +465,22 @@ public class ProfileViewPagerActivity extends FragmentActivity  {
         }
         @Override
         public void run() {
-            System.out.println("TRACKERS RUN "+"https://api.partybay.fr/users/"+my_user_id+"/track/"+user_tracker_id);
-            RestClient client  = new RestClient(context,"https://api.partybay.fr/users/"+my_user_id+"/track/"+user_tracker_id);
-            String access_token = client.getTokenValid();
-            client.AddHeader("Authorization","Bearer "+access_token);
-            String rep = "";
-            try {
-                rep =  client.Execute("POST");
-            } catch (Exception e) {
-                e.printStackTrace();
+            if(internet.internet()){
+                System.out.println("TRACKERS RUN "+"https://api.partybay.fr/users/"+my_user_id+"/track/"+user_tracker_id);
+                RestClient client  = new RestClient(context,"https://api.partybay.fr/users/"+my_user_id+"/track/"+user_tracker_id);
+                String access_token = client.getTokenValid();
+                client.AddHeader("Authorization","Bearer "+access_token);
+                String rep = "";
+                try {
+                    rep =  client.Execute("POST");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                System.out.println("TRACKERS PO "+rep);
+
+            }else{
+
             }
-            System.out.println("TRACKERS PO "+rep);
 
         }
     }

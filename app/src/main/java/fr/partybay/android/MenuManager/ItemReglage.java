@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import fr.partybay.android.Class.Internet;
+import fr.partybay.android.Class.PopupActivity;
 import fr.partybay.android.Class.RestClient;
 import fr.partybay.android.R;
 
@@ -23,6 +25,8 @@ public class ItemReglage extends Activity {
     private EditText edit;
     private Button button_valider;
     private Button button_annuler;
+    private Internet internet = null;
+    private PopupActivity popupActivity = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,7 +34,8 @@ public class ItemReglage extends Activity {
         setContentView(R.layout.item_reglage);
         ActionBar bar = this.getActionBar();
         bar.hide();
-
+        popupActivity = new PopupActivity(this);
+        internet = new Internet(this);
         title = (TextView)findViewById(R.id.item_reglage_poppup_1a);
         edit = (EditText)findViewById(R.id.item_reglage_edit_mail);
         button_valider = (Button)findViewById(R.id.item_reglage_button_valider);
@@ -79,12 +84,13 @@ public class ItemReglage extends Activity {
         }
         @Override
         public void run() {
-            String tel_s = edit.getText().toString();
-            RestClient client = new RestClient(context,"https://api.partybay.fr/users/102");
-            String access_token = client.getTokenValid();
-            client.AddHeader("Authorization", "Bearer " + access_token);
-            client.AddParam("phone", tel_s);
-            String rep = "";
+            if(internet.internet()){
+                String tel_s = edit.getText().toString();
+                RestClient client = new RestClient(context,"https://api.partybay.fr/users/102");
+                String access_token = client.getTokenValid();
+                client.AddHeader("Authorization", "Bearer " + access_token);
+                client.AddParam("phone", tel_s);
+                String rep = "";
 /*
             try {
                  rep = client.Execute("POST");
@@ -92,7 +98,11 @@ public class ItemReglage extends Activity {
                 e.printStackTrace();
             }
 */
-            System.out.println("REGLAGE "+ rep);
+                System.out.println("REGLAGE "+ rep);
+            }else{
+                popupActivity.afficherPopup(getResources().getString(R.string.error_internet),null);
+            }
+
 
         }
     }

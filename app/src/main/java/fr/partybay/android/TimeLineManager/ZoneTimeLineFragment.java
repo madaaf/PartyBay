@@ -3,6 +3,7 @@ package fr.partybay.android.TimeLineManager;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +31,8 @@ import java.util.Iterator;
 
 import fr.partybay.android.Activity.Chargement;
 import fr.partybay.android.Class.CustomListView;
+import fr.partybay.android.Class.Internet;
+import fr.partybay.android.Class.PopupActivity;
 import fr.partybay.android.Class.Post;
 import fr.partybay.android.Class.RestClient;
 import fr.partybay.android.R;
@@ -53,6 +56,8 @@ public class ZoneTimeLineFragment extends Fragment implements SwipeRefreshLayout
     private SeekBar mStickyView;
     private View mPlaceholderView;
     private View mItemTop;
+    private Internet internet = null;
+    private PopupActivity popupActivity = null;
 
 
 
@@ -60,7 +65,8 @@ public class ZoneTimeLineFragment extends Fragment implements SwipeRefreshLayout
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getActivity().getApplicationContext();
-
+        internet = new Internet(getActivity());
+        popupActivity = new PopupActivity(getActivity());
         fragmentManager = getFragmentManager();
 
 
@@ -159,17 +165,21 @@ public class ZoneTimeLineFragment extends Fragment implements SwipeRefreshLayout
                     int lastInScreen = firstVisibleItem + visibleItemCount;
                     if(lastInScreen == (totalItemCount) && (onScroolStateChange==true)){
                         nbr_scroll ++;
-                        try {
+                        if(internet.internet()){
+                            try {
+                                // on récupere les 10 post suivant car l'utilsateur a scroller jusqu'à la fin de la liste
+                                System.out.println("je recupere "+nbr_scroll*NBROFITEM+" item ");
+                                String url = "https://api.partybay.fr/posts?limit="+NBROFITEM+"&offset="+nbr_scroll*NBROFITEM+"&side=desc&order=id";
+                                getPostFromApi(url,false);
 
-                            // on récupere les 10 post suivant car l'utilsateur a scroller jusqu'à la fin de la liste
-                            System.out.println("je recupere "+nbr_scroll*NBROFITEM+" item ");
-                            String url = "https://api.partybay.fr/posts?limit="+NBROFITEM+"&offset="+nbr_scroll*NBROFITEM+"&side=desc&order=id";
-                            getPostFromApi(url,false);
 
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }else{
+                            popupActivity.afficherPopup(getResources().getString(R.string.error_internet),null);
                         }
+
                         onScroolStateChange = false;
                     }
 
@@ -191,53 +201,58 @@ public class ZoneTimeLineFragment extends Fragment implements SwipeRefreshLayout
 
     public void getPostFromApi(String urlapi, Boolean addTop) throws Exception {
 
-        RestClient client = new RestClient(context,urlapi);
-        // je recupere un token dans la sd carte
-        String access_token = client.getTokenValid();
+        if(internet.internet()){
+            RestClient client = new RestClient(context,urlapi);
+            // je recupere un token dans la sd carte
+            String access_token = client.getTokenValid();
 
-        client.AddHeader("Authorization","Bearer "+access_token);
-        String rep = "";
-        try {
-            rep =  client.Execute("GET");
-
+            client.AddHeader("Authorization","Bearer "+access_token);
+            String rep = "";
             try {
-                JSONObject obj = new JSONObject(rep);
-                if(obj.has("error")){deconnexion(); }
+                rep =  client.Execute("GET");
 
-            } catch (JSONException e) {
-                System.out.println("err getPostfromapi "+e.getMessage());
+                try {
+                    JSONObject obj = new JSONObject(rep);
+                    if(obj.has("error")){deconnexion(); }
 
-            }
+                } catch (JSONException e) {
+                    System.out.println("err getPostfromapi "+e.getMessage());
+
+                }
 
 
-            if (rep!=null && rep.length()>2){
-                // System.out.println("je suis ici encore");
-                ArrayList<String> stringArray = new ArrayList<String>();
-                stringArray=jsonStringToArray(rep);
+                if (rep!=null && rep.length()>2){
+                    // System.out.println("je suis ici encore");
+                    ArrayList<String> stringArray = new ArrayList<String>();
+                    stringArray=jsonStringToArray(rep);
 
-                Iterator<String> it = stringArray.iterator();
-                Post post = null;
-                while (it.hasNext()) {
-                    String s = it.next();
-                    // System.out.println("js : "+s.startsWith("["));
-                    // if(s.startsWith("[")){}
-                    JSONObject obj = new JSONObject(s);
-                    post = new Post(context,obj);;
-                    if(post!=null){
-                        if (addTop==true){
-                            posts.add(0,post);
-                        }else{
-                            posts.add(post);
+                    Iterator<String> it = stringArray.iterator();
+                    Post post = null;
+                    while (it.hasNext()) {
+                        String s = it.next();
+                        // System.out.println("js : "+s.startsWith("["));
+                        // if(s.startsWith("[")){}
+                        JSONObject obj = new JSONObject(s);
+                        post = new Post(context,obj);;
+                        if(post!=null){
+                            if (addTop==true){
+                                posts.add(0,post);
+                            }else{
+                                posts.add(post);
+                            }
+
                         }
 
                     }
-
                 }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        }else{
+           //upActivity.afficherPopup(getResources().getString(R.string.error_internet),null);
         }
 
 
@@ -312,148 +327,88 @@ public class ZoneTimeLineFragment extends Fragment implements SwipeRefreshLayout
 
     @Override
     public void onRefresh() {
-        //System.out.println("POSTACTIVITY RESFRESH" );
-        layout.setRefreshing(true);
+        layout.setRefreshing(false);
+        if(internet.internet()){
+            //System.out.println("POSTACTIVITY RESFRESH" );
+            // I create a handler to stop the refresh and show a message after 3s
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    layout.setRefreshing(false);
+                    try {
+                        // on récupere les 10 post suivant car l'utilsateur a scroller jusqu'à la fin de la liste
+                        //posts.clear(); +posts.get(0).getId()
+                        String lastPost = posts.get(0).getId();
+                        int IlastPosst = Integer.parseInt(lastPost);
+                        int nextPost = IlastPosst+1;
+                        String url = "https://api.partybay.fr/posts?last="+nextPost+"&side=asc&order=id";
+                        getPostFromApi(url, true);
+                        adapter = new PostAdapter(getActivity(),R.id.lvPost,posts);
+                        listView.setAdapter(adapter);
+                        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+                            @Override
+                            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                                onScroolStateChange = true;
+                            }
 
-        // I create a handler to stop the refresh and show a message after 3s
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                layout.setRefreshing(false);
-                try {
-                    // on récupere les 10 post suivant car l'utilsateur a scroller jusqu'à la fin de la liste
-                    //posts.clear(); +posts.get(0).getId()
-                    String lastPost = posts.get(0).getId();
-                    int IlastPosst = Integer.parseInt(lastPost);
-                    int nextPost = IlastPosst+1;
-                    String url = "https://api.partybay.fr/posts?last="+nextPost+"&side=asc&order=id";
-                    getPostFromApi(url, true);
-                    adapter = new PostAdapter(getActivity(),R.id.lvPost,posts);
-                    listView.setAdapter(adapter);
-                    listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-                        @Override
-                        public void onScrollStateChanged(AbsListView view, int scrollState) {
-                            onScroolStateChange = true;
-                        }
+                            @Override
+                            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount){
+                                // System.out.println("LOAD" );
+                                //System.out.println("LOAD  firstVisibleItem" + firstVisibleItem);
+                                int lastInScreen = firstVisibleItem + visibleItemCount;
+                                if(lastInScreen == (totalItemCount) && (onScroolStateChange==true)){
+                                    nbr_scroll ++;
+                                    try {
 
-                        @Override
-                        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount){
-                            // System.out.println("LOAD" );
-                            //System.out.println("LOAD  firstVisibleItem" + firstVisibleItem);
-                            int lastInScreen = firstVisibleItem + visibleItemCount;
-                            if(lastInScreen == (totalItemCount) && (onScroolStateChange==true)){
-                                nbr_scroll ++;
-                                try {
-
-                                    // on récupere les 10 post suivant car l'utilsateur a scroller jusqu'à la fin de la liste
-                                    System.out.println("je recupere "+nbr_scroll*NBROFITEM+" item ");
-                                    String url = "https://api.partybay.fr/posts?limit="+NBROFITEM+"&offset="+nbr_scroll*NBROFITEM+"&side=desc&order=id";
-                                    getPostFromApi(url,false);
+                                        // on récupere les 10 post suivant car l'utilsateur a scroller jusqu'à la fin de la liste
+                                        System.out.println("je recupere "+nbr_scroll*NBROFITEM+" item ");
+                                        String url = "https://api.partybay.fr/posts?limit="+NBROFITEM+"&offset="+nbr_scroll*NBROFITEM+"&side=desc&order=id";
+                                        getPostFromApi(url,false);
 
 
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                    onScroolStateChange = false;
                                 }
-                                onScroolStateChange = false;
+
+                                if(firstVisibleItem ==0){
+                                    //Log.d(" firstVisibleItem", "=0");
+                                    layout.setEnabled(true);
+                                }else{
+                                    // Log.d(" firstVisibleItem", "!=0");
+                                    layout.setEnabled(false);
+                                }
                             }
-
-                            if(firstVisibleItem ==0){
-                                //Log.d(" firstVisibleItem", "=0");
-                                layout.setEnabled(true);
-                            }else{
-                                // Log.d(" firstVisibleItem", "!=0");
-                                layout.setEnabled(false);
-                            }
-                        }
-                    });
+                        });
 
 
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    Toast.makeText(context, "Cool !", Toast.LENGTH_LONG).show();
                 }
-                Toast.makeText(context, "Cool !", Toast.LENGTH_LONG).show();
-            }
 
-        }, 3000);
+            }, 3000);
+        }else{
+            popupActivity.afficherPopup(getResources().getString(R.string.error_internet),new redirection());
+        }
+
 
     }
 
 
 
+    class redirection implements android.content.DialogInterface.OnClickListener{
+        public void onClick(DialogInterface dialog, int which) {
+            Intent intent = new Intent(getActivity(), TimeLine.class);
+            startActivity(intent);
+            getActivity().finish();
 
-    /**
-     * Populate the ListView with example data.
-     * @return
-     */
-
-
-
-
-
-
+        }
+    }
 
 }
 
 
 
-
-
-
-            /*
-// debut du set Offset
-        final View v = rootView.findViewById(R.id.timlinezoneheaderheaderbottom);
-        ViewTreeObserver vto = v.getViewTreeObserver();
-
-        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-
-            @Override
-            public void onGlobalLayout() {
-
-                lowerHeaderHeight = v.getMeasuredHeight();
-                ViewTreeObserver vto1 = header.getViewTreeObserver();
-
-                vto1.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-
-                    @Override
-                    public void onGlobalLayout() {
-
-                        if (!offsetSet) {
-                            headerHeight = header.getMeasuredHeight() - lowerHeaderHeight;
-                            floatingBarHeader.setY(headerHeight);
-                            offsetSet = true;
-                        }
-
-                    }
-                });
-            }
-        });
- // fin du set Offset
- // placeFloatingViewWhenReady
-        View v2 = rootView.findViewById(R.id.timelinzoneeseekbar);
-        ViewTreeObserver vto2 = v2.getViewTreeObserver();
-        vto2.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-
-                int scrollY = 0;
-                View c = listView.getChildAt(0);
-                if (c != null) {
-                    scrollY = -c.getTop();
-                    listViewItemHeights.put(listView.getFirstVisiblePosition(), c.getHeight());
-                    for (int i = 0; i < listView.getFirstVisiblePosition(); ++i) {
-                        if (listViewItemHeights.get(i) != null)
-                            scrollY += listViewItemHeights.get(i);
-                    }
-                }
-
-
-                if (scrollY < headerHeight + baseScrollHeight) {
-                    floatingBarHeader.setTop(-1 * scrollY + baseScrollHeight);
-                } else {
-                    floatingBarHeader.setTop(-1 * headerHeight);
-                }
-            }
-        });
-
-
-*/

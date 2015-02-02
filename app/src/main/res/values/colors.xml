@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="white">#fff</color>
+    <color name="white_2">#F5F5F5</color>
+    <color name="white_3">#ffd1d1d1</color>
+
     <color name="redClear">#F83838</color>
     <color name="redDark">#BC2F2F</color>
 
     <color name="red">#ffff2218</color>
+    <color name="black">#000000</color>
 
     <color name="sticky_item">#fff</color>
     <color name="sticky_item_text">#09c</color>

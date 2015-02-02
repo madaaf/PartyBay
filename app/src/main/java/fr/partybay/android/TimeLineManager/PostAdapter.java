@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -17,6 +16,8 @@ import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import java.util.ArrayList;
 
 import fr.partybay.android.Album.AlbumActivity;
+import fr.partybay.android.Class.Internet;
+import fr.partybay.android.Class.PopupActivity;
 import fr.partybay.android.Class.Post;
 import fr.partybay.android.Class.RestClient;
 import fr.partybay.android.Class.SerializeurMono;
@@ -36,6 +37,8 @@ public class PostAdapter extends ArrayAdapter<Post>  {
     private SerializeurMono<User> serializeur ;
     private String myUser_id;
     private Context context;
+    private Internet internet= null;
+    private PopupActivity popupActivity = null;
 
     //A ViewHolder object stores each of the component views inside the tag field of the Layout,
     // so you can immediately access them without the need to look them up repeatedly.
@@ -46,7 +49,7 @@ public class PostAdapter extends ArrayAdapter<Post>  {
         TextView date;
         TextView latitude;
         ImageView link;
-        ImageButton loveButton;
+        ImageView loveButton;
         TextView loversList;
         ImageView selfie;
         RelativeLayout user_profile;
@@ -70,6 +73,8 @@ public class PostAdapter extends ArrayAdapter<Post>  {
     public View getView(final int position, View convertView, ViewGroup parent) {
 
         String ressource  = context.getResources().getString(R.string.sdcard_user);
+        internet = new Internet(context);
+        popupActivity = new PopupActivity(context);
         serializeur = new SerializeurMono<User>(ressource);
         User user = serializeur.getObject();
         myUser_id = user.getId();
@@ -85,7 +90,7 @@ public class PostAdapter extends ArrayAdapter<Post>  {
             viewHolder.date = (TextView) convertView.findViewById(R.id.post_time);
             viewHolder.latitude = (TextView) convertView.findViewById(R.id.post_lieu);
             viewHolder.link = (ImageView) convertView.findViewById(R.id.post_photo_fond);
-            viewHolder.loveButton = (ImageButton) convertView.findViewById(R.id.post_coeur);
+            viewHolder.loveButton = (ImageView) convertView.findViewById(R.id.post_coeur);
             viewHolder.loversList = (TextView) convertView.findViewById(R.id.spinnerLovers);
             viewHolder.selfie = (ImageView)convertView.findViewById(R.id.post_photo);
             viewHolder.user_profile = (RelativeLayout)convertView.findViewById(R.id.post_profile_user);
@@ -112,7 +117,8 @@ public class PostAdapter extends ArrayAdapter<Post>  {
         holder.text.setText(posts.get(position).getText()+" position "+position);
         holder.lovers.setText(String.valueOf(posts.get(position).getTotalLovers()));
         holder.date.setText(posts.get(position).getDate());
-        holder.latitude.setText(posts.get(position).getLatitude());
+       // holder.latitude.setText(posts.get(position).getLatitude());
+        holder.latitude.setText("@chez Laura");
         UrlImageViewHelper.setUrlDrawable(holder.link, "https://static.partybay.fr/images/posts/640x640_" + posts.get(position).getLink());
         if(posts.get(position).getUser_picture()!=null){
             UrlImageViewHelper.setUrlDrawable(holder.selfie, "https://static.partybay.fr/images/users/profile/160x160_" + posts.get(position).getUser_picture());
@@ -120,32 +126,11 @@ public class PostAdapter extends ArrayAdapter<Post>  {
         }
 
 
-
-        holder.link.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String infoItem  = String.valueOf(v.getTag());
-                Context context2 = context.getApplicationContext();
-                int index = infoItem.indexOf('/');
-                String id_post =infoItem.substring(0,index) ;
-                String id_user=infoItem.substring(index+1,infoItem.length());
-
-                Intent i = new Intent(v.getContext(), AlbumActivity.class);
-                i.putExtra("my_user_id", id_user);
-                i.putExtra("item_id",id_post);
-                v.getContext().startActivity(i);
-            }
-        });
-
-
-
-
-
-
-        holder.link.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-
+/*
+         holder.link.setOnLongClickListener(new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            if(internet.internet()){
                 idPost = String.valueOf(v.getTag());
                 // Envoie une requete a l'API pour le prévenir que j'ai liké
                 threadLove = new LoveThread(v.getContext());
@@ -169,18 +154,22 @@ public class PostAdapter extends ArrayAdapter<Post>  {
                     posts.get(position).setTotalLovers(test);
                     holder.lovers.setText(ok);
                 }
+            }else{
+                 popupActivity.afficherPopup(getContext().getString(R.string.error_internet),null);
+             }
 
-                return false;
+            return false;
+        }
+
+        class LoveThread extends Thread {
+            private Context context;
+
+            public LoveThread(Context context) {
+                this.context = context;
             }
 
-            class LoveThread extends Thread {
-                private Context context;
-
-                public LoveThread(Context context) {
-                    this.context = context;
-                }
-
-                public void run() {
+            public void run() {
+                if(internet.internet()){
                     // je préviens l'api que j'ai liké/unliké
                     RestClient client = new RestClient(context, "https://api.partybay.fr/users/" + myUser_id + "/love/" + idPost);
                     String access_token = client.getTokenValid();
@@ -192,14 +181,20 @@ public class PostAdapter extends ArrayAdapter<Post>  {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                }else{
+
                 }
+
             }
-        });
+        }
+    });
+
+*/
 
         holder.loveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if(internet.internet()){
                 idPost = String.valueOf(view.getTag());
                 // Envoie une requete a l'API pour le prévenir que j'ai liké
                 threadLove = new LoveThread(view.getContext());
@@ -223,6 +218,9 @@ public class PostAdapter extends ArrayAdapter<Post>  {
                     posts.get(position).setTotalLovers(test);
                     holder.lovers.setText(ok);
                 }
+            }else{
+                popupActivity.afficherPopup(getContext().getString(R.string.error_internet),null);
+            }
             }
 
             class LoveThread extends Thread {
@@ -233,17 +231,22 @@ public class PostAdapter extends ArrayAdapter<Post>  {
                 }
 
                 public void run() {
-                    // je préviens l'api que j'ai liké/unliké
-                    RestClient client = new RestClient(context, "https://api.partybay.fr/users/" + myUser_id + "/love/" + idPost);
-                    String access_token = client.getTokenValid();
-                    client.AddHeader("Authorization", "Bearer " + access_token);
-                    String rep = "";
-                    try {
-                        rep = client.Execute("POST");
-                        System.out.println("REPONSE DU LOVE" + rep);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    if(internet.internet()){
+                        // je préviens l'api que j'ai liké/unliké
+                        RestClient client = new RestClient(context, "https://api.partybay.fr/users/" + myUser_id + "/love/" + idPost);
+                        String access_token = client.getTokenValid();
+                        client.AddHeader("Authorization", "Bearer " + access_token);
+                        String rep = "";
+                        try {
+                            rep = client.Execute("POST");
+                            System.out.println("REPONSE DU LOVE" + rep);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }else{
+
                     }
+
                 }
             }
         });
@@ -251,12 +254,36 @@ public class PostAdapter extends ArrayAdapter<Post>  {
         holder.user_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String User_id  = String.valueOf(v.getTag());
-                Intent i = new Intent(context, ProfileViewPagerActivity.class);
-                System.out.println("USERID"+User_id);
-                i.putExtra("user_id", User_id);
-                context.startActivity(i);
+                if (internet.internet()){
+                    String User_id  = String.valueOf(v.getTag());
+                    Intent i = new Intent(context, ProfileViewPagerActivity.class);
+                    System.out.println("USERID"+User_id);
+                    i.putExtra("user_id", User_id);
+                    context.startActivity(i);
+                }else{
+                    popupActivity.afficherPopup(getContext().getString(R.string.error_internet),null);
+                }
 
+            }
+        });
+
+
+        holder.link.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(internet.internet()) {
+                    String infoItem  = String.valueOf(v.getTag());
+                    int index = infoItem.indexOf('/');
+                    String id_post =infoItem.substring(0,index) ;
+                    String id_user=infoItem.substring(index+1,infoItem.length());
+
+                    Intent i = new Intent(v.getContext(), AlbumActivity.class);
+                    i.putExtra("my_user_id", id_user);
+                    i.putExtra("item_id",id_post);
+                    v.getContext().startActivity(i);
+                }else{
+                    popupActivity.afficherPopup(getContext().getString(R.string.error_internet),null);
+                }
             }
         });
 
@@ -264,14 +291,18 @@ public class PostAdapter extends ArrayAdapter<Post>  {
 
             @Override
             public void onClick(View v) {
-                String infoLove = String.valueOf(v.getTag());
-                Intent i = new Intent(context,LoversListActivity.class);
-                i.putExtra("infoLove",infoLove);
-                context.startActivity(i);
-                ((Activity) context).overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
-
+                if (internet.internet()){
+                    String infoLove = String.valueOf(v.getTag());
+                    Intent i = new Intent(context,LoversListActivity.class);
+                    i.putExtra("infoLove",infoLove);
+                    context.startActivity(i);
+                    ((Activity) context).overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+                }else{
+                    popupActivity.afficherPopup(getContext().getString(R.string.error_internet),null);
+                }
             }
         });
+
 
         if(posts.get(position)!=null) {
             String Sid =  posts.get(position).getId();

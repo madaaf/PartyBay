@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import fr.partybay.android.Class.Internet;
 import fr.partybay.android.Class.RestClient;
 import fr.partybay.android.R;
 import fr.partybay.android.Class.Post;
@@ -44,11 +45,12 @@ public class Google extends Activity {
     private boolean continuer=true;
     private final LatLng LOCATION_SURRREY = new LatLng(48.8456853,2.3109669); // breteuil
     private threadGetPost threadGetPost;
+    private Internet internet = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         System.out.println("je suis dans GOOGLE");
-
+        internet  = new Internet(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.google);
         ActionBar bar = this.getActionBar();
@@ -243,41 +245,46 @@ public class Google extends Activity {
         public  List<Track> getTracksTable(){ return tracks; }
 
         public void run(){
-            // String url = "https://api.partybay.fr/users/150/posts";
-            String url = "https://api.partybay.fr/posts";
-            RestClient client = new RestClient(context,url);
-            String access_token = client.getTokenValid();
-            client.AddHeader("Authorization","Bearer "+access_token);
+            if(internet.internet()){
+                // String url = "https://api.partybay.fr/users/150/posts";
+                String url = "https://api.partybay.fr/posts";
+                RestClient client = new RestClient(context,url);
+                String access_token = client.getTokenValid();
+                client.AddHeader("Authorization","Bearer "+access_token);
 
-            String rep = "";
-            try {
-                rep = client.Execute("GET");
+                String rep = "";
+                try {
+                    rep = client.Execute("GET");
 
-                if (rep!=null && rep.length()>2){
-                    // System.out.println("je suis ici encore");
-                    ArrayList<String> stringArray = jsonStringToArray(rep);
-                    Iterator<String> it = stringArray.iterator();
-                    Post post = null;
-                    while (it.hasNext()) {
-                        String s = it.next();
-                        // System.out.println("js : "+s.startsWith("["));
-                        // if(s.startsWith("[")){}
-                        JSONObject obj = new JSONObject(s);
-                        post = new Post(context,obj);
-                        if(post!=null){
+                    if (rep!=null && rep.length()>2){
+                        // System.out.println("je suis ici encore");
+                        ArrayList<String> stringArray = jsonStringToArray(rep);
+                        Iterator<String> it = stringArray.iterator();
+                        Post post = null;
+                        while (it.hasNext()) {
+                            String s = it.next();
+                            // System.out.println("js : "+s.startsWith("["));
+                            // if(s.startsWith("[")){}
+                            JSONObject obj = new JSONObject(s);
+                            post = new Post(context,obj);
+                            if(post!=null){
 
-                            String nom =post.getUser_pseudo();
-                            Double latitude = Double.valueOf(post.getLatitude());
-                            Double longitude = Double.valueOf(post.getLongitude());
-                            Track track = new Track(nom,latitude,longitude);
-                            tracks.add(track);
+                                String nom =post.getUser_pseudo();
+                                Double latitude = Double.valueOf(post.getLatitude());
+                                Double longitude = Double.valueOf(post.getLongitude());
+                                Track track = new Track(nom,latitude,longitude);
+                                tracks.add(track);
+                            }
+
                         }
-
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+            }else{
+
             }
+
         }
     }
 

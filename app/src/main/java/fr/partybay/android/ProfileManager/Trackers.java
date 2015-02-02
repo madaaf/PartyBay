@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
+import fr.partybay.android.Class.Internet;
 import fr.partybay.android.Class.Love;
 import fr.partybay.android.Class.RestClient;
 import fr.partybay.android.R;
@@ -33,6 +34,7 @@ public class Trackers extends Fragment{
 
     private TreeMap<Integer, Love> trackersTree = new TreeMap<Integer, Love>();
     private TreeMap<Integer, Love> trackedTree = new TreeMap<Integer, Love>();
+    private Internet internet = null;
 
 
 
@@ -40,7 +42,7 @@ public class Trackers extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Trackers = new ArrayList<Love>();
-
+        internet = new Internet(getActivity());
         /** Getting the arguments to the Bundle object */
         Bundle data = getArguments();
         if (data != null) {
@@ -89,34 +91,38 @@ public class Trackers extends Fragment{
 
 
     public void getTrackersFromApi() throws JSONException {
+        if(internet.internet()){
+            RestClient client = new RestClient(getActivity(), "https://api.partybay.fr/users/" + user_id + "/trackers");
+            String access_token = client.getTokenValid();
+            client.AddHeader("Authorization", "Bearer " + access_token);
 
-        RestClient client = new RestClient(getActivity(), "https://api.partybay.fr/users/" + user_id + "/trackers");
-        String access_token = client.getTokenValid();
-        client.AddHeader("Authorization", "Bearer " + access_token);
-
-        String rep = "";
-        try {
-            rep = client.Execute("GET");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            String rep = "";
+            try {
+                rep = client.Execute("GET");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
 
-        ArrayList<String> stringArray = new ArrayList<String>();
-        try {
-            stringArray = jsonStringToArray(rep);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Iterator<String> it = stringArray.iterator();
-        Love tracker = null;
+            ArrayList<String> stringArray = new ArrayList<String>();
+            try {
+                stringArray = jsonStringToArray(rep);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Iterator<String> it = stringArray.iterator();
+            Love tracker = null;
 
-        while (it.hasNext()) {
-            String s = it.next();
-            JSONObject obj = new JSONObject(s);
-            tracker = new Love(obj,getActivity());
-            Trackers.add(tracker);
-            trackersTree.put(tracker.getUser_id(), tracker);
+            while (it.hasNext()) {
+                String s = it.next();
+                JSONObject obj = new JSONObject(s);
+                tracker = new Love(obj,getActivity());
+                Trackers.add(tracker);
+                trackersTree.put(tracker.getUser_id(), tracker);
+
+            }
+
+        }else{
 
         }
 
@@ -136,33 +142,38 @@ public class Trackers extends Fragment{
     }
 
     public void getTrackedFromApi() throws JSONException {
-        RestClient client = new RestClient(getActivity(), "https://api.partybay.fr/users/" + user_id + "/tracked");
-        String access_token = client.getTokenValid();
-        client.AddHeader("Authorization", "Bearer " + access_token);
+        if (internet.internet()){
+            RestClient client = new RestClient(getActivity(), "https://api.partybay.fr/users/" + user_id + "/tracked");
+            String access_token = client.getTokenValid();
+            client.AddHeader("Authorization", "Bearer " + access_token);
 
-        String rep = "";
-        try {
-            rep = client.Execute("GET");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            String rep = "";
+            try {
+                rep = client.Execute("GET");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
 
-        ArrayList<String> stringArray = new ArrayList<String>();
-        try {
-            stringArray = jsonStringToArray(rep);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Iterator<String> it = stringArray.iterator();
-        Love tracker = null;
+            ArrayList<String> stringArray = new ArrayList<String>();
+            try {
+                stringArray = jsonStringToArray(rep);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Iterator<String> it = stringArray.iterator();
+            Love tracker = null;
 
-        while (it.hasNext()) {
-            String s = it.next();
-            JSONObject obj = new JSONObject(s);
-            tracker = new Love(obj,getActivity());
-            //  Trackers.add(tracker);
-            trackedTree.put(tracker.getUser_id(), tracker);
+            while (it.hasNext()) {
+                String s = it.next();
+                JSONObject obj = new JSONObject(s);
+                tracker = new Love(obj,getActivity());
+                //  Trackers.add(tracker);
+                trackedTree.put(tracker.getUser_id(), tracker);
+            }
+
+        }else{
+
         }
 
     }

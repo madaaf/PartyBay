@@ -30,6 +30,8 @@ import java.util.List;
 import java.util.Locale;
 
 import fr.partybay.android.Class.GPSTracker;
+import fr.partybay.android.Class.Internet;
+import fr.partybay.android.Class.PopupActivity;
 import fr.partybay.android.Class.Post;
 import fr.partybay.android.Class.RestClient;
 import fr.partybay.android.R;
@@ -56,12 +58,15 @@ public class GoogleFragment extends Fragment {
     private List<Marker> markers = new ArrayList<Marker>();
     private List<String> notifs = new ArrayList<String>();
     private GPSTracker gps;
+    private Internet internet  = null;
+    private PopupActivity popupActivity = null;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         System.out.println("GOOGLE onActivityCreated");
         super.onActivityCreated(savedInstanceState);
-
+        popupActivity = new PopupActivity(getActivity());
+        internet = new Internet(getActivity());
         gps=new GPSTracker(getActivity());
         latitude = gps.getLatitude();
         longitude = gps.getLongitude();
@@ -222,41 +227,46 @@ public class GoogleFragment extends Fragment {
         public  List<Track> getTracksTable(){ return tracks; }
 
         public void run(){
-            // String url = "https://api.partybay.fr/users/150/posts";
-            String url = "https://api.partybay.fr/posts";
-            RestClient client = new RestClient(context,url);
-            String access_token = client.getTokenValid();
-            client.AddHeader("Authorization","Bearer "+access_token);
+            if(internet.internet()){
+                // String url = "https://api.partybay.fr/users/150/posts";
+                String url = "https://api.partybay.fr/posts";
+                RestClient client = new RestClient(context,url);
+                String access_token = client.getTokenValid();
+                client.AddHeader("Authorization","Bearer "+access_token);
 
-            String rep = "";
-            try {
-                rep = client.Execute("GET");
+                String rep = "";
+                try {
+                    rep = client.Execute("GET");
 
-                if (rep!=null && rep.length()>2){
-                    // System.out.println("je suis ici encore");
-                    ArrayList<String> stringArray = jsonStringToArray(rep);
-                    Iterator<String> it = stringArray.iterator();
-                    Post post = null;
-                    while (it.hasNext()) {
-                        String s = it.next();
-                        // System.out.println("js : "+s.startsWith("["));
-                        // if(s.startsWith("[")){}
-                        JSONObject obj = new JSONObject(s);
-                        post = new Post(context,obj);
-                        if(post!=null){
+                    if (rep!=null && rep.length()>2){
+                        // System.out.println("je suis ici encore");
+                        ArrayList<String> stringArray = jsonStringToArray(rep);
+                        Iterator<String> it = stringArray.iterator();
+                        Post post = null;
+                        while (it.hasNext()) {
+                            String s = it.next();
+                            // System.out.println("js : "+s.startsWith("["));
+                            // if(s.startsWith("[")){}
+                            JSONObject obj = new JSONObject(s);
+                            post = new Post(context,obj);
+                            if(post!=null){
 
-                            String nom =post.getUser_pseudo();
-                            Double latitude = Double.valueOf(post.getLatitude());
-                            Double longitude = Double.valueOf(post.getLongitude());
-                            Track track = new Track(nom,latitude,longitude);
-                            tracks.add(track);
+                                String nom =post.getUser_pseudo();
+                                Double latitude = Double.valueOf(post.getLatitude());
+                                Double longitude = Double.valueOf(post.getLongitude());
+                                Track track = new Track(nom,latitude,longitude);
+                                tracks.add(track);
+                            }
+
                         }
-
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+            }else{
+                popupActivity.afficherPopup(getResources().getString(R.string.error_internet),null);
             }
+
         }
     }
 
@@ -275,6 +285,7 @@ public class GoogleFragment extends Fragment {
         }
         return addressString;
     }
+
 
 
 }

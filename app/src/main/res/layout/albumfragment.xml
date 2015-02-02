@@ -2,6 +2,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:id="@+id/albumfragmentcontainer"
     android:layout_height="match_parent"
     android:background="#000000">
 
@@ -10,7 +11,8 @@
         android:id="@+id/item_album_photo_fond"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_margin="5dp">
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp">
 
         <ImageView
             android:id="@+id/item_album_post_photo_fond"

@@ -32,6 +32,7 @@ import java.util.Iterator;
 import fr.partybay.android.Activity.CameraAc;
 import fr.partybay.android.Activity.Chargement;
 import fr.partybay.android.Class.CustomListView;
+import fr.partybay.android.Class.Internet;
 import fr.partybay.android.Class.RestClient;
 import fr.partybay.android.Class.SerializeurMono;
 import fr.partybay.android.Class.User;
@@ -66,7 +67,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
     private final static int NBROFITEM = 5;
     private SerializeurMono<User> serializeur_user;
     private String my_user_id;
-
+    private Internet internet = null;
 
 
 
@@ -81,7 +82,7 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
         User user = serializeur_user.getObject();
         my_user_id = user.getId();
 
-
+        internet  = new Internet(this);
 
         layout = (SwipeRefreshLayout) findViewById(R.id.swype);
         layout.setOnRefreshListener(this);
@@ -208,54 +209,59 @@ public class PostActivity extends Activity implements SwipeRefreshLayout.OnRefre
     // get posts from api
     public void getPostFromApi(String urlapi, Boolean addTop) throws Exception {
 
-        RestClient client = new RestClient(this,urlapi);
-        // je recupere un token dans la sd carte
-        String access_token = client.getTokenValid();
+        if(internet.internet()){
+            RestClient client = new RestClient(this,urlapi);
+            // je recupere un token dans la sd carte
+            String access_token = client.getTokenValid();
 
-        client.AddHeader("Authorization","Bearer "+access_token);
-        String rep = "";
-        try {
-            rep =  client.Execute("GET");
-
+            client.AddHeader("Authorization","Bearer "+access_token);
+            String rep = "";
             try {
-                JSONObject obj = new JSONObject(rep);
-                if(obj.has("error")){deconnexion(); }
+                rep =  client.Execute("GET");
 
-            } catch (JSONException e) {
-                System.out.println("err getPostfromapi "+e.getMessage());
+                try {
+                    JSONObject obj = new JSONObject(rep);
+                    if(obj.has("error")){deconnexion(); }
 
-            }
+                } catch (JSONException e) {
+                    System.out.println("err getPostfromapi "+e.getMessage());
+
+                }
 
 
-            if (rep!=null && rep.length()>2){
-                // System.out.println("je suis ici encore");
-                ArrayList<String> stringArray = new ArrayList<String>();
-                stringArray=jsonStringToArray(rep);
+                if (rep!=null && rep.length()>2){
+                    // System.out.println("je suis ici encore");
+                    ArrayList<String> stringArray = new ArrayList<String>();
+                    stringArray=jsonStringToArray(rep);
 
-                Iterator<String> it = stringArray.iterator();
-                Post post = null;
-                while (it.hasNext()) {
-                    String s = it.next();
-                    // System.out.println("js : "+s.startsWith("["));
-                    // if(s.startsWith("[")){}
-                    JSONObject obj = new JSONObject(s);
-                    post = new Post(this,obj);
-                    if(post!=null){
-                        if (addTop==true){
-                            posts.add(0,post);
-                        }else{
-                            posts.add(post);
+                    Iterator<String> it = stringArray.iterator();
+                    Post post = null;
+                    while (it.hasNext()) {
+                        String s = it.next();
+                        // System.out.println("js : "+s.startsWith("["));
+                        // if(s.startsWith("[")){}
+                        JSONObject obj = new JSONObject(s);
+                        post = new Post(this,obj);
+                        if(post!=null){
+                            if (addTop==true){
+                                posts.add(0,post);
+                            }else{
+                                posts.add(post);
+                            }
+
                         }
 
                     }
-
                 }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+        }else{
 
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+
 
 
     }
