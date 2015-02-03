@@ -9,6 +9,7 @@
     <RelativeLayout
         android:id="@+id/tracker_profile_user"
         android:layout_width="fill_parent"
+        android:background="@color/white"
         android:layout_height="80dp">
 
 

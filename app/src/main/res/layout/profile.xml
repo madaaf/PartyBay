@@ -67,6 +67,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:background="@drawable/degrader_bas"
                 android:weightSum="3">
 
                 <Button
@@ -88,7 +89,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Moments"
+                    android:text="Trackers"
                     android:textStyle="bold"
                     android:textColor="#F83838"
                     android:background="@null" />
@@ -103,7 +104,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Relations"
+                    android:text="Tracking"
                     android:textStyle="bold"
                     android:textColor="#F83838"
                     android:background="@null"/>
@@ -157,8 +158,7 @@
         <LinearLayout
             android:id="@+id/profilePager"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_below="@+id/ItemPorfile">
+            android:layout_height="fill_parent">
 
             <android.support.v4.view.ViewPager
                 xmlns:android="http://schemas.android.com/apk/res/android"

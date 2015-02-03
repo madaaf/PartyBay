@@ -106,7 +106,7 @@ public class LoversListActivity extends Activity{
 
 
         //System.out.println("tabLoveLovers SIZE "+Lovers.size());
-        adapter = new TrackersAdapter(this,Lovers);
+        adapter = new TrackersAdapter(this,Lovers,null);
         loversListView.setAdapter(adapter);
 
 

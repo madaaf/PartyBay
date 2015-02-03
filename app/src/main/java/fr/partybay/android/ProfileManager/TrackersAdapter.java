@@ -29,6 +29,7 @@ public class TrackersAdapter extends BaseAdapter {
     private String user_id;
     private SerializeurMono<User> serializeurUser ;
     private String my_user_id;
+    private String activite = null;
 
     static class ViewHolder{
         TextView pseudo;
@@ -39,10 +40,10 @@ public class TrackersAdapter extends BaseAdapter {
 
 
 
-    public TrackersAdapter(Context context, ArrayList<Love> trackers){
+    public TrackersAdapter(Context context, ArrayList<Love> trackers, String style){
         this.context = context;
         this.trackers = trackers;
-
+        this.activite = style;
         serializeurUser = new SerializeurMono<User>(context.getResources().getString(R.string.sdcard_user));
         User user = serializeurUser.getObject();
         my_user_id = user.getId();
@@ -114,6 +115,7 @@ public class TrackersAdapter extends BaseAdapter {
         }else{
             UrlImageViewHelper.setUrlDrawable(holder.picture, "https://static.partybay.fr/images/users/profile/160x160_" + trackers.get(position).getPicture());
         }
+
 
 
         if(trackers.get(position).getDoubleTrack()==true){

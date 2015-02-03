@@ -38,17 +38,24 @@ public class ProfileViewPagerAdapter extends FragmentPagerAdapter {
                 return story;
             }
             case 1 : {
-                args.putString("user_id",user_id);
+                /*args.putString("user_id",user_id);
                 MomentsActivity ma = new MomentsActivity();
                 ma.setArguments(args);
-                return ma;
-            }
-            case 2 : {
-
+                return ma;*/
                 args.putString("user_id",user_id);
                 Trackers trackers = new Trackers();
                 trackers.setArguments(args);
                 return trackers;
+            }
+            case 2 : {
+                args.putString("user_id",user_id);
+                Tracking tracking = new Tracking();
+                tracking.setArguments(args);
+                return tracking;
+                /*args.putString("user_id",user_id);
+                Trackers trackers = new Trackers();
+                trackers.setArguments(args);
+                return trackers;*/
             }
         }
         return null;
