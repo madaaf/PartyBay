@@ -52,7 +52,7 @@ public class TimeLine extends FragmentActivity {
         my_user_id = user.getId();
 
         profile = (ImageButton) findViewById(R.id.profile);
-         moment = (ImageButton) findViewById(R.id.moment);
+        moment = (ImageButton) findViewById(R.id.moment);
         menu = (ImageButton) findViewById(R.id.reglage);
         zone = (Button)findViewById(R.id.timeline_button_zone);
         track = (Button)findViewById(R.id.timeline_button_track);
