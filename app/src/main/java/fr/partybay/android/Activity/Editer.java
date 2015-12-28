@@ -23,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import fr.partybay.android.Class.GPSTracker;
 import fr.partybay.android.Class.Internet;
@@ -57,8 +58,10 @@ public class Editer extends Activity {
     private  PopupActivity popup = null;
     private Internet internet = null;
 
-    protected void onCreate(Bundle savedInstanceState) {
+    private ArrayList<String> ok = new ArrayList<String>();
 
+    protected void onCreate(Bundle savedInstanceState) {
+        ok.add("ok");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.editer);
@@ -219,6 +222,8 @@ public class Editer extends Activity {
 
         }
     }
+
+
 
 
 

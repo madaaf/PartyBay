@@ -59,6 +59,7 @@ public class CameraSelfie extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.camera2);
+        internet = new Internet(this);
 
         Bundle bundle = getIntent().getExtras();
         user_id = bundle.getString("user_id");

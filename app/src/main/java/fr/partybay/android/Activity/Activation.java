@@ -40,11 +40,17 @@ public class Activation extends Activity {
         setContentView(R.layout.activation);
         ActionBar bar = this.getActionBar();
         bar.hide();
+        internet = new Internet(this);
         popupActivity = new PopupActivity(this);
         activation_button_valider = (Button)findViewById(R.id.activation_button_valider);
         activation_code=(EditText)findViewById(R.id.activation_code);
         renvoyerCode = (Button)findViewById(R.id.activation_button);
 
+        /**
+         *
+         * PartyBay
+         *
+         **/
 
         serializeur_user = new SerializeurMono<User>(getResources().getString(R.string.sdcard_user));
         JSONObject obj = new JSONObject();
@@ -62,7 +68,6 @@ public class Activation extends Activity {
         @Override
         public void onClick(View v) {
             phone ="0610919713";
-
             if(internet.internet()){
                 RestClient client = new RestClient(v.getContext(),"https://api.partybay.fr/activate?phone="+phone);
                 System.out.println("https://api.partybay.fr/activate?phone="+phone + user.getId());

@@ -81,6 +81,8 @@ public class LoversListActivity extends Activity{
             entete.setText("0 lover");
         }else if (nbr_lover==1){
             entete.setText("1 lover");
+        }else{
+            entete.setText(nbr_lover+" lovers");
         }
         font = Typeface.createFromAsset(getAssets(), "fonts/havana.otf");
         entete.setTypeface(font);

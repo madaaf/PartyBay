@@ -47,7 +47,7 @@ public class ZoneTimeLineFragment extends Fragment implements SwipeRefreshLayout
     private Thread ThreadLoadPost;
     private ArrayList<Post> posts = null;
     private int nbr_scroll = 0 ;
-    private final static int NBROFITEM = 5;
+    private final static int NBROFITEM = 15;
     private Context context;
     public static FragmentManager fragmentManager;
 

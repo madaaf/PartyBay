@@ -1,6 +1,7 @@
 package fr.partybay.android.TimeLineManager;
 
 import android.app.ActionBar;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ public class TimeLine extends FragmentActivity {
     private ViewPager mViewPager;
     private Button zone;
     private Button track;
+    private ProgressDialog simpleWaitDialog;
 
 
 
@@ -63,7 +65,7 @@ public class TimeLine extends FragmentActivity {
         entete.setTypeface(font);
         entete.setOnClickListener(enteteListener);
 
-        menu.setOnClickListener(reglageListener);
+       menu.setOnClickListener(reglageListener);
 
         profile.setOnClickListener(profileListener);
         moment.setOnClickListener(momentListener);
@@ -119,6 +121,8 @@ public class TimeLine extends FragmentActivity {
     View.OnClickListener reglageListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+
+
             Intent intent = new Intent(TimeLine.this, MenuViewPagerActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.left_to_right_slide, R.anim.right_to_left_slide);
@@ -135,12 +139,12 @@ public class TimeLine extends FragmentActivity {
           //  Animation rotation = AnimationUtils.loadAnimation(view.getContext(), R.anim.button_rotate);
           //  profile.startAnimation(rotation);
 
+         //   new ImageUploaderTaskProfile().execute();
+
             Intent intent = new Intent(TimeLine.this, ProfileViewPagerActivity.class);
             intent.putExtra("user_id",my_user_id);
             startActivity(intent);
             overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
-
-
 
             /*
 
@@ -176,6 +180,9 @@ public class TimeLine extends FragmentActivity {
 
 
         }
+
+
+
 
         class ThreadMoments extends Thread{
             public void run(){
@@ -213,4 +220,26 @@ public class TimeLine extends FragmentActivity {
             //listView.setSelection(0);
         }
     };
+
+    /*
+    class ImageUploaderTaskProfile extends AsyncTask<String, Integer, Void> {
+        @Override
+        protected void onPreExecute(){
+            simpleWaitDialog = ProgressDialog.show(TimeLine.this, getResources().getString(R.string.patientez), "Patientez");
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+            Intent intent = new Intent(TimeLine.this, ProfileViewPagerActivity.class);
+            intent.putExtra("user_id",my_user_id);
+            startActivity(intent);
+            overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result){
+            simpleWaitDialog.dismiss();
+        }
+    }*/
 }

@@ -76,8 +76,6 @@ public class Connexion extends Activity{
                 String response = client.getReponsePost();
                 if(internet.internet()){
 
-                    //popupActivity.afficherPopup(getResources().getString(R.string.editer_error_internet_connexion) , null);
-                }else{
                     JSONObject obj = null;
                     Token token = null ;
                     access_token = null;
@@ -134,13 +132,11 @@ public class Connexion extends Activity{
                     }
                 }
 
-
-
             }else{
-              // popupActivity.afficherPopup(getResources().getString(R.string.error_internet), null);
+
+                popupActivity.afficherPopup(getResources().getString(R.string.error_internet), null);
+
             }
-
-
 
         }
 

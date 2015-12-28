@@ -3,12 +3,10 @@ package fr.partybay.android.ProfileManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.TextView;
 
 import com.nirhart.parallaxscroll.views.ParallaxListView;
 
@@ -77,10 +75,12 @@ public class Story extends Fragment  implements SwipeRefreshLayout.OnRefreshList
         // initialize the GridView
         lv = (ParallaxListView) rootView.findViewById(R.id.TrackinglistView);
 
-        TextView v = new TextView(getActivity());
+       /* TextView v = new TextView(getActivity());
         v.setGravity(Gravity.CENTER);
         v.setHeight(1050);
-        lv.addHeaderView(v);
+        lv.addHeaderView(v);*/
+
+
 
        // lv.addHeaderView(rootView2);
 

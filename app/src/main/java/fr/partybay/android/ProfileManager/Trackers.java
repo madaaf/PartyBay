@@ -2,12 +2,10 @@ package fr.partybay.android.ProfileManager;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -87,10 +85,10 @@ public class Trackers extends Fragment{
         View rootView = inflater.inflate(R.layout.trackers, container, false);
         adapter = new TrackersAdapter(getActivity(),Trackers,"trackers");
         ListView listView = (ListView) rootView.findViewById(R.id.trackerslistView);
-        TextView v = new TextView(getActivity());
+       /* TextView v = new TextView(getActivity());
         v.setGravity(Gravity.CENTER);
         v.setHeight(1050);
-        listView.addHeaderView(v);
+        listView.addHeaderView(v);*/
         listView.setAdapter(adapter);
         return rootView;
     }

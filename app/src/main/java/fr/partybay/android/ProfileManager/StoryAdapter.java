@@ -102,7 +102,7 @@ public class StoryAdapter extends BaseAdapter {
         viewHolder.nbr_lovers.setText(String.valueOf(item.getTotalLovers()));
 
 
-        UrlImageViewHelper.setUrlDrawable(viewHolder.link, "https://static.partybay.fr/images/posts/640x640_" + item.getLink());
+        UrlImageViewHelper.setUrlDrawable(viewHolder.link, "https://static.partybay.fr/images/posts/160x160_" + item.getLink());
 
         viewHolder.story_item.setOnClickListener(new View.OnClickListener() {
             @Override

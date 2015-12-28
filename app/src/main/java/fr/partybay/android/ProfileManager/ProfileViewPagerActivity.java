@@ -388,6 +388,7 @@ public class ProfileViewPagerActivity extends FragmentActivity  {
         return BitmapFactory.decodeFile(path, options);
     }
 
+
     View.OnClickListener ListenerPhotoSelfie = new View.OnClickListener(){
 
         @Override
@@ -405,34 +406,8 @@ public class ProfileViewPagerActivity extends FragmentActivity  {
 
     public void getTrackedFromApi() throws JSONException {
         if(internet.internet()){
-            RestClient client = new RestClient(this, "https://api.partybay.fr/users/" + my_user_id + "/tracked");
-            String access_token = client.getTokenValid();
-            client.AddHeader("Authorization", "Bearer " + access_token);
-
-            String rep = "";
-            try {
-                rep = client.Execute("GET");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-
-            ArrayList<String> stringArray = new ArrayList<String>();
-            try {
-                stringArray = jsonStringToArray(rep);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            Iterator<String> it = stringArray.iterator();
-            Love tracker = null;
-
-            while (it.hasNext()) {
-                String s = it.next();
-                JSONObject obj = new JSONObject(s);
-                tracker = new Love(obj,this);
-                //  Trackers.add(tracker);
-                trackedTree.put(tracker.getUser_id(), tracker);
-            }
+            Thread threadConnexion = new ThreadConnexion();
+            threadConnexion.start();
 
         }else{
 
@@ -480,6 +455,46 @@ public class ProfileViewPagerActivity extends FragmentActivity  {
 
             }else{
 
+            }
+
+        }
+    }
+
+    public class ThreadConnexion extends Thread{
+        public void run(){
+            RestClient client = new RestClient(getApplication(), "https://api.partybay.fr/users/" + my_user_id + "/tracked");
+            String access_token = client.getTokenValid();
+            client.AddHeader("Authorization", "Bearer " + access_token);
+
+            String rep = "";
+            try {
+                rep = client.Execute("GET");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+            ArrayList<String> stringArray = new ArrayList<String>();
+            try {
+                stringArray = jsonStringToArray(rep);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Iterator<String> it = stringArray.iterator();
+            Love tracker = null;
+
+            while (it.hasNext()) {
+                String s = it.next();
+                JSONObject obj = null;
+                try {
+                    obj = new JSONObject(s);
+                    tracker = new Love(obj,getApplication());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                //  Trackers.add(tracker);
+                trackedTree.put(tracker.getUser_id(), tracker);
             }
 
         }
